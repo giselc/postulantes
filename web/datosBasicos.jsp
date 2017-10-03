@@ -94,6 +94,13 @@
             <td>C.I.: </td>
             <td><input type=number name="ci" size="8" maxlength="8" value=<%if( p!=null){ out.print(Integer.valueOf(p.getCi()));} %> required="required"/></td>
         </tr>
+        <tr  <% if(p==null){out.println("hidden='hidden'");} %>>
+            
+            <td>Fecha de Alta: </td>
+            <td><input type=date name="fechaAlta" size="8" value="<%if( p!=null){out.print(p.getFechaAlta());} %>" readonly/></td>
+        
+            
+        </tr>
         <tr>
             <td>Primer nombre: </td>
             <td><input type="text" name="primerNombre" value="<%if( p!=null){out.print(p.getPrimerNombre());} %>" size="50" required="required"/></td>

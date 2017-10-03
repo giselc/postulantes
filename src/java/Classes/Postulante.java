@@ -51,7 +51,7 @@ public class Postulante {
     private RecordPostulanteNota notas;
     private int resultado;
     private int precedencia;
-
+    private Date fechaAlta;
     private boolean alojamiento;
     //patronimico
     //PADRE
@@ -665,6 +665,14 @@ public class Postulante {
         }
         return contador;
 }
+
+    public Date getFechaAlta() {
+        return fechaAlta;
+    }
+
+    public void setFechaAlta(Date fechaAlta) {
+        this.fechaAlta = fechaAlta;
+    }
     
    public void imprimirPostulante(PrintWriter out){
        String impr="<table class=\"resultsTable\" style=\"margin-left: 0%; margin-right: 0%;word-wrap: break-word\">\n" +
@@ -735,6 +743,10 @@ public class Postulante {
 "                        <tr>\n" +
 "                            <td>C.I.: </td>\n" +
 "                            <td>"+ ci +"</td>\n" +
+"                        </tr>\n" +
+"                        <tr>\n" +
+"                            <td>Fecha Alta: </td>\n" +
+"                            <td>"+ ManejadorCodigoBD.fechaFormatoDDMMAAAA(fechaAlta) +"</td>\n" +
 "                        </tr>\n" +
 
                             

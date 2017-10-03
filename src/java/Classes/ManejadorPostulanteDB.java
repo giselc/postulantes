@@ -8,6 +8,7 @@ package Classes;
 import java.io.PrintWriter;
 import java.sql.Blob;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -128,6 +129,7 @@ public class ManejadorPostulanteDB {
                         p.setId(0);
                     }
                 }
+                p.setFechaAlta(this.getFechaAlta(ci));
             }
         } catch (Exception ex) {
             Logger.getLogger(ManejadorCodigoBD.class.getName()).log(Level.SEVERE, null, ex);
@@ -489,7 +491,7 @@ public class ManejadorPostulanteDB {
             int mes = fecha1.get(java.util.Calendar.MONTH)+1;
             String fecha=  fecha1.get(java.util.Calendar.YEAR)+"-"+mes+"-"+fecha1.get(java.util.Calendar.DATE); //usada para log
             String sql = "INSERT INTO postulantes.documentos (anio,ci, foto, fotociAnverso, fotociReverso, fotof69Hoja1, fotof69Hoja2, fotof69Hoja3, fotof1hoja1, fotof1hoja2) values (?,?,?,?,?,?,?,?,?,?)";
-            String sql1 = "INSERT INTO postulantes.postulantes (ci, PrimerNombre, PrimerApellido, SegundoNombre, SegundoApellido, anio, unidadInsc, FechaNac, Sexo, DepartamentoNac, LocalidadNac, CC, CCNro, EstadoCivil, Domicilio, Departamento, Localidad, Telefono, Email, Quinto, Orientacion, Lmga, Reingreso, BuenaConducta, PS, PSEjercito, HIJOS, OBSERVACIONES, carrera,paseDirecto,notaPaseDirecto,materiasPendientes,alojamiento) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            String sql1 = "INSERT INTO postulantes.postulantes (ci, PrimerNombre, PrimerApellido, SegundoNombre, SegundoApellido, anio, unidadInsc, FechaNac, Sexo, DepartamentoNac, LocalidadNac, CC, CCNro, EstadoCivil, Domicilio, Departamento, Localidad, Telefono, Email, Quinto, Orientacion, Lmga, Reingreso, BuenaConducta, PS, PSEjercito, HIJOS, OBSERVACIONES, carrera,paseDirecto,notaPaseDirecto,materiasPendientes,alojamiento) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             String sql2 = "INSERT INTO postulantes.log(ci,  usuario, fecha, alta, sentenciaSQL, archivos) values(?,?,?,?,?,?)";
             PreparedStatement statement= connection.prepareStatement(sql); // sql a insertar en postulantes
             PreparedStatement statement1= connection.prepareStatement(sql1); // incluir sql sin archivos en log
@@ -932,6 +934,26 @@ public class ManejadorPostulanteDB {
         } catch (SQLException ex) {
             return false;
         }
+    }
+    public Date getFechaAlta(int ci){
+         Date d= null;
+        
+        try {
+            Statement s= connection.createStatement();
+            String sql="Select * from postulantes.log where ci="+ci+" and alta=1";
+            ResultSet rs=s.executeQuery(sql);
+            if (rs.next()){
+                System.out.print(rs.getDate("fecha"));
+                return rs.getDate("fecha");
+            }
+            
+
+        } catch (Exception ex) {
+            System.out.print("ddd");
+            Logger.getLogger(ManejadorPostulanteDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return d;
     }
     public boolean savePostulantePatronimico(RecordPostulantePatronim rb, int creadoPor, int Carrera,PrintWriter out){
         try {
