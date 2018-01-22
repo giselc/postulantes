@@ -140,6 +140,18 @@ public class guardarDatosBasicos extends HttpServlet {
            else{
                rb.alojamiento = false;
            }
+           if (request.getParameter("nsp")!=null){
+                rb.nsp = request.getParameter("nsp").equals("on");
+           }
+           else{
+               rb.nsp = false;
+           }
+           if (request.getParameter("renuncio")!=null){
+                rb.renuncio = request.getParameter("renuncio").equals("on");
+           }
+           else{
+               rb.renuncio = false;
+           }
             ManejadorPostulanteDB mp = new ManejadorPostulanteDB();
             int b = mp.createPostulante(rb, Integer.valueOf(creadopor), Integer.valueOf(sesion.getAttribute("carrera").toString()),response.getWriter());
             if(b==1){

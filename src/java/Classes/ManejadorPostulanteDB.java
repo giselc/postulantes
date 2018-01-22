@@ -81,6 +81,8 @@ public class ManejadorPostulanteDB {
                 p.setNotaPaseDirecto(rs.getDouble("NotaPaseDirecto"));
                 p.setMateriasPendientes(rs.getString("materiasPendientes"));
                 p.setAlojamiento(rs.getBoolean("Alojamiento"));
+                p.setNsp(rs.getBoolean("Nsp"));
+                p.setRenuncio(rs.getBoolean("Renuncio"));
                 p.setBuenaConducta(rs.getBoolean("BuenaConducta"));
                 p.setPs(rs.getBoolean("PS"));
                 p.setPsEjercito(rs.getBoolean("PSEjercito"));
@@ -238,6 +240,26 @@ public class ManejadorPostulanteDB {
                 if (rf.alojamiento.equals("N")){
                     filtro+= " and alojamiento = 0";
                     filtroMostrar += "ALOJAMIENTO = NO - ";
+                }
+            }
+            if(rf.nsp.equals("S")){
+                filtro+= " and nsp = 1";
+                filtroMostrar += "NSP = SI - ";
+            }
+            else{
+                if (rf.nsp.equals("N")){
+                    filtro+= " and NSP = 0";
+                    filtroMostrar += "NSP = NO - ";
+                }
+            }
+            if(rf.renuncio.equals("S")){
+                filtro+= " and renuncio = 1";
+                filtroMostrar += "Renuncio = SI - ";
+            }
+            else{
+                if (rf.renuncio.equals("N")){
+                    filtro+= " and renuncio = 0";
+                    filtroMostrar += "Renuncio = NO - ";
                 }
             }
             if(rf.condicional.equals("S")){
@@ -491,7 +513,7 @@ public class ManejadorPostulanteDB {
             int mes = fecha1.get(java.util.Calendar.MONTH)+1;
             String fecha=  fecha1.get(java.util.Calendar.YEAR)+"-"+mes+"-"+fecha1.get(java.util.Calendar.DATE); //usada para log
             String sql = "INSERT INTO postulantes.documentos (anio,ci, foto, fotociAnverso, fotociReverso, fotof69Hoja1, fotof69Hoja2, fotof69Hoja3, fotof1hoja1, fotof1hoja2) values (?,?,?,?,?,?,?,?,?,?)";
-            String sql1 = "INSERT INTO postulantes.postulantes (ci, PrimerNombre, PrimerApellido, SegundoNombre, SegundoApellido, anio, unidadInsc, FechaNac, Sexo, DepartamentoNac, LocalidadNac, CC, CCNro, EstadoCivil, Domicilio, Departamento, Localidad, Telefono, Email, Quinto, Orientacion, Lmga, Reingreso, BuenaConducta, PS, PSEjercito, HIJOS, OBSERVACIONES, carrera,paseDirecto,notaPaseDirecto,materiasPendientes,alojamiento) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            String sql1 = "INSERT INTO postulantes.postulantes (ci, PrimerNombre, PrimerApellido, SegundoNombre, SegundoApellido, anio, unidadInsc, FechaNac, Sexo, DepartamentoNac, LocalidadNac, CC, CCNro, EstadoCivil, Domicilio, Departamento, Localidad, Telefono, Email, Quinto, Orientacion, Lmga, Reingreso, BuenaConducta, PS, PSEjercito, HIJOS, OBSERVACIONES, carrera,paseDirecto,notaPaseDirecto,materiasPendientes,alojamiento,nsp,renuncio) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             String sql2 = "INSERT INTO postulantes.log(ci,  usuario, fecha, alta, sentenciaSQL, archivos) values(?,?,?,?,?,?)";
             PreparedStatement statement= connection.prepareStatement(sql); // sql a insertar en postulantes
             PreparedStatement statement1= connection.prepareStatement(sql1); // incluir sql sin archivos en log
@@ -635,6 +657,8 @@ public class ManejadorPostulanteDB {
             statement1.setDouble(i1++, rb.notaPaseDirecto);
             statement1.setString(i1++, rb.materiasPendientes);
             statement1.setBoolean(i1++, rb.alojamiento);
+            statement1.setBoolean(i1++, rb.nsp);
+            statement1.setBoolean(i1++, rb.renuncio);
 
             statement2.setInt(i2++, rb.ci);
             statement2.setInt(i2++, creadoPor);
@@ -755,7 +779,7 @@ public class ManejadorPostulanteDB {
            int mes = fecha1.get(java.util.Calendar.MONTH)+1;
            String fecha=  fecha1.get(java.util.Calendar.YEAR)+"-"+mes+"-"+fecha1.get(java.util.Calendar.DATE);
            String sql2 = "INSERT INTO postulantes.log(ci,  usuario, fecha, alta, sentenciaSQL, archivos) values(?,?,?,?,?,?)";
-           String sql1 = "UPDATE postulantes.postulantes set ci=?,PrimerNombre=?, PrimerApellido=?,SegundoNombre=?, SegundoApellido=?,fechaNac=?,Sexo=?,DepartamentoNac=?,localidadNac=?,cc=?,ccNro=?,estadocivil=?,domicilio=?,departamento=?,localidad=?,telefono=?,email=?,Quinto=?,Orientacion=?,lmga=?,reingreso=?,BuenaConducta=?,PS=?,PSEjercito=?,Hijos=?,Observaciones=?,PaseDirecto=?,NotaPaseDirecto=?,materiasPendientes=?,Alojamiento=? where ci = "+ rb.ci+" and anio="+ManejadorPostulanteDB.getAnioPostula();
+           String sql1 = "UPDATE postulantes.postulantes set ci=?,PrimerNombre=?, PrimerApellido=?,SegundoNombre=?, SegundoApellido=?,fechaNac=?,Sexo=?,DepartamentoNac=?,localidadNac=?,cc=?,ccNro=?,estadocivil=?,domicilio=?,departamento=?,localidad=?,telefono=?,email=?,Quinto=?,Orientacion=?,lmga=?,reingreso=?,BuenaConducta=?,PS=?,PSEjercito=?,Hijos=?,Observaciones=?,PaseDirecto=?,NotaPaseDirecto=?,materiasPendientes=?,Alojamiento=?, nsp=?, renuncio=? where ci = "+ rb.ci+" and anio="+ManejadorPostulanteDB.getAnioPostula();
            String sql = "UPDATE postulantes.documentos set ci=?"+strfoto+strfotoCIAnverso+strfotoCIReverso+strfotoF69Hoja1+strfotoF69Hoja2+strfotoF69Hoja3+strfotoF1Hoja1+strfotoF1Hoja2+" where ci = "+ rb.ci + " and anio= "+ManejadorPostulanteDB.getAnioPostula();
            PreparedStatement statement= connection.prepareStatement(sql);
            PreparedStatement statement1= connection.prepareStatement(sql1);
@@ -816,6 +840,8 @@ public class ManejadorPostulanteDB {
            statement1.setDouble(i1++, rb.notaPaseDirecto);
            statement1.setString(i1++, rb.materiasPendientes);
            statement1.setBoolean(i1++, rb.alojamiento);
+           statement1.setBoolean(i1++, rb.nsp);
+           statement1.setBoolean(i1++, rb.renuncio);
            
            if (!rb.foto.equals("")){
                byte[] imageByte = Base64.getDecoder().decode(rb.foto);
@@ -943,7 +969,7 @@ public class ManejadorPostulanteDB {
             String sql="Select * from postulantes.log where ci="+ci+" and alta=1";
             ResultSet rs=s.executeQuery(sql);
             if (rs.next()){
-                System.out.print(rs.getDate("fecha"));
+                //System.out.print(rs.getDate("fecha"));
                 return rs.getDate("fecha");
             }
             

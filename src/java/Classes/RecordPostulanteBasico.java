@@ -44,6 +44,8 @@ public class RecordPostulanteBasico {
     public boolean psEjercito;
     public  int hijos;
     public boolean alojamiento;
+    public boolean nsp;
+    public boolean renuncio;
     public String observaciones;
     public String foto;
     public String fotoCIAnverso;

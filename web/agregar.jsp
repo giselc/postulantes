@@ -54,15 +54,15 @@
             };
 
         }
-        function agregarimagen(f){
-            var r=confirm("¿Seguro que desea guardar los cambios?");
+        function agregarimagen(f,f1){
+                  var r=confirm("¿Seguro que desea guardar los cambios?");
             if (r==true)
             {
                 if(f.elements["ci"].value.length == 8 ){
                     var patron=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
                     if(f.elements["email"].value.search(patron)==0){
                         if (f.elements["telefono"].value.length==8 || f.elements["telefono"].value.length==9){
-                            if(document.getElementById('f1hoja1').value != "" || document.getElementById('imagenf1hoja1').src!=window.location){
+                            if(document.getElementById('f1hoja1').value != "" || f1!=window.location){
                                 var input = document.createElement('input');input.type = 'hidden';input.name = 'foto2';
                                 if(document.getElementById('uploadImage').value == ""){
                                     input.value = "";

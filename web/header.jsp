@@ -151,5 +151,5 @@
                         <tr>
                             <td style="width: 5%">
                             </td>
-                            <td style="width: 90%" class="conteinermenu">
+                            <td style="width: 90%;" class="conteinermenu">
                                 <p align="center" style="margin-top: 0px"><img src="images/POSTULANTES.png" style="width: 35%"/></p>

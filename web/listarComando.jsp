@@ -37,7 +37,7 @@ ManejadorPostulanteDB mp = new ManejadorPostulanteDB();
                 sesion.setAttribute("filtroMostrarC", "");
                 out.print("<tr style='background-color:#ffcc66'>");
                             out.print("<td style='width: 5%' align='center'><h3 style='margin:2%;'></h3></td>");
-                            out.print("<td style='width: 5%' align='center'><input type='checkbox' onclick='seleccionar_todo_apoyo()' id='selTodoApoyo'></td>");
+                            out.print("<td style='width: 5%' align='center'><input type='checkbox' onclick='seleccionar_todo_comando()' id='selTodo'></td>");
                             out.print("<td style='width: 10%' align='center'><h3 style='margin:2%;'>Número</h3></td>");
                             out.print("<td colspan=2 style='width: 20%' align='center'><h3 style='margin:2%;'>Nombres</h3></td>");
                             out.print("<td colspan=2 style='width: 20%' align='center'><h3 style='margin:2%;'>Apellidos</h3></td>");

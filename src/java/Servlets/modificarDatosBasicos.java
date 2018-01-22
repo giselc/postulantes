@@ -129,6 +129,18 @@ public class modificarDatosBasicos extends HttpServlet {
                else{
                    rb.alojamiento = false;
                }
+               if (request.getParameter("nsp")!=null){
+                    rb.nsp = request.getParameter("nsp").equals("on");
+               }
+               else{
+                   rb.nsp = false;
+               }
+               if (request.getParameter("renuncio")!=null){
+                    rb.renuncio = request.getParameter("renuncio").equals("on");
+               }
+               else{
+                   rb.renuncio = false;
+               }
                 ManejadorPostulanteDB mp = new ManejadorPostulanteDB();
                 String creadopor = sesion.getAttribute("usuarioID").toString();
                 boolean b = mp.savePostulanteBasico(rb,Integer.valueOf(creadopor),Integer.valueOf(sesion.getAttribute("carrera").toString()),out);

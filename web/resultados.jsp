@@ -126,7 +126,6 @@
             </tr>
             <%
                 int i=0;
-                if(!an.isEmpty()){
                     for(RecordPostulanteNota n: an){
                         out.print("<tr >"+
                             "<td style='width:8%; text-align:center'>"+n.id+
@@ -138,10 +137,24 @@
                             "<td>"+n.primerNombre+
                            "</td>");
                             switch(materia){
-                                case 1: 
+                                case 1: case 2: case 3 :
+                                    double nota;
+                                    String obs;
+                                    if(materia==1){
+                                        nota= n.matematica;
+                                        obs=n.matematicaObs;
+                                    }
+                                    else if(materia==2){
+                                        nota= n.historia;
+                                        obs=n.historiaObs;
+                                    }
+                                    else{
+                                        nota= n.idiomaEspaniol;
+                                        obs=n.idiomaEspaniolObs;
+                                    }
                                     out.print("</td>"+
                                     "<td><input name='notas[]' type=number min='0.00' max='10.00' step='0.001'");
-                                    if(n.pd || n.reingreso){
+                                    if(n.pd || n.reingreso||n.nsp||n.renuncio){
                                         if(n.reingreso){
                                             out.print("readonly value='0");
                                         }
@@ -149,234 +162,97 @@
                                             out.print("readonly value='"+n.notapd);
                                         }
                                     }else{
-                                        if(n.matematica<1){
+                                        if(nota<1){
                                             out.print(" value='0");
                                         }
                                         else{
-                                            out.print(" value='"+n.matematica);
+                                            out.print(" value='"+nota);
                                         }
                                     }
                                     out.print("' /></td>"+
                                     "<td><input name='observaciones[]' type=text value='");
-                                    if(!n.matematicaObs.toUpperCase().contains("REINGRESO") && n.reingreso){
+                                    if(!obs.toUpperCase().contains("REINGRESO") && n.reingreso){
                                         out.print("REINGRESO ");
                                     }
-                                    if(!n.matematicaObs.toUpperCase().contains("PD") && !n.matematicaObs.toUpperCase().contains("P.D")  && n.pd){
+                                    if(!obs.toUpperCase().contains("NSP") && n.nsp){
+                                        out.print("NSP ");
+                                    }
+                                    if(!obs.toUpperCase().contains("RENUNCIO") && n.renuncio){
+                                        out.print("RENUNCIO ");
+                                    }
+                                    if(!obs.toUpperCase().contains("PD") && !obs.toUpperCase().contains("P.D")  && n.pd){
                                         out.print("PD ");
                                     }
-                                    out.print(n.matematicaObs);
-                                    out.print("'/></td></tr>");break;
-                                case 2: 
-                                    out.print("</td>"+
-                                    "<td><input name='notas[]' type=number min='0.00' max='10.00' step='0.001'");
-                                    if(n.pd || n.reingreso){
-                                        if(n.reingreso){
-                                            out.print("readonly value='0");
-                                        }
-                                        else{
-                                            out.print("readonly value='"+n.notapd);
-                                        }
-                                    }else{
-                                        out.print("value='"+n.historia);
-                                    }
-                                    out.print("' /></td>"+
-                                    "<td><input name='observaciones[]' type=text value='");
-                                    if(!n.historiaObs.contains("REINGRESO") && n.pd){
-                                        out.print("REINGRESO ");
-                                    }
-                                    if(!n.historiaObs.contains("PD") && n.pd){
-                                        out.print("PD ");
-                                    }
-                                    out.print(n.historiaObs);
-                                    out.print("'/></td></tr>");break;
-                                case 3: 
-                                    out.print("</td>"+
-                                    "<td><input name='notas[]' type=number min='0.00' max='10.00' step='0.001'" );
-                                    if(n.pd || n.reingreso){
-                                        if(n.reingreso){
-                                            out.print("readonly value='0");
-                                        }
-                                        else{
-                                            out.print("readonly value='"+n.notapd);
-                                        }
-                                    }else{
-                                        out.print("value='"+n.idiomaEspaniol);
-                                    }
-                                    out.print("' /></td>"+
-                                    "<td><input name='observaciones[]' type=text value='");
-                                    if(!n.idiomaEspaniolObs.contains("REINGRESO") && n.reingreso){
-                                        out.print("REINGRESO ");
-                                    }
-                                    if(!n.idiomaEspaniolObs.contains("PD") && n.pd){
-                                        out.print("PD ");
-                                    }
-                                    out.print(n.idiomaEspaniolObs);
+                                    out.print(obs);
                                     out.print("'/></td></tr>");break;
                                 case 4: 
                                     out.print("</td>"+
-                                    "<td><input name='notas[]' type=number min='0.00' max='10.00' step='0.001' value='"+n.educacionFisica+
-                                    "' /></td>"+
-                                    "<td><input name='observaciones[]' type=text value='"+n.edFisicaObs+
-                                    "'/></td>"+
+                                    "<td><input name='notas[]' type=number min='0.00' max='10.00' step='0.001' value='"+n.educacionFisica+"'");
+                                    if(n.nsp||n.renuncio){
+                                        out.print("readonly ");
+                                    }
+                                    out.print(" /></td>"+
+                                    "<td><input name='observaciones[]' type=text value='"+n.edFisicaObs);
+                                    if(!n.edFisicaObs.toUpperCase().contains("NSP") && n.nsp){
+                                        out.print("NSP ");
+                                    }
+                                    if(!n.edFisicaObs.toUpperCase().contains("RENUNCIO") && n.renuncio){
+                                        out.print("RENUNCIO ");
+                                    }
+                                    out.print("'/></td>"+
                                     "<td><input name='arrojo"+i+"' type=checkbox ");
                                     if(n.arrojo==null || n.arrojo){
-                                        out.print("checked='checked'");
+                                        if(!n.renuncio&&!n.nsp){
+                                            out.print("checked='checked'");
+                                        }
                                     };
                                     out.print("/></td>"+
                                     "<td>"+n.medicoObs+
                                     "</td></tr>");break;
-                                case 5: 
+                                case 5: case 6: case 7:
+                                    int nota1;
+                                    boolean seg;
+                                    String obs1;
+                                    if(materia==5){
+                                        nota1=n.psicotecnica;
+                                        obs1=n.psicoObs;
+                                        seg=n.psicoSeg;
+                                    }
+                                    else if(materia==6){
+                                        nota1=n.medico;
+                                        obs1=n.medicoObs;
+                                        seg=n.medicoSeg;
+                                    }
+                                    else{
+                                        nota1=n.odontologico;
+                                        obs1=n.odontObs;
+                                        seg=n.odontSeg;
+                                    }
                                     out.print("<td><table style='width:100%'><tr>"+
                                         "<td style='padding-right:5%'>Apto</td>" +
                                         "<td style='padding-right:5%'>No apto</td>"+
                                         "<td style='padding-right:5%'>Apto C/S</td>"+
                                         
                                     "</tr><tr>"+
-                                        "<td style='padding-right:5%'><input type=radio name=\"notas["+i+"][]\" value=\"3\"");if(n.psicotecnica!=2 || (n.psicotecnica==1 && !n.psicoSeg)){out.print("checked='checked'");};out.print(" /></td>" +
-                                        "<td style='padding-right:5%'><input type=radio name=\"notas["+i+"][]\" value=\"1\"");if(n.psicotecnica==2){out.print("checked='checked'");};out.print(" /></td>"+
-                                        "<td style='padding-right:5%'><input type=radio name=\"notas["+i+"][]\" value=\"2\"");if(n.psicotecnica==1 && n.psicoSeg){out.print("checked='checked'");};out.print(" /></td>"+
+                                        "<td style='padding-right:5%'><input type=radio name=\"notas["+i+"][]\" value=\"3\"");if((!n.nsp&&!n.renuncio)&&(n.medico!=2 || (nota1==1 && !seg))){out.print("checked='checked'");};out.print(" /></td>" +
+                                        "<td style='padding-right:5%'><input type=radio name=\"notas["+i+"][]\" value=\"1\"");if((n.nsp||n.renuncio)||(nota1==2)){out.print("checked='checked'");};out.print(" /></td>"+
+                                        "<td style='padding-right:5%'><input type=radio name=\"notas["+i+"][]\" value=\"2\"");if((!n.nsp&&!n.renuncio)&&(nota1==1 && seg)){out.print("checked='checked'");};out.print(" /></td>"+
                                         
                                         
                                     "</tr></table></td>"+
-                                    "<td><input name='observaciones[]' type=text value='"+n.psicoObs+
-                                    "'/></td></tr>");break;
-                                case 6: 
-                                   out.print("<td><table style='width:100%'><tr>"+
-                                        "<td style='padding-right:5%'>Apto</td>" +
-                                        "<td style='padding-right:5%'>No apto</td>"+
-                                        "<td style='padding-right:5%'>Apto C/S</td>"+
-                                        
-                                    "</tr><tr>"+
-                                        "<td style='padding-right:5%'><input type=radio name=\"notas["+i+"][]\" value=\"3\"");if(n.medico!=2 || (n.medico==1 && !n.medicoSeg)){out.print("checked='checked'");};out.print(" /></td>" +
-                                        "<td style='padding-right:5%'><input type=radio name=\"notas["+i+"][]\" value=\"1\"");if(n.medico==2){out.print("checked='checked'");};out.print(" /></td>"+
-                                        "<td style='padding-right:5%'><input type=radio name=\"notas["+i+"][]\" value=\"2\"");if(n.medico==1 && n.medicoSeg){out.print("checked='checked'");};out.print(" /></td>"+
-                                        
-                                        
-                                    "</tr></table></td>"+
-                                    "<td><input name='observaciones[]' type=text value='"+n.medicoObs+
-                                    "'/></td></tr>");break;
-                                case 7:
-                                    out.print("<td><table style='width:100%'><tr>"+
-                                        "<td style='padding-right:5%'>Apto</td>" +
-                                        "<td style='padding-right:5%'>No apto</td>"+
-                                        "<td style='padding-right:5%'>Apto C/S</td>"+
-                                        
-                                    "</tr><tr>"+
-                                        "<td style='padding-right:5%'><input type=radio name=\"notas["+i+"][]\" value=\"3\"");if(n.odontologico!=2 || (n.odontologico==1 && !n.odontSeg)){out.print("checked='checked'");};out.print(" /></td>" +
-                                        "<td style='padding-right:5%'><input type=radio name=\"notas["+i+"][]\" value=\"1\"");if(n.odontologico==2){out.print("checked='checked'");};out.print(" /></td>"+
-                                        "<td style='padding-right:5%'><input type=radio name=\"notas["+i+"][]\" value=\"2\"");if(n.odontologico==1 && n.odontSeg){out.print("checked='checked'");};out.print(" /></td>"+
-                                        
-                                        
-                                    "</tr></table></td>"+
-                                    "<td><input name='observaciones[]' type=text value='"+n.odontObs+
+                                    "<td><input name='observaciones[]' type=text value='"+obs1);
+                                    if(!obs1.toUpperCase().contains("NSP") && n.nsp){
+                                        out.print("NSP ");
+                                    }
+                                    if(!obs1.toUpperCase().contains("RENUNCIO") && n.renuncio){
+                                        out.print("RENUNCIO ");
+                                    }
+                                    out.print(
                                     "'/></td></tr>");break;
                             }
                             i++;
                     } 
-                }
-                else{
-                    an= mn.getPasesDirectosYReingresos(carrera, anio);
-                    for(RecordPostulanteNota n: an){
-                        out.print("<tr >"+
-                            "<td style='width:8%; text-align:center'>"+n.id+
-                            "</td>"+
-                            "<td style='display:none'><input style='background-color: #CDCDCD;border-width: 0px;width:90%' name='ci[]' type= namber value='"+n.ci+
-                            "'hidden='hidden'/></td>"+
-                            "<td>"+n.primerApellido+
-                            "</td>"+
-                            "<td>"+n.primerNombre+
-                           "</td>");
-                            switch(materia){
-                                case 1: 
-                                    out.print("</td>"+
-                                    "<td><input name='notas[]' type=number min='0.00' max='10.00' step='0.001'");
-                                    if(n.pd || n.reingreso){
-                                        if(n.reingreso){
-                                            out.print("readonly value='0");
-                                        }
-                                        else{
-                                            out.print("readonly value='"+n.notapd);
-                                        }
-                                    }
-                                    else{
-                                         out.print(" value='0");
-                                    }
-                                    out.print("' /></td>"+
-                                    "<td><input name='observaciones[]' type=text value='");
-                                    if (n.reingreso){
-                                        out.print("REINGRESO");
-                                    }
-                                    if (n.pd){
-                                        out.print("PD");
-                                    }
-                                    out.print("'/></td></tr>");break;
-                                case 2: 
-                                    out.print("</td>"+
-                                    "<td><input name='notas[]' type=number min='0.00' max='10.00' step='0.001'");
-                                    if(n.pd || n.reingreso){
-                                        if(n.reingreso){
-                                            out.print("readonly value='0");
-                                        }
-                                        else{
-                                            out.print("readonly value='"+n.notapd);
-                                        }
-                                    }
-                                    else{
-                                         out.print(" value='0");
-                                    }
-                                    out.print("' /></td>"+
-                                    "<td><input name='observaciones[]' type=text value='");
-                                    if (n.reingreso){
-                                        out.print("REINGRESO");
-                                    }
-                                    if (n.pd){
-                                        out.print("PD");
-                                    }
-                                    out.print("'/></td></tr>");break;
-                                case 3: 
-                                    out.print("</td>"+
-                                    "<td><input name='notas[]' type=number min='0.00' max='10.00' step='0.001'" );
-                                    if(n.pd || n.reingreso){
-                                        if(n.reingreso){
-                                            out.print("readonly value='0");
-                                        }
-                                        else{
-                                            out.print("readonly value='"+n.notapd);
-                                        }
-                                    }
-                                    out.print("' /></td>"+
-                                    "<td><input name='observaciones[]' type=text value='");
-                                    if (n.reingreso){
-                                        out.print("REINGRESO");
-                                    }
-                                    if (n.pd){
-                                        out.print("PD");
-                                    }
-                                    out.print("'/></td></tr>");break;
-                                case 4: 
-                                    out.print("</td>"+
-                                    "<td><input name='notas[]' type=number min='0.00' max='10.00' step='0.001' value='"+n.educacionFisica+
-                                    "' /></td>"+
-                                    "<td><input name='observaciones[]' type=text value=''/></td>"+
-                                    "<td><input name='arrojo"+i+"' type=checkbox /></td>"+
-                                    "<td></td></tr>");break;
-                                case 5: case 6: case 7:
-                                    out.print("<td><table style='width:100%'><tr>"+
-                                        "<td style='padding-right:5%'>Apto</td>" +
-                                        "<td style='padding-right:5%'>No apto</td>"+
-                                        "<td style='padding-right:5%'>Apto C/S</td>"+
-                                    "</tr><tr>"+
-                                        "<td style='padding-right:5%'><input type=radio name=\"notas["+i+"][]\" value=\"3\" checked='checked'");out.print(" /></td>" +
-                                        "<td style='padding-right:5%'><input type=radio name=\"notas["+i+"][]\" value=\"1\"");out.print(" /></td>"+
-                                        "<td style='padding-right:5%'><input type=radio name=\"notas["+i+"][]\" value=\"2\"");out.print(" /></td>"+
-                                        
-                                    "</tr></table></td>"+
-                                    "<td><input name='observaciones[]' type=text value=''/></td></tr>");break;
-                               
-                            }
-                            i++;
-                    }
-                }
+                
             %>
             <input name="i" type="number" value="<%= i%>" hidden="hidden"/>
         </table>

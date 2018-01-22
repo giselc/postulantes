@@ -176,10 +176,10 @@ public class ManejadorNotasBD {
             Statement s= connection.createStatement();
             String sql = "";
             if(carrera==1){
-                sql="SELECT postulantes.ci, paseDirecto, reingreso, notaPaseDirecto,  primerNombre, primerApellido,segundoNombre, segundoApellido, numero, carrera FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci where anio="+anio+" and carrera=" + carrera + " order by NUMERO asc";
+                sql="SELECT postulantes.ci, paseDirecto, reingreso, notaPaseDirecto,renuncio,nsp,  primerNombre, primerApellido,segundoNombre, segundoApellido, numero, carrera FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci where anio="+anio+" and carrera=" + carrera + " order by NUMERO asc";
             }
             else{
-                sql="SELECT postulantes.ci, paseDirecto, reingreso, notaPaseDirecto,  primerNombre, primerApellido,segundoNombre, segundoApellido, unidadInsc, numero, carrera FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci where anio="+anio+" and carrera=" + carrera + " order by NUMERO asc";
+                sql="SELECT postulantes.ci, paseDirecto, reingreso, notaPaseDirecto,renuncio,nsp,  primerNombre, primerApellido,segundoNombre, segundoApellido, unidadInsc, numero, carrera FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci where anio="+anio+" and carrera=" + carrera + " order by NUMERO asc";
             }
             ResultSet rs=s.executeQuery(sql);
             RecordPostulanteNota rpn = null;
@@ -192,6 +192,8 @@ public class ManejadorNotasBD {
                 rpn.ci= rs.getInt("CI");
                 rpn.pd = rs.getBoolean("paseDirecto");
                 rpn.reingreso = rs.getBoolean("reingreso");
+                rpn.renuncio = rs.getBoolean("renuncio");
+                rpn.nsp = rs.getBoolean("nsp");
                 rpn.notapd = convertirEscala12a10(rs.getDouble("notaPaseDirecto"));
                 rpn.primerNombre="";
                 for (String nombre: rs.getString("primerNombre").split(" ")){
@@ -224,10 +226,10 @@ public class ManejadorNotasBD {
             String sql = "";
             String aux = "matematica, matematicaObs,historia, historiaObs,IdiomaEspanol, IdEspanolObs,EducacionFisica, EdFisicaObs, arrojo, psicotecnica, psicoSeg, psicoObs,medico, medicoSeg, medicoObs, odontologico, odontSeg, odontObs";
             if(carrera==1){
-                sql="SELECT postulantes.ci, paseDirecto, reingreso, notaPaseDirecto, primerNombre, primerApellido,segundoNombre, segundoApellido,  numero, carrera, "+aux+" FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci LEFT JOIN postulantes.notas ON postulantes.ci = notas.ci where carrera=" + carrera + " and postulantes.anio = "+ anio +" order by NUMERO asc";
+                sql="SELECT postulantes.ci, paseDirecto, reingreso, nsp, renuncio, notaPaseDirecto, primerNombre, primerApellido,segundoNombre, segundoApellido,  numero, carrera, "+aux+" FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci LEFT JOIN postulantes.notas ON postulantes.ci = notas.ci where carrera=" + carrera + " and postulantes.anio = "+ anio +" order by NUMERO asc";
             }
             else{
-                sql="SELECT postulantes.ci, paseDirecto, reingreso, notaPaseDirecto, primerNombre, primerApellido,segundoNombre, segundoApellido,  unidadInsc, numero, carrera, "+aux+" FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci LEFT JOIN postulantes.notas ON postulantes.ci = notas.ci where carrera=" + carrera + " and postulantes.anio = "+ anio +" order by NUMERO asc";
+                sql="SELECT postulantes.ci, paseDirecto, reingreso, nsp, renuncio, notaPaseDirecto, primerNombre, primerApellido,segundoNombre, segundoApellido,  unidadInsc, numero, carrera, "+aux+" FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci LEFT JOIN postulantes.notas ON postulantes.ci = notas.ci where carrera=" + carrera + " and postulantes.anio = "+ anio +" order by NUMERO asc";
             }
             ResultSet rs=s.executeQuery(sql);
             RecordPostulanteNota rpn = null;
@@ -240,6 +242,8 @@ public class ManejadorNotasBD {
                 rpn.ci= rs.getInt("CI");
                 rpn.pd = rs.getBoolean("paseDirecto");
                 rpn.reingreso = rs.getBoolean("reingreso");
+                rpn.nsp = rs.getBoolean("nsp");
+                rpn.renuncio = rs.getBoolean("renuncio");
                 rpn.notapd = convertirEscala12a10(rs.getDouble("notaPaseDirecto"));
                 rpn.primerNombre="";
                 for (String nombre: rs.getString("primerNombre").split(" ")){

@@ -25,5 +25,7 @@ public class RecordPostulanteFiltro {
     public String filtroMostrar;
     public String condicional;
     public String alojamiento; // TODOS, S, N
+    public String nsp; // TODOS, S, N
+    public String renuncio; // TODOS, S, N
     
 }

@@ -143,6 +143,7 @@
                     int i=1;
                     if(!an.isEmpty()){
                         for(RecordPostulanteNota n: an){
+                            if(!n.nsp&&!n.renuncio){
                             out.print("<tr >"+
                                     "<td style='width:8%; text-align:center'>"+i+
                                 "</td>"+
@@ -309,7 +310,9 @@
                                         "</td></tr>");break;
                                 }
                                 i++;
-                        }           
+                        }
+                        }
+                    
                     }
                     else{
                         an= mn.getPasesDirectosYReingresos(carrera, anio);
@@ -317,6 +320,7 @@
                             out.print("<h2 style='color:#FF0000'>DEBE INGRESAR RESULTADOS MÉDICOS</h2>");
                         }
                         for(RecordPostulanteNota n: an){
+                            if(!n.nsp&&!n.renuncio){
                             out.print("<tr >"+
                                     "<td style='width:8%; text-align:center'>"+i+
                                 "</td>"+
@@ -374,7 +378,7 @@
                                 }
                                 i++;
                         }
-                        
+                        }
                     }
                          
                 %>
@@ -383,7 +387,7 @@
             <table style="width: 100%">
                     <tr>
                         <td style="width: 50%"></td>
-                        <td>EL JEFE DE ESTUDIOS DE LA ESCUELA MILITAR</td>
+                        <td>EL JEFE DE ESTUDIOS DE LA E.M.</td>
                     </tr>
                     <tr>
                         <td style="width: 50%"></td>
@@ -398,7 +402,7 @@
             <table style="width: 100%; padding-right: 30%;padding-top: 1% ">
                     <tr>
                         <td style="width: 50%"></td>
-                        <td>EL SUBDIRECTOR DE LA ESCUELA MILITAR</td>
+                        <td>EL SUBDIRECTOR DE LA E.M.</td>
                     </tr>
                     <tr>
                         <td style="width: 50%"></td>

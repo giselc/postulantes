@@ -92,11 +92,11 @@
                             <b>Super Administrador:</b>
                         </td>
                         <td>
-                            <% if(u1!=null && u1.getNombre().equals("admin")){
+                            <% if(u1!=null && u1.getNombre().equals("superAdmin")){
                                 out.print("No puede modificar este campo");
                             }
                             else{%>
-                            <input  id="admin" type=checkbox name="superAdmin" <% if(u1!=null && u1.isSuperAdmin()){out.print("checked='checked'");} %>/>
+                            <input  id="superAdmin" type=checkbox name="superAdmin" <% if(u1!=null && u1.isSuperAdmin()){out.print("checked='checked'");} %>/>
                             <%
                             }
                             %>

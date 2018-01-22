@@ -53,6 +53,8 @@ public class Postulante {
     private int precedencia;
     private Date fechaAlta;
     private boolean alojamiento;
+    private boolean nsp;
+    private boolean renuncio;
     //patronimico
     //PADRE
     private String pNombreComp;
@@ -96,6 +98,22 @@ public class Postulante {
         this.carrera = carrera;
         this.id=id;
         this.unidadInsc = u;
+    }
+
+    public boolean isNsp() {
+        return nsp;
+    }
+
+    public void setNsp(boolean nsp) {
+        this.nsp = nsp;
+    }
+
+    public boolean isRenuncio() {
+        return renuncio;
+    }
+
+    public void setRenuncio(boolean renuncio) {
+        this.renuncio = renuncio;
     }
 
    

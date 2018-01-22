@@ -62,7 +62,7 @@
     </table>
 </form>
 <div id="loader" style="position: fixed; top:0; left:0; width:100%; height: 100%;background: url('images/loading-verde.gif') center center no-repeat; background-size: 10%"></div>
-<form method="post"  name="formulario" id="formulario" onsubmit="<% if (request.getParameter("ci")==null){out.print("alert('Se habilitó la pestaña de Datos Patronímicos');");} %>return agregarimagen(this);" <% if (request.getParameter("ci")==null){ out.print("action='guardarDatosBasicos'");} else{out.print("action='modificarDatosBasicos'");} %> enctype="multipart/form-data">
+<form method="post"  name="formulario" id="formulario" onsubmit="<% if (request.getParameter("ci")==null){out.print("alert('Se habilitó la pestaña de Datos Patronímicos');");} %>return agregarimagen(this,'<%=src[6]%>');" <% if (request.getParameter("ci")==null){ out.print("action='guardarDatosBasicos'");} else{out.print("action='modificarDatosBasicos'");} %> enctype="multipart/form-data">
     <table border="0">
         <tr>
             <p id="mensaje" style="color: #990000"><% if(session.getAttribute("Mensaje")!=null){out.print("<img src='images/icono-informacion.png' width='3%' /> &nbsp;&nbsp;"+session.getAttribute("Mensaje"));}%></p>
@@ -288,6 +288,14 @@
             <td><input  type=checkbox name="alojamiento" <% if(p!=null && p.isAlojamiento()){out.print("checked='checked'");} %>/></td>
         </tr>
         <tr>
+            <td>NSP: </td>
+            <td><input  type=checkbox name="nsp" <% if(p!=null && p.isNsp()){out.print("checked='checked'");} %>/></td>
+        </tr>
+        <tr>
+            <td>Renunci&oacute;: </td>
+            <td><input  type=checkbox name="renuncio" <% if(p!=null && p.isRenuncio()){out.print("checked='checked'");} %>/></td>
+        </tr>
+        <tr>
             <td>Observaciones: </td>
             <td>
                 <textarea rows="4" cols="50" name="observaciones" form="formulario"><% if(p!=null){out.print(p.getObservaciones());} %></textarea>
@@ -301,20 +309,14 @@
         <tr>
             <td>C.I. Anverso: </td>
             <td><input id= "anverso" type="file" name="fotoCIAnverso" accept="image/*" onchange="canvasimage('anverso','canvasAnverso')"/></td>
-            <div id="dialogAnverso" style="display:none" title="Cedula de Identidad">
-                <img src="<%= src[1] %>" width="100%"/>
-            </div>
             <td><canvas id="canvasAnverso" hidden="hidden"> </canvas></td>
-            <td><a <% if (!src[1].equals("")){ out.print("onclick='abrir_dialog(dialogAnverso)' style='color: #000099'");} %>>Ver</a></td>
+            <td><a <% if (!src[1].equals("")){ session.setAttribute("src1", src[1]); out.print("href='mostrarImagen.jsp?src=src1' style='color: #000099'");} %>  target="_blank">Ver</a></td>
         </tr>
         <tr>
             <td>C.I. Reverso: </td>
             <td><input id= "reverso" type="file" name="fotoCIReverso" accept="image/*" onchange="canvasimage('reverso','canvasReverso')"/></td>
-            <div id="dialogReverso" style="display:none" title="Cedula de Identidad">
-                <img src="<%= src[2] %>" width="100%"/>
-            </div>
             <td><canvas id="canvasReverso" hidden="hidden"> </canvas></td>
-            <td><a <% if (!src[2].equals("")){ out.print("onclick='abrir_dialog(dialogReverso)' style='color: #000099'");} %>>Ver</a></td>
+            <td><a <% if (!src[2].equals("")){ session.setAttribute("src2", src[2]); out.print("href='mostrarImagen.jsp?src=src2' style='color: #000099'");} %>  target="_blank">Ver</a></td>
         </tr>
         <tr>
             <td>
@@ -324,29 +326,20 @@
         <tr>
             <td>F&oacute;rmula 69 Hoja 1: </td>
             <td><input id= "hoja1" type="file" name="fotoF69Hoja1" accept="image/*" onchange="canvasimage('hoja1','canvasHoja1')"/></td>
-            <div id="dialogHoja1" style="display:none" title="Formula 69">
-                <img src="<%= src[3] %>"width="100%"/>
-            </div>
             <td><canvas id="canvasHoja1" hidden="hidden"> </canvas></td>
-            <td><a <% if (!src[3].equals("")){ out.print("onclick='abrir_dialog(dialogHoja1)' style='color: #000099'");} %> >Ver</a></td>
+            <td><a <% if (!src[3].equals("")){ session.setAttribute("src3", src[3]); out.print("href='mostrarImagen.jsp?src=src3' style='color: #000099'");} %>  target="_blank">Ver</a></td>
         </tr>
         <tr>
             <td>F&oacute;rmula 69 Hoja 2: </td>
             <td><input id= "hoja2" type="file" name="fotoF69Hoja2" accept="image/*" onchange="canvasimage('hoja2','canvasHoja2')"/></td>
-            <div id="dialogHoja2" style="display:none" title="Formula 69">
-                <img src="<%= src[4] %>"width="100%"/>
-            </div>
             <td><canvas id="canvasHoja2" hidden="hidden"> </canvas></td>
-            <td><a <% if (!src[4].equals("")){ out.print("onclick='abrir_dialog(dialogHoja2)' style='color: #000099'");} %> >Ver</a></td>
+            <td><a <% if (!src[4].equals("")){session.setAttribute("src4", src[4]); out.print("href='mostrarImagen.jsp?src=src4' style='color: #000099'");} %>  target="_blank">Ver</a></td>
         </tr>
         <tr>
             <td>F&oacute;rmula 69 Hoja 3: </td>
             <td><input id= "hoja3" type="file" name="fotoF69Hoja3" accept="image/*" onchange="canvasimage('hoja3','canvasHoja3')"/></td>
-            <div id="dialogHoja3" style="display:none" title="Formula 69">
-                <img src="<%= src[5] %>"width="100%"/>
-            </div>
             <td><canvas id="canvasHoja3" hidden="hidden"> </canvas></td>
-            <td><a <% if (!src[5].equals("")){ out.print("onclick='abrir_dialog(dialogHoja3)' style='color: #000099'");} %> >Ver</a></td>
+            <td><a <% if (!src[5].equals("")){session.setAttribute("src5", src[5]); out.print("href='mostrarImagen.jsp?src=src5' style='color: #000099'");} %>  target="_blank" >Ver</a></td>
         </tr>
         <tr>
             <td>
@@ -354,22 +347,17 @@
             </td>
         </tr>
         <tr>
+            
             <td>Formulario N&deg;1 (A &oacute; B): </td>
             <td><input id= "f1hoja1" type="file" name="fotoF1Hoja1" accept="image/*" onchange="canvasimage('f1hoja1','canvasf1Hoja1')"/></td>
-            <div id="dialogf1Hoja1" style="display:none" title="Formulario Nro. 1 Hoja 1">
-                <img id="imagenf1hoja1" src="<%= src[6] %>" width="100%"/>
-            </div>
             <td><canvas id="canvasf1Hoja1" hidden="hidden"> </canvas></td>
-            <td><a <% if (!src[6].equals("")){ out.print("onclick='abrir_dialog(dialogf1Hoja1)' style='color: #000099'");} %> >Ver</a></td>
+            <td><a <% if (!src[6].equals("")){session.setAttribute("src6", src[6]); out.print("href='mostrarImagen.jsp?src=src6' style='color: #000099'");} %>  target="_blank">Ver</a></td>
         </tr>
         <tr style='display: none'>
             <td>Formulario N&deg;1 (A &oacute; B) Hoja 2: </td>
             <td><input id= "f1hoja2" type="file" name="fotoF1Hoja2" accept="image/*" onchange="canvasimage('f1hoja2','canvasf1Hoja2')"/></td>
-            <div id="dialogf1Hoja2" style="display:none" title="Formulario Nro. 1 Hoja2">
-                <img src="<%= src[7] %>"width="100%"/>
-            </div>
             <td><canvas id="canvasf1Hoja2" hidden="hidden"> </canvas></td>
-            <td><a <% if (!src[7].equals("")){ out.print("onclick='abrir_dialog(dialogf1Hoja2)' style='color: #000099'");} %> >Ver</a></td>
+            <td><a <% if (!src[7].equals("")){ out.print("href='mostrarImagen.jsp?src=src7' style='color: #000099'");} %> >Ver</a></td>
         </tr>
     </table>
     <p align="right"> <input style="font-size: 18px" type="submit" <% if (request.getParameter("ci")==null){ out.print("value='Guardar y Continuar'");} else{out.print("value='Modificar'");} %> /> </p>

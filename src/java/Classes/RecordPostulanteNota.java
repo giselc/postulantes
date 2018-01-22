@@ -38,4 +38,6 @@ public class RecordPostulanteNota {
     public Boolean arrojo;
     public int anio;
     public boolean reingreso;
+    public boolean nsp;
+    public boolean renuncio;
 }

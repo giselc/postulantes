@@ -83,6 +83,30 @@
                         </select>
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        NSP:
+                    </td>
+                    <td>
+                        <select name="nsp" form="formComandoFiltro"> 
+                            <option value="todos" selected="selected">TODOS</option>
+                            <option value="S">SI</option>
+                            <option value="N">NO</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Renunci&oacute;:
+                    </td>
+                    <td>
+                        <select name="renuncio" form="formComandoFiltro"> 
+                            <option value="todos" selected="selected">TODOS</option>
+                            <option value="S">SI</option>
+                            <option value="N">NO</option>
+                        </select>
+                    </td>
+                </tr>
                  <%
                     }
 

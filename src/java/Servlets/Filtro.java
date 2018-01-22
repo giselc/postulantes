@@ -59,6 +59,8 @@ public class Filtro extends HttpServlet {
                 rf.unidadInsc = request.getParameterValues("unidadInsc");
                 rf.condicional = request.getParameter("condicional");
                 rf.alojamiento = request.getParameter("alojamiento");
+                rf.nsp = request.getParameter("nsp");
+                rf.renuncio = request.getParameter("renuncio");
                 int carrera = Integer.valueOf(request.getParameter("carrera"));
                ArrayList<Postulante> ap = mp.getPostulantesListar(rf,Integer.valueOf(sesion.getAttribute("usuarioID").toString()),carrera,ManejadorPostulanteDB.getAnioPostula());
                if (carrera==1){
