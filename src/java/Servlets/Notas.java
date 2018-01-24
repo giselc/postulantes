@@ -63,7 +63,6 @@ public class Notas extends HttpServlet {
                     notas = new String[i];
                     for(int j=0;j<i;j++){
                         notas[j]= request.getParameter("notas["+j+"][]");
-                        out.print(notas[j]);
                     }
                     observaciones = request.getParameterValues("observaciones[]");
                 break;

@@ -234,7 +234,7 @@
                                         "<td style='padding-right:5%'>Apto C/S</td>"+
                                         
                                     "</tr><tr>"+
-                                        "<td style='padding-right:5%'><input type=radio name=\"notas["+i+"][]\" value=\"3\"");if((!n.nsp&&!n.renuncio)&&(n.medico!=2 || (nota1==1 && !seg))){out.print("checked='checked'");};out.print(" /></td>" +
+                                        "<td style='padding-right:5%'><input type=radio name=\"notas["+i+"][]\" value=\"3\"");if((!n.nsp&&!n.renuncio)&&(nota1!=2 || (nota1==1 && !seg))){out.print("checked='checked'");};out.print(" /></td>" +
                                         "<td style='padding-right:5%'><input type=radio name=\"notas["+i+"][]\" value=\"1\"");if((n.nsp||n.renuncio)||(nota1==2)){out.print("checked='checked'");};out.print(" /></td>"+
                                         "<td style='padding-right:5%'><input type=radio name=\"notas["+i+"][]\" value=\"2\"");if((!n.nsp&&!n.renuncio)&&(nota1==1 && seg)){out.print("checked='checked'");};out.print(" /></td>"+
                                         
