@@ -73,7 +73,7 @@
                             break;
                         }
                         if(parseFloat(tableEntra.rows[i].cells[9].innerText)==j){
-                            if(parseFloat(tableEntra.rows[i].cells[5].innerText)<j){ //cells[5]=id
+                            if(tableListaEspera.rows[i].cells[5].innerText!="COND."&& parseFloat(tableEntra.rows[i].cells[5].innerText)<j){ //cells[5]=id
                                 tableEntra.rows[i].before(tr);
                                 break;
                             }
@@ -100,7 +100,7 @@
                                 break;
                             }
                             if(parseFloat(tableListaEspera.rows[i].cells[9].innerText)==j){
-                                if(parseFloat(tableListaEspera.rows[i].cells[5].innerText)<j){ //cells[5]=id
+                                if(tableListaEspera.rows[i].cells[5].innerText!="COND." && parseFloat(tableListaEspera.rows[i].cells[5].innerText)<j){ //cells[5]=id
                                     tableListaEspera.rows[i].before(tr);
                                     break;
                                 }
@@ -127,7 +127,7 @@
                                     break;
                                 }
                                 if(parseFloat(tableNoEntran.rows[i].cells[9].innerText)==j){
-                                    if(parseFloat(tableNoEntran.rows[i].cells[5].innerText)<j){ //cells[5]=id
+                                    if(tableNoEntran.rows[i].cells[5].innerText!="COND." && parseFloat(tableNoEntran.rows[i].cells[5].innerText)<j){ //cells[5]=id
                                         tableNoEntran.rows[i].before(tr);
                                         break;
                                     }
@@ -154,7 +154,7 @@
                                         break;
                                     }
                                     if(parseFloat(tableAnalizar.rows[i].cells[9].innerText)==j){
-                                        if(parseFloat(tableAnalizar.rows[i].cells[5].innerText)<j){ //cells[5]=id
+                                        if(tableAnalizar.rows[i].cells[5].innerText!="COND." && parseFloat(tableAnalizar.rows[i].cells[5].innerText)<j){ //cells[5]=id
                                             tableAnalizar.rows[i].before(tr);
                                             break;
                                         }

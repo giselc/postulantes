@@ -89,7 +89,7 @@
                                     Usuario u= (Classes.Usuario)sesion.getAttribute("usuario");
                                     out.print("Bienvenido ");out.print(u.getNombreMostrar());
                                     %></p>
-                                <form action="logout" method="POST" style="font-size: 100%">
+                                
                                     <ul class="nav" style="padding: 0px;margin: 0px">
                                         <li><a <% if(u.isAdmin()){out.print("href='postulantes.jsp'");}else{out.print("href='listar.jsp'");} %>><table><tr><td align="center"><img src="images/home.png" width="80%" /></td><td>Inicio</td></tr></table> </a></li>
                                         <li><a > <table><tr><td align="center"><img src="images/menu.png" width="80%" /></td><td>Menu</td></tr></table> </a>
@@ -104,9 +104,11 @@
                                                                 <a>PASAJE A SISTEMA PERSONAL</a>
                                                                 <ul>
                                                                     <li>
-                                                                        <form method="post" action='Pasaje?entran=1&carrera=1' >
+                                                                        <form action="Pasaje?entran=1&carrera=1" method="post" >
                                                                             <a href=""><input type="submit" value="Exportar Entran Comando a txt"/> </a>
                                                                         </form>
+                                                                    </li>
+                                                                    <li>
                                                                         <form method="post" action='Pasaje?entran=1&carrera=2' >
                                                                             <a href=""><input type="submit" value="Exportar Entran Apoyo a txt"/> </a>
                                                                         </form>
@@ -126,11 +128,15 @@
                                                         <%
                                                             }
                                                         %>
-                                                        <li><a align="center"><input type="submit" value="SALIR"/></a></li>
+                                                        <li>
+                                                            <form action="logout" method="POST" style="font-size: 100%">
+                                                                <a align="center"><input type="submit" value="SALIR"/></a>
+                                                            </form>
+                                                        </li>
                                                 </ul>
                                         </li>
                                     </ul>
-                                </form>
+                                
                             </td>
                             <td style="width: 60%; vertical-align: top">
                                 <p align="center" ><img src="images/logo-escuelaMilitar.png" title="INICIO" <% if(u.isAdmin()){out.print("onclick=location.href='/postulantes.jsp'");}else{out.print("onclick=location.href='/listar.jsp'");} %> style="height: 15%; width: 100%"/></p>

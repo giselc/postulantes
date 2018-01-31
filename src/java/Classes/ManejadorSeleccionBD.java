@@ -125,6 +125,7 @@ public class ManejadorSeleccionBD {
         }
     public void imprimirSabana(String[]lista,int carrera,PrintWriter out){
         int anio = ManejadorPostulanteDB.getAnioPostula();
+        ManejadorCodigoBD mc = new ManejadorCodigoBD();
         String sql="";
         String sql1="";
         if(carrera==1){
@@ -240,7 +241,6 @@ public class ManejadorSeleccionBD {
                             case "CI": out.print("<td>"+rs.getInt("ci")+"</td>");break;
                             case "Sexo": out.print("<td>"+rs.getString("sexo")+"</td>");break;
                             case "UI":
-                                ManejadorCodigoBD mc = new ManejadorCodigoBD();
                                 Usuario u = mc.getUsuario(rs.getInt("unidadInsc"));
                                 out.print("<td>"+u.getNombreMostrar()+"</td>");break;
                             case "FechaNac": out.print("<td>"+rs.getString("FechaNac")+"</td>");break;
@@ -269,7 +269,9 @@ public class ManejadorSeleccionBD {
                                         out.print("SE");
                                     }
                                     out.print("</td>");break;
-                            case "DepDom": out.print("<td>"+rs.getInt("DEPARTAMENTO")+"</td>");break;
+                            case "DepDom": 
+                                Departamento d = mc.getDepartamento(rs.getInt("DEPARTAMENTO"));
+                                out.print("<td>"+d.getDescripcion()+"</td>");break;
                             case "Obs": out.print("<td>"+rs.getString("OBSERVACIONES")+"</td>");break;
                             case "ObsEdFisica": out.print("<td>"+rs.getString("edFisicaObs")+"</td>");break;
                             case "Mat": out.print("<td>");
@@ -401,6 +403,7 @@ public class ManejadorSeleccionBD {
     }
     public void imprimirResultadosFinales(String[]lista,int entran,PrintWriter out){
         int anio = ManejadorPostulanteDB.getAnioPostula();
+        ManejadorCodigoBD mc = new ManejadorCodigoBD();
         String sql="SELECT precedencia,numero, segundoNombre, segundoApellido, primerNombre, primerApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, departamento, observaciones, matematica, historia, idiomaEspanol, educacionfisica, arrojo, medico, medicoSeg, medicoobs,psicotecnica, psicoseg, psicoObs, odontologico, odontSeg, odontObs, promedio FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where carrera=1 and notas.anio= "+ anio +" and resultado="+ entran +" order by postulantes.resultados.promedio desc, numero asc";
         String sql1="SELECT precedencia,numero,  segundoNombre, segundoApellido, primerNombre, primerApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, departamento, observaciones, matematica, historia, idiomaEspanol, educacionfisica, arrojo, medico, medicoSeg, medicoobs,psicotecnica, psicoseg, psicoObs, odontologico, odontSeg, odontObs, promedio FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where carrera=2 and notas.anio= "+ anio +" and resultado="+ entran +" order by postulantes.resultados.promedio desc, numero asc";   
         try{       
@@ -503,7 +506,7 @@ public class ManejadorSeleccionBD {
                             case "SegundoApellido": out.print("<td>"+rs.getString("SegundoApellido")+"</td>");break;
                             case "CI": out.print("<td>"+rs.getInt("ci")+"</td>");break;
                             case "Sexo": out.print("<td>"+rs.getString("sexo")+"</td>");break;
-                            case "UI": ManejadorCodigoBD mc = new ManejadorCodigoBD();
+                            case "UI": 
                                 Usuario u = mc.getUsuario(rs.getInt("unidadInsc"));
                                 out.print("<td>"+u.getNombreMostrar()+"</td>");break;
                             case "FechaNac": out.print("<td>"+rs.getString("FechaNac")+"</td>");break;
@@ -532,7 +535,9 @@ public class ManejadorSeleccionBD {
                                         out.print("SE");
                                     }
                                     out.print("</td>");break;
-                            case "DepDom": out.print("<td>"+rs.getInt("DEPARTAMENTO")+"</td>");break;
+                            case "DepDom": 
+                                Departamento d = mc.getDepartamento(rs.getInt("DEPARTAMENTO"));
+                                out.print("<td>"+d.getDescripcion()+"</td>");break;
                             case "Obs": out.print("<td>"+rs.getString("OBSERVACIONES")+"</td>");break;
                             case "Mat": out.print("<td>"+rs.getDouble("MATEMATICA")+"</td>");break;
                             case "Hist": out.print("<td>"+rs.getDouble("HISTORIA")+"</td>");break;

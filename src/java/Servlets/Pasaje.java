@@ -106,10 +106,10 @@ public class Pasaje extends HttpServlet {
                     out.print(p.getmLocalidad()+"||");//29
                     out.print(p.getMtelefono()+"||");//30
                     out.print(p.getmProfesion()+"||");//31
-                    out.println(p.getmLugarTrabajo());//32
+                    out.print(p.getmLugarTrabajo()+"||");//32
 
                     out.print(p.getSegundoNombre()+"||"); //33
-                    out.print(p.getSegundoApellido()+"||"); //34
+                    out.println(p.getSegundoApellido()); //34
 
                 }
 
