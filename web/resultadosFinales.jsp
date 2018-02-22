@@ -64,6 +64,17 @@ function subir(entra, casosAnalizar){
         </tr>
         <tr>
             <td>
+                <input type="checkbox" name="lista" value="Telefono"/> Tel&eacute;fono
+            </td>
+            <td>
+                <input type="checkbox" name="lista" value="Credencial"/> Credencial
+            </td>
+            <td>
+            </td>
+            
+        </tr>
+        <tr>
+            <td>
                 <input type="checkbox" name="lista"  value="Sexo"/> Sexo
             </td>
             <td>
@@ -88,55 +99,52 @@ function subir(entra, casosAnalizar){
         </tr>
         <tr>
             <td>
+                <input type="checkbox" name="lista"  value="Dom"/> Domicilio
+            </td>
+            <td>
                 <input type="checkbox" name="lista"  value="DepDom"/> Departamento domicilio
             </td>
             <td>
                 <input type="checkbox" name="lista"  value="Obs"/> Observaciones de Ingreso
             </td>
+        </tr>
+        <tr>
             <td>
                 <input type="checkbox" name="lista" checked="checked" value="Medico"/> Médico
             </td>
-           
-            
-        </tr>
-        <tr>
              <td>
                 <input type="checkbox" name="lista" checked="checked" value="Psico"/> Psicotécnica
             </td>
             <td>
                 <input type="checkbox" name="lista" checked="checked" value="Odont"/> Odontológico
             </td>
+        </tr>
+        <tr>
             <td>
                 <input type="checkbox" name="lista" checked="checked" value="EdFis"/> Ed. Física
             </td>
-            
-            
-        </tr>
-        <tr>
             <td>
                 <input type="checkbox" name="lista" checked="checked" value="Mat"/> Matemática
             </td>
             <td>
                 <input type="checkbox" name="lista" checked="checked" value="IdEsp"/> Idioma Español
             </td>
+        </tr>
+        <tr>
             <td>
                 <input type="checkbox" name="lista" checked="checked" value="Hist"/> Historia
             </td>
-            
-        </tr>
-        <tr>
             <td>
                 <input type="checkbox" name="lista"  value="Arrojo"/> Arrojo
             </td>
             <td>
                 <input type="checkbox" name="lista"  value="ObsOdont"/> Obs. Odontológico
             </td>
+        </tr>
+        <tr>
             <td>
                 <input type="checkbox" name="lista"  value="ObsMedico"/> Obs. Médico
             </td>
-            
-        </tr>
-        <tr>
             <td>
                 <input type="checkbox" name="lista"  value="ObsPsico"/> Obs. Psicotécnica
             </td>

@@ -404,8 +404,8 @@ public class ManejadorSeleccionBD {
     public void imprimirResultadosFinales(String[]lista,int entran,PrintWriter out){
         int anio = ManejadorPostulanteDB.getAnioPostula();
         ManejadorCodigoBD mc = new ManejadorCodigoBD();
-        String sql="SELECT precedencia,numero, segundoNombre, segundoApellido, primerNombre, primerApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, departamento, observaciones, matematica, historia, idiomaEspanol, educacionfisica, arrojo, medico, medicoSeg, medicoobs,psicotecnica, psicoseg, psicoObs, odontologico, odontSeg, odontObs, promedio FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where carrera=1 and notas.anio= "+ anio +" and resultado="+ entran +" order by postulantes.resultados.promedio desc, numero asc";
-        String sql1="SELECT precedencia,numero,  segundoNombre, segundoApellido, primerNombre, primerApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, departamento, observaciones, matematica, historia, idiomaEspanol, educacionfisica, arrojo, medico, medicoSeg, medicoobs,psicotecnica, psicoseg, psicoObs, odontologico, odontSeg, odontObs, promedio FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where carrera=2 and notas.anio= "+ anio +" and resultado="+ entran +" order by postulantes.resultados.promedio desc, numero asc";   
+        String sql="SELECT precedencia,numero, segundoNombre, segundoApellido, primerNombre, primerApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, cc, ccnro, telefono, domicilio, departamento, observaciones, matematica, historia, idiomaEspanol, educacionfisica, arrojo, medico, medicoSeg, medicoobs,psicotecnica, psicoseg, psicoObs, odontologico, odontSeg, odontObs, promedio FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where carrera=1 and notas.anio= "+ anio +" and resultado="+ entran +" order by postulantes.resultados.promedio desc, numero asc";
+        String sql1="SELECT precedencia,numero,  segundoNombre, segundoApellido, primerNombre, primerApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, cc, ccnro, telefono, domicilio, departamento, observaciones, matematica, historia, idiomaEspanol, educacionfisica, arrojo, medico, medicoSeg, medicoobs,psicotecnica, psicoseg, psicoObs, odontologico, odontSeg, odontObs, promedio FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where carrera=2 and notas.anio= "+ anio +" and resultado="+ entran +" order by postulantes.resultados.promedio desc, numero asc";   
         try{       
             for(int k=0; k<=1;k++){
                 out.print("<style>\n" +
@@ -455,12 +455,15 @@ public class ManejadorSeleccionBD {
                         case "PrimerApellido": out.print("<td>Primer Apellido</td>");break;
                         case "SegundoApellido": out.print("<td>Segundo Apellido</td>");break;
                         case "CI": out.print("<td>CI</td>");break;
+                            case "Telefono": out.print("<td>Tel.</td>");break;
+                                case "Credencial": out.print("<td>Cred.</td>");break;
                         case "Sexo": out.print("<td>Sexo</td>");break;
                         case "UI": out.print("<td>UI</td>");break;
                         case "FechaNac": out.print("<td>F.Nac.</td>");break;
                         case "LM": out.print("<td>LM</td>");break;
                         case "Aprobado": out.print("<td>Aprobado</td>");break;
                         case "Orient": out.print("<td>Orient.</td>");break;
+                            case "Dom": out.print("<td>Dom.</td>");break;
                         case "DepDom": out.print("<td>Dep.Dom.</td>");break;
                         case "Obs": out.print("<td>Observaciones de Ingreso</td>");break;
                         case "Mat": out.print("<td>Mat.</td>");break;
@@ -505,6 +508,8 @@ public class ManejadorSeleccionBD {
                             case "PrimerApellido": out.print("<td>"+rs.getString("PrimerApellido")+"</td>");break;
                             case "SegundoApellido": out.print("<td>"+rs.getString("SegundoApellido")+"</td>");break;
                             case "CI": out.print("<td>"+rs.getInt("ci")+"</td>");break;
+                                case "Telefono": out.print("<td>"+rs.getString("telefono")+"</td>");break;
+                                case "Credencial": out.print("<td>"+rs.getString("cc")+" "+rs.getInt("ccnro")+"</td>");break;
                             case "Sexo": out.print("<td>"+rs.getString("sexo")+"</td>");break;
                             case "UI": 
                                 Usuario u = mc.getUsuario(rs.getInt("unidadInsc"));
@@ -535,6 +540,7 @@ public class ManejadorSeleccionBD {
                                         out.print("SE");
                                     }
                                     out.print("</td>");break;
+                            case "Dom": out.print("<td>"+rs.getString("domicilio")+"</td>");break;
                             case "DepDom": 
                                 Departamento d = mc.getDepartamento(rs.getInt("DEPARTAMENTO"));
                                 out.print("<td>"+d.getDescripcion()+"</td>");break;
