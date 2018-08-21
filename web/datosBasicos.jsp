@@ -308,7 +308,7 @@
         </tr>
         <tr>
             <td>C.I. Anverso: </td>
-            <td><input id= "anverso" type="file" name="fotoCIAnverso" accept="image/*" onchange="canvasimage('anverso','canvasAnverso')"/></td>
+            <td><input id= "anverso" type="file" name="fotoCIAnverso" accept="image/*" onchange="canvasimage('anverso','canvasAnverso')" <% if(request.getParameter("ci")==null){ out.print("required=\"required\"");} %>/></td>
             <td><canvas id="canvasAnverso" hidden="hidden"> </canvas></td>
             <td><a <% if (!src[1].equals("")){ session.setAttribute("src1", src[1]); out.print("href='mostrarImagen.jsp?src=src1' style='color: #000099'");} %>  target="_blank">Ver</a></td>
         </tr>

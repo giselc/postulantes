@@ -53,6 +53,14 @@
     <ul class="nav2" style="width: 80%;padding-left: 13%;min-height: 350px;">
             <li  style="width: 30%">
                 <a href="listar.jsp"><p align="center" style="margin:0px"><img  class="boton" title="Listar postulantes" src="images/POSTULANTES3.png"/></p></a>
+                <ul>
+                    <li>
+                        <a href="listar.jsp">Datos Postulantes</a>
+                    </li>
+                    <li>
+                        <a href="historial.jsp">Historial</a>
+                    </li>
+                </ul>
             </li>
             <li style="width: 30%">
                 <a> <p align="center" style="margin:0px"><img  title="Exámenes y Actas" class="boton" src="images/EXAMENES3.png"/></p></a>

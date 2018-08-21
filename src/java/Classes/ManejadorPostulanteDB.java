@@ -217,7 +217,7 @@ public class ManejadorPostulanteDB {
         return al;
     } 
             
-    public String getFiltroSQL(RecordPostulanteFiltro rf){ 
+    public static String getFiltroSQL(RecordPostulanteFiltro rf){ 
         ManejadorCodigoBD mc =  new ManejadorCodigoBD(); 
         String filtro = "";
         String filtroMostrar = "";
@@ -475,7 +475,7 @@ public class ManejadorPostulanteDB {
     public static int getAnioPostula(){
       java.util.Calendar fecha1 = java.util.Calendar.getInstance();
       int mes = fecha1.get(java.util.Calendar.MONTH)+1;  
-      if(mes >= 3){
+      if(mes >= 8){
           return fecha1.get(java.util.Calendar.YEAR) +1;
       }
       else{

@@ -672,7 +672,7 @@ public class Postulante {
         this.segundoApellido = segundoApellido;
     }
     
-    private int contarCaracteres(String cadena, char caracter) {
+    public static int contarCaracteres(String cadena, char caracter) {
         int posicion, contador = 0;
         //se busca la primera vez que aparece
         posicion = cadena.indexOf(caracter);
