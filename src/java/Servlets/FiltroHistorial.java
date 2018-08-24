@@ -8,6 +8,7 @@ package Servlets;
 import Classes.ManejadorHistorialBD;
 import Classes.Postulante;
 import Classes.RecordPostulanteFiltro;
+import Classes.RecordPostulanteHistorial;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class FiltroHistorial extends HttpServlet {
                 System.out.print(request.getParameter("anio"));
                 int anio = Integer.valueOf(request.getParameter("anio"));
                 RecordPostulanteFiltro rf =  new RecordPostulanteFiltro();
+                rf.entra= request.getParameter("entra");
                 rf.lmga = request.getParameter("lmga");
                 rf.orientacion = request.getParameter("orientacion");
                 rf.ps = request.getParameter("ps");
@@ -61,7 +63,7 @@ public class FiltroHistorial extends HttpServlet {
                 rf.nsp = request.getParameter("nsp");
                 rf.renuncio = request.getParameter("renuncio");
                 int carrera = Integer.valueOf(request.getParameter("carrera"));
-                ArrayList<Postulante> ap = mh.getPostulantesListarHistorial(rf, Integer.valueOf(sesion.getAttribute("usuarioID").toString()), carrera, anio);
+                ArrayList<RecordPostulanteHistorial> ap = mh.getPostulantesListarHistorial(rf, Integer.valueOf(sesion.getAttribute("usuarioID").toString()), carrera, anio);
                // System.out.print(ap.size());
                 JsonObjectBuilder json = Json.createObjectBuilder(); 
                 if (carrera==1){
@@ -78,15 +80,17 @@ public class FiltroHistorial extends HttpServlet {
                 }
                 else{
                     JsonArrayBuilder jab= Json.createArrayBuilder();
-                    for (Postulante p : ap){
+                    for (RecordPostulanteHistorial h : ap){
                         jab.add(Json.createObjectBuilder()
-                            .add("ci", p.getCi())
-                            .add("primerNombre", p.getPrimerNombre())
-                            .add("segundoNombre", p.getSegundoNombre())
-                            .add("primerApellido", p.getPrimerApellido())
-                            .add("segundoApellido", p.getSegundoApellido())
-                            .add("unidadInsc", p.getUnidadInsc().getNombreMostrar())
-                            .add("id", p.getId())
+                            .add("ci", h.p.getCi())
+                            .add("primerNombre", h.p.getPrimerNombre())
+                            .add("segundoNombre", h.p.getSegundoNombre())
+                            .add("primerApellido", h.p.getPrimerApellido())
+                            .add("segundoApellido", h.p.getSegundoApellido())
+                            .add("unidadInsc", h.p.getUnidadInsc().getNombreMostrar())
+                            .add("id", h.p.getId())
+                            .add("entra", h.entra)
+                            .add("promedio", h.promedio)
                         );
                     };
                     json.add("listadoFiltroHistorial", jab);

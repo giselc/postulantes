@@ -7,6 +7,8 @@ package Servlets;
 
 import Classes.ManejadorHistorialBD;
 import Classes.Postulante;
+import Classes.RecordPostulanteBasico;
+import Classes.RecordPostulanteHistorial;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -43,7 +45,7 @@ public class ListarHistorial extends HttpServlet {
                 /* TODO output your page here. You may use following sample code. */
                 ManejadorHistorialBD mh= new ManejadorHistorialBD();
                 int anio = Integer.valueOf(request.getParameter("anio"));
-                ArrayList<Postulante> ap = mh.getPostulantesListarHistorial(null, Integer.valueOf(sesion.getAttribute("usuarioID").toString()), 1, anio);
+                ArrayList<RecordPostulanteHistorial> ap = mh.getPostulantesListarHistorial(null, Integer.valueOf(sesion.getAttribute("usuarioID").toString()), 1, anio);
                 JsonObjectBuilder json = Json.createObjectBuilder(); 
 
                //json.add("filtroMostrar",rf.filtroMostrar);
@@ -52,15 +54,18 @@ public class ListarHistorial extends HttpServlet {
                 }
                 else{
                     JsonArrayBuilder jab= Json.createArrayBuilder();
-                    for (Postulante p : ap){
+                    for (RecordPostulanteHistorial h : ap){
                         jab.add(Json.createObjectBuilder()
-                            .add("ci", p.getCi())
-                            .add("primerNombre", p.getPrimerNombre())
-                            .add("segundoNombre", p.getSegundoNombre())
-                            .add("primerApellido", p.getPrimerApellido())
-                            .add("segundoApellido", p.getSegundoApellido())
-                            .add("unidadInsc", p.getUnidadInsc().getNombreMostrar())
-                            .add("id", p.getId())
+                            .add("ci", h.p.getCi())
+                            .add("primerNombre", h.p.getPrimerNombre())
+                            .add("segundoNombre", h.p.getSegundoNombre())
+                            .add("primerApellido", h.p.getPrimerApellido())
+                            .add("segundoApellido", h.p.getSegundoApellido())
+                            .add("unidadInsc", h.p.getUnidadInsc().getNombreMostrar())
+                            .add("id", h.p.getId())
+                            .add("entra", h.entra)
+                            .add("promedio", h.promedio)
+                            
                         );
                     };
                     json.add("listadoComandoHistorial", jab);
@@ -71,15 +76,17 @@ public class ListarHistorial extends HttpServlet {
                 }
                 else{
                     JsonArrayBuilder jab= Json.createArrayBuilder();
-                    for (Postulante p : ap){
+                    for (RecordPostulanteHistorial h : ap){
                         jab.add(Json.createObjectBuilder()
-                            .add("ci", p.getCi())
-                            .add("primerNombre", p.getPrimerNombre())
-                            .add("segundoNombre", p.getSegundoNombre())
-                            .add("primerApellido", p.getPrimerApellido())
-                            .add("segundoApellido", p.getSegundoApellido())
-                            .add("unidadInsc", p.getUnidadInsc().getNombreMostrar())
-                            .add("id", p.getId())
+                            .add("ci", h.p.getCi())
+                            .add("primerNombre", h.p.getPrimerNombre())
+                            .add("segundoNombre", h.p.getSegundoNombre())
+                            .add("primerApellido", h.p.getPrimerApellido())
+                            .add("segundoApellido", h.p.getSegundoApellido())
+                            .add("unidadInsc", h.p.getUnidadInsc().getNombreMostrar())
+                            .add("id", h.p.getId())
+                            .add("entra", h.entra)
+                            .add("promedio", h.promedio)
                         );
                     };
                     json.add("listadoApoyoHistorial", jab);

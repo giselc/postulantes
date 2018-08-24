@@ -39,8 +39,10 @@ public class ManejadorHistorialBD {
         }
         return al;
     }
-    public ArrayList<Postulante> getPostulantesListarHistorial(RecordPostulanteFiltro rf, int usuario,int carrera, int anio){
-         ArrayList<Postulante> al= new ArrayList<>();
+    public ArrayList<RecordPostulanteHistorial> getPostulantesListarHistorial(RecordPostulanteFiltro rf, int usuario,int carrera, int anio){
+        ArrayList<RecordPostulanteHistorial> entra= new ArrayList<>();
+        ArrayList<RecordPostulanteHistorial> le= new ArrayList<>();
+        ArrayList<RecordPostulanteHistorial> ne= new ArrayList<>();
         ManejadorCodigoBD mc = new ManejadorCodigoBD();
         try {
             Statement s= connection.createStatement();
@@ -48,42 +50,40 @@ public class ManejadorHistorialBD {
             String sql = "";
             String filtro = ManejadorPostulanteDB.getFiltroSQL(rf);
             
-            if(u.isAdmin()){
-                    sql="SELECT * FROM postulantes.historialpostulantes where anio="+anio+" and carrera=" + carrera + filtro + " order by primerapellido asc, segundoApellido asc";
-                
+            if(!u.isAdmin()){
+                filtro = "and UnidadInsc="+ usuario + filtro;                 
                     //System.out.print(sql);
             }
-            else{
-                    sql="SELECT * FROM postulantes.historialpostulantes where anio="+anio+" and UnidadInsc="+ usuario + " and carrera=" + carrera + filtro + " order by primerapellido asc, segundoApellido asc";
-               
-            }
+            sql="Select * from postulantes.historialpostulantes left join  postulantes.historialresultados on historialpostulantes.ci = historialresultados.ci and historialpostulantes.anio = historialresultados.anio where historialpostulantes.anio="+anio+" and carrera=" + carrera + filtro + " order by promedio desc, primerapellido asc, primerNombre asc";
             
             ResultSet rs=s.executeQuery(sql);
             while (rs.next()){
                 int id=-1;
-                if (rf!=null){
-                    if( rf.condicional.equals("S")&& id==-1){
-                        al.add(new Postulante(rs.getInt("ci"), rs.getString("primerNombre"),rs.getString("segundoNombre"),rs.getString("primerApellido"),rs.getString("segundoApellido"),mc.getCarrera(rs.getInt("carrera")),id,mc.getUsuario(rs.getInt("unidadInsc"))));
-                    }
-                    else{
-                        if (rf.condicional.equals("N")&& id!=-1){
-                            al.add(new Postulante(rs.getInt("ci"), rs.getString("primerNombre"),rs.getString("segundoNombre"),rs.getString("primerApellido"),rs.getString("segundoApellido"),mc.getCarrera(rs.getInt("carrera")),id,mc.getUsuario(rs.getInt("unidadInsc"))));
-                        } 
-                        else{
-                            al.add(new Postulante(rs.getInt("ci"), rs.getString("primerNombre"),rs.getString("segundoNombre"),rs.getString("primerApellido"),rs.getString("segundoApellido"),mc.getCarrera(rs.getInt("carrera")),id,mc.getUsuario(rs.getInt("unidadInsc"))));
-                        }
-                    }
+                RecordPostulanteHistorial rh = new RecordPostulanteHistorial();
+                rh.p=new Postulante(rs.getInt("ci"), rs.getString("primerNombre"),rs.getString("segundoNombre"),rs.getString("primerApellido"),rs.getString("segundoApellido"),mc.getCarrera(rs.getInt("carrera")),id,mc.getUsuario(rs.getInt("unidadInsc")));
+                rh.entra=rs.getInt("resultado");
+                rh.promedio=rs.getDouble("promedio");
+                if(rh.entra==0){
+                    entra.add(rh);
                 }
                 else{
-                    al.add(new Postulante(rs.getInt("ci"), rs.getString("primerNombre"),rs.getString("segundoNombre"),rs.getString("primerApellido"),rs.getString("segundoApellido"),mc.getCarrera(rs.getInt("carrera")),id,mc.getUsuario(rs.getInt("unidadInsc"))));
+                    if(rh.entra==2){
+                        le.add(rh);
+                    }
+                    else{
+                        ne.add(rh);
+                    }
                 }
             }
+            entra.addAll(le);
+            entra.addAll(ne);
+            
         } catch (Exception ex) {
             Logger.getLogger(ManejadorCodigoBD.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return al;
+        return entra;
     }
-    public String imprimirFichaPostulante(int ci,int usuario, int anio){
+    public void imprimirFichaPostulante(int ci,int usuario, PrintWriter out, int anio){
         String impr="";
         try {
             Statement s= connection.createStatement();
@@ -456,7 +456,7 @@ impr+="                        <tr>\n" +
         catch(Exception e){
              System.out.print(e.getMessage());
         }
-        System.out.print(impr);
-        return impr;
+       // System.out.print(impr);
+        out.print(impr);
     }
 }

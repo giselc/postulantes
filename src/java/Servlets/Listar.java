@@ -5,8 +5,10 @@
  */
 package Servlets;
 
+import Classes.ManejadorHistorialBD;
 import Classes.ManejadorPostulanteDB;
 import Classes.Postulante;
+import Classes.RecordPostulanteHistorial;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -40,7 +42,9 @@ public class Listar extends HttpServlet {
             try (PrintWriter out = response.getWriter()) {
                 /* TODO output your page here. You may use following sample code. */
                 ManejadorPostulanteDB mp = new ManejadorPostulanteDB();
+                String anio = request.getParameter("anio");
                 if(request.getParameterValues("List[]")!=null){
+                    
                     if(request.getParameterValues("List[]").length==1){
                         out.print("<html><head><script src=\"js/jquery-1.9.1.min.js\"></script>");
                         out.print("<script src=\"js/jquery.table2excel.js\"></script>");
@@ -59,8 +63,16 @@ public class Listar extends HttpServlet {
                                     "}); </script></head><body>");
                         out.print("<BUTTON style='color:#0000ff' id=\"export-btn\">Export</BUTTON>");
                     }
-                    for (String parameterValue : request.getParameterValues("List[]")) {
-                        mp.imprimirFichaPostulante(Integer.valueOf(parameterValue), Integer.valueOf(sesion.getAttribute("usuarioID").toString()), out, ManejadorPostulanteDB.getAnioPostula());
+                    if(Integer.valueOf(anio)==ManejadorPostulanteDB.getAnioPostula()){
+                        for (String parameterValue : request.getParameterValues("List[]")) {
+                            mp.imprimirFichaPostulante(Integer.valueOf(parameterValue), Integer.valueOf(sesion.getAttribute("usuarioID").toString()), out, Integer.valueOf(anio));
+                        }
+                    }
+                    else{
+                        ManejadorHistorialBD mh = new ManejadorHistorialBD();
+                        for (String parameterValue : request.getParameterValues("List[]")) {
+                            mh.imprimirFichaPostulante(Integer.valueOf(parameterValue), Integer.valueOf(sesion.getAttribute("usuarioID").toString()), out, Integer.valueOf(anio));
+                        }
                     }
                     if(request.getParameterValues("List[]").length==1){
                         out.print("</body></html>");
@@ -70,30 +82,36 @@ public class Listar extends HttpServlet {
                     int i=0;
                     String color;
                     ArrayList<Postulante> ap = new ArrayList<>();
+                    ArrayList<RecordPostulanteHistorial> ah = new ArrayList<>();
                     out.println("<table style=\"width: 70%; margin:auto;\">");
                     out.print("            <tr>\n" +
     "                <td colspan=\"3\">\n" +
     "                    <p align=\"left\">Escuela Militar</p>\n" +
     "                </td>\n" +
-    "                <td colspan=\"2\">\n" +
+    "                <td colspan=\"3\">\n" +
     "                     <p align=\"right\">Jefatura de Estudios</p>\n" +
     "                </td>\n" +
     "            </tr>\n");
                     out.print("            <tr>\n" +
-    "                <td colspan=\"5\" style=\"text-align: center;\">\n" +
+    "                <td colspan=\"6\" style=\"text-align: center;\">\n" +
     "                    <h1>POSTULANTES</h1>\n" +
     "                </td>\n" +
     "            </tr>\n");
                     if (request.getParameter("carreraListar").equals("Apoyo")){
                         out.print("            <tr>\n" +
-    "                <td colspan=\"5\" style=\"text-align: center;\">\n" +
-    "                    <h2>Apoyo de Servicio y Combate</h2>\n" +
+    "                <td colspan=\"6\" style=\"text-align: center;\">\n" +
+    "                    <h2>Apoyo de Servicio y Combate "+anio+"</h2>\n" +
     "                </td>\n" +
     "            </tr>\n");
-                        ap= (ArrayList<Postulante>)sesion.getAttribute("listaTodosA");
+                        if(Integer.valueOf(anio)==ManejadorPostulanteDB.getAnioPostula()){
+                            ap= (ArrayList<Postulante>)sesion.getAttribute("listaTodosA");
+                        }
+                        else{
+                            ah= (ArrayList<RecordPostulanteHistorial>)sesion.getAttribute("listaTodosA");
+                        }
                         if(sesion.getAttribute("filtroMostrarA")!=null){
                         out.println("<tr>\n" +
-                                "        <td colspan=\"5\">\n" +
+                                "        <td colspan=\"6\">\n" +
                                 "            <p>\n <b>FILTROS: </b> " +
                                                 sesion.getAttribute("filtroMostrarA").toString() +
                                 "            </p>\n" +
@@ -103,14 +121,19 @@ public class Listar extends HttpServlet {
                     }
                     else{
                         out.print("            <tr>\n" +
-        "                <td colspan=\"5\" style=\"text-align: center;\">\n" +
-        "                    <h2>Cuerpo Comando</h2>\n" +
+        "                <td colspan=\"6\" style=\"text-align: center;\">\n" +
+        "                    <h2>Cuerpo Comando "+anio+"</h2>\n" +
         "                </td>\n" +
         "            </tr>\n");
-                        ap= (ArrayList<Postulante>)sesion.getAttribute("listaTodosC");
+                        if(Integer.valueOf(anio)==ManejadorPostulanteDB.getAnioPostula()){
+                            ap= (ArrayList<Postulante>)sesion.getAttribute("listaTodosC");
+                        }
+                        else{
+                            ah= (ArrayList<RecordPostulanteHistorial>)sesion.getAttribute("listaTodosC");
+                        }
                         if(sesion.getAttribute("filtroMostrarC")!=null){
                         out.println("<tr>\n" +
-                                "        <td colspan=\"5\">\n" +
+                                "        <td colspan=\"6\">\n" +
                                 "            <p>\n<b>FILTROS: </b> " +
                                                 sesion.getAttribute("filtroMostrarC").toString() +
                                 "            </p>\n" +
@@ -121,37 +144,70 @@ public class Listar extends HttpServlet {
 
 
                         out.print("<tr style='background-color:#ffcc66'>");
+                        out.print("<td style='width: 5%' align='center'><h3 style='margin:2%;'></h3></td>");
+                        if(Integer.valueOf(anio)==ManejadorPostulanteDB.getAnioPostula()){
                                 out.print("<td style='width: 10%' align='center'><h3 style='margin:2%;'>Numero</h3></td>");
+                        }
                                 out.print("<td style='width: 20%' align='center'><h3 style='margin:2%;'>Nombre</h3></td>");
                                 out.print("<td style='width: 20%' align='center'><h3 style='margin:2%;'>Apellido</h3></td>");
                                 out.print("<td style='width: 20%' align='center'><h3 style='margin:2%;'>Cedula</h3></td>");
-                                out.print("<td style='width: 30%' align='center'><h3 style='margin:2%;'>Unidad Insc.</h3></td>");
+                                out.print("<td style='width: 25%' align='center'><h3 style='margin:2%;'>Unidad Insc.</h3></td>");
+                            if(Integer.valueOf(anio)!=ManejadorPostulanteDB.getAnioPostula()){
+                                out.print("<td style='width: 10%' align='center'><h3 style='margin:2%;'>Promedio</h3></td>");
+                            }
                         out.print("</tr>");
-                    for (Postulante p : ap){
+                    if(Integer.valueOf(anio)==ManejadorPostulanteDB.getAnioPostula()){
+                            for (Postulante p : ap){
 
-                        if ((i%2)==0){
-                            color=" #ccccff";
+                                if ((i%2)==0){
+                                    color=" #ccccff";
+                                }
+                                else{
+                                    color=" #ffff99";
+                                }
+                                i++;
+
+                               out.print("<tr style='background-color:"+color+"'>");
+                               out.print("<td style='width: 5%' align='center'><h3 style='margin:2%;'>"+i+"</h3></td>");
+                                if (p.getId()!=-1){
+                                    out.print("<td style='width: 10%' align='center'>"+p.getId()+"</td>");
+                                }
+                                else{
+                                    out.print("<td style='width: 10%' align='center'>COND.</td>");
+                                }
+                                out.print("<td style='width: 20%' align='center'>"+p.getPrimerNombre()+"</td>");
+                                out.print("<td style='width: 20%' align='center'>"+p.getPrimerApellido()+"</td>");
+                                out.print("<td style='width: 20%' align='center'>"+String.valueOf(p.getCi())+"</td>");
+                                out.print("<td style='width: 25%' align='center'>"+p.getUnidadInsc().getNombreMostrar()+"</td>"); 
+                                out.print("</tr>");
+
+
+                            }
                         }
                         else{
-                            color=" #ffff99";
-                        }
-                        i++;
+                            for (RecordPostulanteHistorial h : ah){
 
-                       out.print("<tr style='background-color:"+color+"'>");
-                       if (p.getId()!=-1){
-                            out.print("<td style='width: 10%' align='center'>"+p.getId()+"</td>");
-                        }
-                        else{
-                            out.print("<td style='width: 10%' align='center'>COND.</td>");
-                        }
-                        out.print("<td style='width: 20%' align='center'>"+p.getPrimerNombre()+"</td>");
-                        out.print("<td style='width: 20%' align='center'>"+p.getPrimerApellido()+"</td>");
-                        out.print("<td style='width: 20%' align='center'>"+String.valueOf(p.getCi())+"</td>");
-                        out.print("<td style='width: 30%' align='center'>"+p.getUnidadInsc().getNombreMostrar()+"</td>"); 
-                        out.print("</tr>");
+                                if ((i%2)==0){
+                                    color=" #ccccff";
+                                }
+                                else{
+                                    color=" #ffff99";
+                                }
+                                i++;
+
+                               out.print("<tr style='background-color:"+color+"'>");
+                               out.print("<td style='width: 5%' align='center'><h3 style='margin:2%;'>"+i+"</h3></td>");
+                                out.print("<td style='width: 20%' align='center'>"+h.p.getPrimerNombre()+"</td>");
+                                out.print("<td style='width: 20%' align='center'>"+h.p.getPrimerApellido()+"</td>");
+                                out.print("<td style='width: 20%' align='center'>"+String.valueOf(h.p.getCi())+"</td>");
+                                out.print("<td style='width: 25%' align='center'>"+h.p.getUnidadInsc().getNombreMostrar()+"</td>"); 
+                                out.print("<td style='width: 10%' align='center'><h3 style='margin:2%;'>"+h.promedio+"</h3></td>");
+                                out.print("</tr>");
 
 
-                    }
+                            }
+                        }   
+                    
                     out.print("</table>");
                 }
             }

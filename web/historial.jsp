@@ -12,7 +12,7 @@
 <%@page import="java.sql.Connection"%>
 <%@page import="Classes.ConexionDB"%>
 <%@ include file="header.jsp" %>   
-<% if(u.isSuperAdmin()){%>
+<% if(u!=null && u.isSuperAdmin()){%>
     <script src="js/jquery-1.9.1.min.js"></script>
     <script src="js/jquery-ui.js"></script>
     <script>
@@ -156,18 +156,23 @@
                         datos+="<td style='width: 5%' align='center'><h3 style='margin:2%;'></h3></td>";
                         datos+="<td style='width: 5%' align='center'><input type='checkbox' onclick='seleccionar_todo_apoyo()' id='selTodoApoyo'></td>";
                      }
-                    datos+="<td colspan=2 style='width: 20%' align='center'><h3 style='margin:2%;'>Nombres</h3></td>";
+                     datos+="<td colspan=2 style='width: 20%' align='center'><h3 style='margin:2%;'>Nombres</h3></td>";
                     datos+="<td colspan=2 style='width: 20%' align='center'><h3 style='margin:2%;'>Apellidos</h3></td>";
                     datos+="<td style='width: 15%' align='center'><h3 style='margin:2%;'>Cédula</h3></td>";
                     datos+="<td style='width: 15%' align='center'><h3 style='margin:2%;'>Unidad Insc.</h3></td>";
-                    datos+="<td style='width: 10%' align='center'></td>";
+                    datos+="<td style='width: 10%' align='center'><h3 style='margin:2%;'>Promedio</h3></td>";
                     datos+="</tr>" ;
                     for (var i=0; i<listado.length;i++) {
-                        if ((i%2)==0){
-                            color=" #ccccff";
+                        if (listado[i].entra==0){
+                            color="#ACFA58";
                         }
                         else{
-                            color=" #ffff99";
+                            if(listado[i].entra==2){
+                                color="#F4FA58";
+                            }
+                            else{
+                                color="#FA8258";
+                            }
                         }
                         j=i+1;
                         datos += "<tr style='background-color:"+color+"'>";
@@ -179,7 +184,7 @@
                         datos +="<td style='width: 10%' align='center'>"+ listado[i].segundoApellido +"</td>";
                         datos +="<td style='width: 15%' align='center'>"+ listado[i].ci +"</td>";
                         datos +="<td style='width: 15%' align='center'>"+ listado[i].unidadInsc +"</td>"; 
-                        datos +="<td style='width: 10%' align='center'><a href='agregar.jsp?ci="+ listado[i].ci +"'><img src='images/ver.png' width='25%' /></a></td>";
+                        datos+="<td style='width: 10%' align='center'>"+ listado[i].promedio +"</td>";
                         datos +="</tr>";
                     }
                      document.getElementById(idDatos).innerHTML = datos;
@@ -219,6 +224,9 @@
              var anio=document.getElementById("anioHistorial").value;
              document.getElementById("tituloComando").innerHTML="Cuerpo Comando Historial "+anio;
              document.getElementById("tituloApoyo").innerHTML="Apoyo de Servicio y Combate "+anio;
+             document.getElementById("formApoyoHistorial").action='Listar?anio='+anio;
+             document.getElementById("formComandoHistorial").action='Listar?anio='+anio;
+             document.getElementById("estadistica").action='Estadistica?anio='+anio;
              xmlhttp=new XMLHttpRequest();
              xmlhttp.onreadystatechange = function() {
                  if (xmlhttp.readyState==4 && xmlhttp.status==200) {
@@ -236,30 +244,37 @@
                     datos+="<tr style='background-color:#ffcc66'>";
                     datos+="<td style='width: 5%' align='center'><h3 style='margin:2%;'></h3></td>";
                     datos+="<td style='width: 5%' align='center'><input type='checkbox' onclick='seleccionar_todo_comando()' id='selTodoComando'></td>";
+                    
                     datos+="<td colspan=2 style='width: 20%' align='center'><h3 style='margin:2%;'>Nombres</h3></td>";
                     datos+="<td colspan=2 style='width: 20%' align='center'><h3 style='margin:2%;'>Apellidos</h3></td>";
                     datos+="<td style='width: 15%' align='center'><h3 style='margin:2%;'>Cédula</h3></td>";
                     datos+="<td style='width: 15%' align='center'><h3 style='margin:2%;'>Unidad Insc.</h3></td>";
-                    datos+="<td style='width: 10%' align='center'></td>";
+                    datos+="<td style='width: 10%' align='center'><h3 style='margin:2%;'>Promedio</h3></td>";
                     datos+="</tr>" ;
                     for (var i=0; i<listado.length;i++) {
-                        if ((i%2)==0){
-                            color=" #ccccff";
+                        if (listado[i].entra==0){
+                            color="#ACFA58";
                         }
                         else{
-                            color=" #ffff99";
+                            if(listado[i].entra==2){
+                                color="#F4FA58";
+                            }
+                            else{
+                                color="#FA8258";
+                            }
                         }
                         j=i+1;
                         datos += "<tr style='background-color:"+color+"'>";
                         datos += "<td style='width: 5%' align='center'>"+j+"</td>";
                         datos +="<td style='width: 5%' align='center'><input type='checkbox' name='List[]' value='"+ listado[i].ci +"' /></td>";
+                        
                         datos +="<td style='width: 10%' align='center'>"+ listado[i].primerNombre +"</td>";
                         datos +="<td style='width: 10%' align='center'>"+ listado[i].segundoNombre +"</td>";
                         datos +="<td style='width: 10%' align='center'>"+ listado[i].primerApellido +"</td>";
                         datos +="<td style='width: 10%' align='center'>"+ listado[i].segundoApellido +"</td>";
                         datos +="<td style='width: 15%' align='center'>"+ listado[i].ci +"</td>";
                         datos +="<td style='width: 15%' align='center'>"+ listado[i].unidadInsc +"</td>"; 
-                        datos +="<td style='width: 10%' align='center'><a href='agregar.jsp?ci="+ listado[i].ci +"'><img src='images/ver.png' width='25%' /></a></td>";
+                        datos+="<td style='width: 10%' align='center'>"+ listado[i].promedio +"</td>";
                         datos +="</tr>";
 
                     }
@@ -276,30 +291,37 @@
                     datos+="<tr style='background-color:#ffcc66'>";
                     datos+="<td style='width: 5%' align='center'><h3 style='margin:2%;'></h3></td>";
                     datos+="<td style='width: 5%' align='center'><input type='checkbox' onclick='seleccionar_todo_apoyo()' id='selTodoApoyo'></td>";
+                    
                     datos+="<td colspan=2 style='width: 20%' align='center'><h3 style='margin:2%;'>Nombres</h3></td>";
                     datos+="<td colspan=2 style='width: 20%' align='center'><h3 style='margin:2%;'>Apellidos</h3></td>";
                     datos+="<td style='width: 15%' align='center'><h3 style='margin:2%;'>Cédula</h3></td>";
                     datos+="<td style='width: 15%' align='center'><h3 style='margin:2%;'>Unidad Insc.</h3></td>";
-                    datos+="<td style='width: 10%' align='center'></td>";
+                    datos+="<td style='width: 10%' align='center'><h3 style='margin:2%;'>Promedio</h3></td>";
                     datos+="</tr>" ;
                     for (var i=0; i<listado.length;i++) {
-                        if ((i%2)==0){
-                            color=" #ccccff";
+                        if (listado[i].entra==0){
+                            color="#ACFA58";
                         }
                         else{
-                            color=" #ffff99";
+                            if(listado[i].entra==2){
+                                color="#F4FA58";
+                            }
+                            else{
+                                color="#FA8258";
+                            }
                         }
                         j=i+1;
                         datos += "<tr style='background-color:"+color+"'>";
                         datos += "<td style='width: 5%' align='center'>"+j+"</td>";
                         datos +="<td style='width: 5%' align='center'><input type='checkbox' name='List[]' value='"+ listado[i].ci +"' /></td>";
+                        
                         datos +="<td style='width: 10%' align='center'>"+ listado[i].primerNombre +"</td>";
                         datos +="<td style='width: 10%' align='center'>"+ listado[i].segundoNombre +"</td>";
                         datos +="<td style='width: 10%' align='center'>"+ listado[i].primerApellido +"</td>";
                         datos +="<td style='width: 10%' align='center'>"+ listado[i].segundoApellido +"</td>";
                         datos +="<td style='width: 15%' align='center'>"+ listado[i].ci +"</td>";
                         datos +="<td style='width: 15%' align='center'>"+ listado[i].unidadInsc +"</td>"; 
-                        datos +="<td style='width: 10%' align='center'><a href='agregar.jsp?ci="+ listado[i].ci +"'><img src='images/ver.png' width='25%' /></a></td>";
+                        datos+="<td style='width: 10%' align='center'>"+ listado[i].promedio +"</td>";
                         datos +="</tr>";
                     }
                     document.getElementById("datosApoyo").innerHTML = datos;
@@ -341,7 +363,32 @@ ManejadorHistorialBD mp = new ManejadorHistorialBD();
                     %>
                  </select>
             </td>
+            
+            <td>
+                <table>
+                    <TR>
+                        <td style="background-color: #ffffff">REFERENCIAS:</td>
+                    </TR>
+                    <tr>
+                        <td style="background-color: #ACFA58">ENTRA</td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #F4FA58">LISTA DE ESPERA</td>
+                    </tr>
+                    <tr>
+                        <td style="background-color: #FA8258">NO ENTRA</td>
+                    </tr>
+                </table>
+            </td>
+            <td>
+                <form method="post" target="_blank" id="estadistica" action="Estadistica?anio=<%= ManejadorPostulanteDB.getAnioPostula()-1 %>">
+                    <input type="image" width="30%" title="Estadísticas" src="images/estadistica.png" alt="Submit Form" />
+                </form>
+                
+            </td>
+            
         </tr>
+        
         </table>
      <ul id="tabs">
          <li><a href="#" title="Cuerpo-Comando"><b>Cuerpo Comando</b></a></li>

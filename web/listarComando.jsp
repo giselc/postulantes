@@ -7,7 +7,7 @@
 <%
 ManejadorPostulanteDB mp = new ManejadorPostulanteDB();
 %>   
-<form method="post" target="_blank" onsubmit="return listar(this)" name="formComando" action='Listar'>
+<form method="post" target="_blank" onsubmit="return listar(this)" name="formComando" action='Listar?anio=<%= ManejadorPostulanteDB.getAnioPostula()%>'>
     
     <table style="float: right">
         <tr>

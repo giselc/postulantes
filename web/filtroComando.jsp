@@ -3,7 +3,21 @@
 <%@page import="Classes.Usuario"%>
 <%@page import="Classes.ManejadorCodigoBD"%>
 <form method="post" onsubmit='return aplicarFiltro(this,"datosComando")' id="formComandoFiltro" action="">
+   
     <table style="font-size: 70%">
+        <tr <%if(!request.getRequestURI().endsWith("/historial.jsp")){out.print("hidden");}%>>
+            <td>
+                RESULTADO:
+            </td>
+            <td>
+                <select name="entra" form="formComandoFiltro"> 
+                    <option value="todos" selected="selected">TODOS</option>
+                    <option value="0">ENTRAN</option>
+                    <option value="2">LISTA DE ESPERA</option>
+                    <option value="1">NO ENTRAN</option>
+                </select>
+            </td>
+        </tr>
         <tr>
             <td>
                 LMGA:

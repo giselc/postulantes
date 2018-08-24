@@ -7,7 +7,7 @@
 <div id='dialog' style="display:none" title="Filtro">
     <%@include file="filtroApoyo.jsp" %>
 </div>
-<form method="post" target="_blank" onsubmit="return listar(this)" name="formApoyo" action='Listar'>
+<form method="post" target="_blank" onsubmit="return listar(this)" name="formApoyo" action='Listar?anio=<%= ManejadorPostulanteDB.getAnioPostula()%>'>
     
     
     <table style="float: right;">

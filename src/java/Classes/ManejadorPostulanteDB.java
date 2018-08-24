@@ -222,6 +222,22 @@ public class ManejadorPostulanteDB {
         String filtro = "";
         String filtroMostrar = "";
         if (rf!=null){
+            if(rf.entra.equals("0")){
+                filtro+= " and resultado = 0";
+                filtroMostrar += "RESULTADO = ENTRAN - ";
+            }
+            else{
+                if (rf.entra.equals("1")){
+                    filtro+= " and resultado = 1";
+                    filtroMostrar += "RESULTADO = NO ENTRAN - ";
+                }
+                else{
+                    if (rf.entra.equals("2")){
+                        filtro+= " and resultado = 2";
+                        filtroMostrar += "RESULTADO = LISTA DE ESPERA - ";
+                    }
+                }
+            }
             if(rf.lmga.equals("S")){
                 filtro+= " and lmga = 1";
                 filtroMostrar += "LMGA = SI - ";

@@ -5,7 +5,21 @@
 
 <form method="post" onsubmit='return aplicarFiltro(this,"datosApoyo")' id="formApoyoFiltro" action="">
     <table style="font-size: 70%">
+        <tr style="<%if(!request.getContextPath().equals("/historial.jsp")){out.print("hidden:hidden");}%>">
+            <td >
+                RESULTADO:
+            </td>
+            <td>
+                <select name="entra" form="formApoyoFiltro"> 
+                    <option value="todos" selected="selected">TODOS</option>
+                    <option value="0">ENTRAN</option>
+                    <option value="2">LISTA DE ESPERA</option>
+                    <option value="1">NO ENTRAN</option>
+                </select>
+            </td>
+        </tr>
         <tr>
+            
             <td>
                 LMGA:
             </td>

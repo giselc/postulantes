@@ -12,6 +12,7 @@ import java.util.ArrayList;
  * @author Gisel
  */
 public class RecordPostulanteFiltro {
+    public String entra; //TODOS,0,1,2
     public String lmga; // TODOS, S, N
     public String anio_aprobado; // TODOS, S, N
     public String ps; // TODOS, S, N
