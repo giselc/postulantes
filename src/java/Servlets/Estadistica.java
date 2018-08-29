@@ -16,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -42,6 +43,8 @@ public class Estadistica extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        HttpSession sesion = request.getSession();
+        if (sesion.getAttribute("usuarioID")!=null){
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             ManejadorEstadisticasBD me = new ManejadorEstadisticasBD();
@@ -296,7 +299,13 @@ public class Estadistica extends HttpServlet {
             s+=imprimirEstadisticaUnidad(false,"", "TOTAL", todosPostComando, todosPostApoyo, entranPostComando, entranPostApoyo, todosPostComando, entranPostComando, todosPostApoyo, entranPostApoyo);
             out.print(s+"</table></body>");
         }
+        }
+        else{
+            sesion.setAttribute("login", "vacio");
+            response.sendRedirect("");
+        }
     }
+        
     public static double fijarNumero(double numero, int digitos) {
         double resultado;
         resultado = numero * Math.pow(10, digitos);
@@ -332,6 +341,7 @@ s+="        <td>\n" +unidad+
 "        <td >\n" +fijarNumero((Double.valueOf(EntranApoyo)/entranPostApoyo)*100,1)+"%        </td>\n" +
 "    </tr>\n" ;
     return s;
+    
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

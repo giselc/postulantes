@@ -382,7 +382,7 @@ ManejadorHistorialBD mp = new ManejadorHistorialBD();
             </td>
             <td>
                 <form method="post" target="_blank" id="estadistica" action="Estadistica?anio=<%= ManejadorPostulanteDB.getAnioPostula()-1 %>">
-                    <input type="image" width="30%" title="Estadísticas" src="images/estadistica.png" alt="Submit Form" />
+                    <input type="image" width="30%" title="Estadísticas por unidad inscriptora" src="images/estadistica.png" alt="Submit Form" />
                 </form>
                 
             </td>
