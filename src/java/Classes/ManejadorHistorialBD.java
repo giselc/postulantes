@@ -91,10 +91,10 @@ public class ManejadorHistorialBD {
             Usuario u = mc.getUsuario(usuario);
             String sql = "";
             if(u.isAdmin()){
-                sql="Select * from postulantes.historialpostulantes left join postulantes.historialnotas on historialpostulantes.ci = historialnotas.ci left join  postulantes.historialresultados on historialpostulantes.ci = historialresultados.ci where historialpostulantes.anio="+anio+" and historialpostulantes.ci="+ ci;
+                sql="Select * from postulantes.historialpostulantes left join postulantes.historialnotas on historialpostulantes.ci = historialnotas.ci and historialpostulantes.anio = historialnotas.anio left join  postulantes.historialresultados on historialpostulantes.ci = historialresultados.ci and historialpostulantes.anio = historialresultados.anio where historialpostulantes.anio="+anio+" and historialpostulantes.ci="+ ci;
             }
             else{
-                sql="Select * from postulantes.historialpostulantes left join postulantes.historialnotas on historialpostulantes.ci = historialnotas.ci left join  postulantes.historialresultados on historialpostulantes.ci = historialresultados.ci where historialpostulantes.anio="+anio+" and historialpostulantes.ci="+ ci + " and UnidadInsc="+ usuario;
+                sql="Select * from postulantes.historialpostulantes left join postulantes.historialnotas on historialpostulantes.ci = historialnotas.ci and historialpostulantes.anio = historialnotas.anio left join  postulantes.historialresultados on historialpostulantes.ci = historialresultados.ci and historialpostulantes.anio = historialresultados.anio where historialpostulantes.anio="+anio+" and historialpostulantes.ci="+ ci + " and UnidadInsc="+ usuario;
             }
             ResultSet rs=s.executeQuery(sql);
             if (rs.next()){
@@ -104,11 +104,24 @@ public class ManejadorHistorialBD {
 "                    <p align=\"left\">Escuela Militar</p>\n" +
 "                </td>\n" +
 "                <td>\n" +
+"                </td>\n" +
+"                <td>\n" +
 "                     <p align=\"right\">Jefatura de Estudios</p>\n" +
 "                </td>\n" +
 "            </tr>\n" +
+                               "            <tr>\n" +
+"                <td style=\"width=33%\">\n" +
+"                    <p align=\"left\"></p>\n" +
+"                </td>\n" +
+"                <td style=\"width=33%\">\n" +
+"                    <p align=\"center\"><h1>"+rs.getString("primerNombre")+" "+rs.getString("primerApellido")+" "+ anio +"</h1></p>\n" +
+"                </td>\n" +
+"                <td style=\"width=33%\">\n" +
+"                     <p align=\"right\"></p>\n" +
+"                </td>\n" +
+"            </tr>\n" +
 "            <tr class=\"noExl\">\n" +
-"                <td width=\"40%\" style=\"vertical-align: top;border: solid\">\n" +
+"                <td width=\"33%\" style=\"vertical-align: top;border: solid\">\n" +
 "                    <table  style=\"table-layout: fixed; width: 100%\">\n" +
 "                        <tr>\n" +
 "                            <td>\n" +
@@ -314,7 +327,7 @@ impr+="                        <tr>\n" +
 "                        \n" +
 "                    </table>\n" +
 "                </td>\n" +
-"                <td width=\"40%\" style=\"vertical-align: top;border: solid\" >\n" +
+"                <td width=\"33%\" style=\"vertical-align: top;border: solid\" >\n" +
 "                    <table  style=\"width: 100%; table-layout: fixed\">\n" +
 "                        <tr>\n" +
 "                            <td>\n" +
@@ -429,6 +442,84 @@ impr+="                        <tr>\n" +
 "                            <td>Lugar de trabajo: </td>\n" +
 "                            <td>"+ rs.getString("mLugarTrabajo") +"</td>\n" +
 "                        </tr>\n" +
+"                    </table>\n" +
+"                        \n" +
+"                </td>\n" +
+                
+"                <td width=\"33%\" style=\"vertical-align: top;border: solid\" >\n" +
+"                    <table  style=\"width: 100%; table-layout: fixed\">\n" +
+"                        <tr>\n" +
+"                            <td>\n" +
+"                                <h4 style=\"padding: 0px\">Notas:</h4>\n" +
+"                            </td>\n" +
+"                        </tr>\n" +
+"                        <tr>\n" +
+"                            <td>Matemática: </td>\n" +
+"                            <td style=\"size: 50\">"+ rs.getDouble("Matematica") +"</td>\n" +
+"                        </tr>\n" +
+"                        <tr>\n" +
+"                            <td colspan=\"2\" style=\"size: 50\">"+ rs.getString("MatematicaObs") +"</td>\n" +
+"                        </tr>\n" +
+"                        <tr>\n" +
+"                            <td>Historia: </td>\n" +
+"                            <td style=\"size: 50\">"+ rs.getDouble("Historia") +"</td>\n" +
+"                        </tr>\n" +
+"                        <tr>\n" +
+"                            <td colspan=\"2\" style=\"size: 50\">"+ rs.getString("HistoriaObs") +"</td>\n" +
+"                        </tr>\n" +
+"                        <tr>\n" +
+"                            <td>IdiomaEspañol: </td>\n" +
+"                            <td style=\"size: 50\">"+ rs.getDouble("IdiomaEspanol") +"</td>\n" +
+"                        </tr>\n" +
+"                        <tr>\n" +
+"                            <td colspan=\"2\" style=\"size: 50\">"+ rs.getString("IdEspanolObs") +"</td>\n" +
+"                        </tr>\n" +
+"                        <tr>\n" +
+"                            <td>Educación Física: </td>\n" +
+"                            <td style=\"size: 50\">"+ rs.getDouble("EducacionFisica") +"</td>\n" +
+"                        </tr>\n" + 
+"                        <tr>\n" +
+"                            <td colspan=\"2\" style=\"size: 50\">"+ rs.getString("EdFisicaObs") +"</td>\n" +
+"                        </tr>\n" +
+"                        <tr>\n" +
+"                            <td>Psicotécnica: </td>\n" +
+"                            <td style=\"size: 50\">";
+                             if(rs.getInt("Psicotecnica")==1){
+                                impr+="APTO";
+                                if(rs.getInt("PsicoSeg")==1){
+                                    impr+=" C/S";
+                                 }
+                             }
+                             else{
+                                impr+="NO APTO";
+                             }
+                             impr+="</td>\n" +
+"                        </tr>\n" +
+"                        <tr>\n" +
+"                            <td colspan=\"2\" style=\"size: 50\">"+ rs.getString("PsicoObs") +"</td>\n" +
+"                        </tr>\n" +
+"                        <tr>\n" +
+"                            <td>Médico: </td>\n" +
+"                            <td style=\"size: 50\">";
+                             if(rs.getInt("Medico")==1){
+                                impr+="APTO";
+                                if(rs.getInt("MedicoSeg")==1){
+                                    impr+=" C/S";
+                                 }
+                             }
+                             else{
+                                impr+="NO APTO";
+                             }
+                             impr+="</td>\n" +
+"                        </tr>\n" +
+"                        <tr>\n" +
+"                            <td colspan=\"2\" style=\"size: 50\">"+ rs.getString("MedicoObs") +"</td>\n" +
+"                        </tr>\n" +
+                                     
+"                        <tr>\n" +
+"                            <td><b>PROMEDIO: </b></td>\n" +
+"                            <td style=\"size: 50\"><b>"+ rs.getDouble("Promedio") +"</b></td>\n" +
+"                        </tr>\n" + 
 "                    </table>\n" +
 "                        \n" +
 "                </td>\n" +

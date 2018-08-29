@@ -61,7 +61,7 @@ public class Listar extends HttpServlet {
                                     "        });\n" +
                                     "    }\n" +
                                     "}); </script></head><body>");
-                        out.print("<BUTTON style='color:#0000ff' id=\"export-btn\">Export</BUTTON>");
+                       // out.print("<BUTTON style='color:#0000ff' id=\"export-btn\">Export</BUTTON>");
                     }
                     if(Integer.valueOf(anio)==ManejadorPostulanteDB.getAnioPostula()){
                         for (String parameterValue : request.getParameterValues("List[]")) {
