@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class RecordPostulanteFiltro {
     public String entra; //TODOS,0,1,2
     public String lmga; // TODOS, S, N
+    public String pd; // TODOS, S, N
     public String anio_aprobado; // TODOS, S, N
     public String ps; // TODOS, S, N
     public String psEjercito; // TODOS, S, N

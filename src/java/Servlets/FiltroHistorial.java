@@ -49,6 +49,7 @@ public class FiltroHistorial extends HttpServlet {
                 RecordPostulanteFiltro rf =  new RecordPostulanteFiltro();
                 rf.entra= request.getParameter("entra");
                 rf.lmga = request.getParameter("lmga");
+                rf.pd = request.getParameter("pd");
                 rf.orientacion = request.getParameter("orientacion");
                 rf.ps = request.getParameter("ps");
                 rf.psEjercito = request.getParameter("psEjercito");

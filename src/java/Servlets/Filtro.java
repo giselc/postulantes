@@ -48,6 +48,7 @@ public class Filtro extends HttpServlet {
                 ManejadorPostulanteDB mp = new ManejadorPostulanteDB();
                 RecordPostulanteFiltro rf =  new RecordPostulanteFiltro();
                 rf.lmga = request.getParameter("lmga");
+                rf.pd = request.getParameter("pd");
                 rf.orientacion = request.getParameter("orientacion");
                 rf.ps = request.getParameter("ps");
                 rf.psEjercito = request.getParameter("psEjercito");

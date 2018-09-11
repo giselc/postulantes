@@ -248,6 +248,16 @@ public class ManejadorPostulanteDB {
                     filtroMostrar += "LMGA = NO - ";
                 }
             }
+            if(rf.pd.equals("S")){
+                filtro+= " and paseDirecto = 1";
+                filtroMostrar += "PD = SI - ";
+            }
+            else{
+                if (rf.lmga.equals("N")){
+                    filtro+= " and paseDirecto = 0";
+                    filtroMostrar += "PD = NO - ";
+                }
+            }
             if(rf.alojamiento.equals("S")){
                 filtro+= " and alojamiento = 1";
                 filtroMostrar += "ALOJAMIENTO = SI - ";

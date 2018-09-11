@@ -32,6 +32,19 @@
             </td>
         </tr>
         <tr>
+            
+            <td>
+                Pase directo:
+            </td>
+            <td>
+                <select name="pd" form="formApoyoFiltro"> 
+                    <option value="todos" selected="selected">TODOS</option>
+                    <option value="S">SI</option>
+                    <option value="N">NO</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
             <td>
                 A cursar en el instituto:
             </td>
