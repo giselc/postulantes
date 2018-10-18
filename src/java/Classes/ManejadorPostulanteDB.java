@@ -16,6 +16,9 @@ import java.sql.Statement;
 import static java.sql.Types.NULL;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
@@ -88,7 +91,9 @@ public class ManejadorPostulanteDB {
                 p.setPsEjercito(rs.getBoolean("PSEjercito"));
                 p.setHijos(rs.getInt("HIJOS"));
                 p.setObservaciones(rs.getString("OBSERVACIONES"));
-                
+                p.setTalleOperacional(rs.getString("talleOperacional"));
+                p.setTalleBotas(rs.getInt("talleBotas"));
+                p.setTalleQuepi(rs.getInt("talleQuepi"));
                 //DATOS PATRONIMICOS
                 //PADRE
                 p.setpNombreComp(rs.getString("PNombreComp"));
@@ -541,7 +546,7 @@ public class ManejadorPostulanteDB {
             int mes = fecha1.get(java.util.Calendar.MONTH)+1;
             String fecha=  fecha1.get(java.util.Calendar.YEAR)+"-"+mes+"-"+fecha1.get(java.util.Calendar.DATE); //usada para log
             String sql = "INSERT INTO postulantes.documentos (anio,ci, foto, fotociAnverso, fotociReverso, fotof69Hoja1, fotof69Hoja2, fotof69Hoja3, fotof1hoja1, fotof1hoja2) values (?,?,?,?,?,?,?,?,?,?)";
-            String sql1 = "INSERT INTO postulantes.postulantes (ci, PrimerNombre, PrimerApellido, SegundoNombre, SegundoApellido, anio, unidadInsc, FechaNac, Sexo, DepartamentoNac, LocalidadNac, CC, CCNro, EstadoCivil, Domicilio, Departamento, Localidad, Telefono, Email, Quinto, Orientacion, Lmga, Reingreso, BuenaConducta, PS, PSEjercito, HIJOS, OBSERVACIONES, carrera,paseDirecto,notaPaseDirecto,materiasPendientes,alojamiento,nsp,renuncio) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            String sql1 = "INSERT INTO postulantes.postulantes (ci, PrimerNombre, PrimerApellido, SegundoNombre, SegundoApellido, anio, unidadInsc, FechaNac, Sexo, DepartamentoNac, LocalidadNac, CC, CCNro, EstadoCivil, Domicilio, Departamento, Localidad, Telefono, Email, Quinto, Orientacion, Lmga, Reingreso, BuenaConducta, PS, PSEjercito, HIJOS, OBSERVACIONES, carrera,paseDirecto,notaPaseDirecto,materiasPendientes,alojamiento,nsp,renuncio,talleoperacional,tallebotas,tallequepi) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             String sql2 = "INSERT INTO postulantes.log(ci,  usuario, fecha, alta, sentenciaSQL, archivos) values(?,?,?,?,?,?)";
             PreparedStatement statement= connection.prepareStatement(sql); // sql a insertar en postulantes
             PreparedStatement statement1= connection.prepareStatement(sql1); // incluir sql sin archivos en log
@@ -687,6 +692,10 @@ public class ManejadorPostulanteDB {
             statement1.setBoolean(i1++, rb.alojamiento);
             statement1.setBoolean(i1++, rb.nsp);
             statement1.setBoolean(i1++, rb.renuncio);
+            statement1.setString(i1++, rb.talleOperacional);
+            statement1.setInt(i1++, rb.talleBotas);
+            statement1.setInt(i1++, rb.talleQuepi);
+            
 
             statement2.setInt(i2++, rb.ci);
             statement2.setInt(i2++, creadoPor);
@@ -807,7 +816,7 @@ public class ManejadorPostulanteDB {
            int mes = fecha1.get(java.util.Calendar.MONTH)+1;
            String fecha=  fecha1.get(java.util.Calendar.YEAR)+"-"+mes+"-"+fecha1.get(java.util.Calendar.DATE);
            String sql2 = "INSERT INTO postulantes.log(ci,  usuario, fecha, alta, sentenciaSQL, archivos) values(?,?,?,?,?,?)";
-           String sql1 = "UPDATE postulantes.postulantes set ci=?,PrimerNombre=?, PrimerApellido=?,SegundoNombre=?, SegundoApellido=?,fechaNac=?,Sexo=?,DepartamentoNac=?,localidadNac=?,cc=?,ccNro=?,estadocivil=?,domicilio=?,departamento=?,localidad=?,telefono=?,email=?,Quinto=?,Orientacion=?,lmga=?,reingreso=?,BuenaConducta=?,PS=?,PSEjercito=?,Hijos=?,Observaciones=?,PaseDirecto=?,NotaPaseDirecto=?,materiasPendientes=?,Alojamiento=?, nsp=?, renuncio=? where ci = "+ rb.ci+" and anio="+ManejadorPostulanteDB.getAnioPostula();
+           String sql1 = "UPDATE postulantes.postulantes set ci=?,PrimerNombre=?, PrimerApellido=?,SegundoNombre=?, SegundoApellido=?,fechaNac=?,Sexo=?,DepartamentoNac=?,localidadNac=?,cc=?,ccNro=?,estadocivil=?,domicilio=?,departamento=?,localidad=?,telefono=?,email=?,Quinto=?,Orientacion=?,lmga=?,reingreso=?,BuenaConducta=?,PS=?,PSEjercito=?,Hijos=?,Observaciones=?,PaseDirecto=?,NotaPaseDirecto=?,materiasPendientes=?,Alojamiento=?, nsp=?, renuncio=?, talleoperacional=?, tallebotas=?, tallequepi=? where ci = "+ rb.ci+" and anio="+ManejadorPostulanteDB.getAnioPostula();
            String sql = "UPDATE postulantes.documentos set ci=?"+strfoto+strfotoCIAnverso+strfotoCIReverso+strfotoF69Hoja1+strfotoF69Hoja2+strfotoF69Hoja3+strfotoF1Hoja1+strfotoF1Hoja2+" where ci = "+ rb.ci + " and anio= "+ManejadorPostulanteDB.getAnioPostula();
            PreparedStatement statement= connection.prepareStatement(sql);
            PreparedStatement statement1= connection.prepareStatement(sql1);
@@ -870,6 +879,9 @@ public class ManejadorPostulanteDB {
            statement1.setBoolean(i1++, rb.alojamiento);
            statement1.setBoolean(i1++, rb.nsp);
            statement1.setBoolean(i1++, rb.renuncio);
+           statement1.setString(i1++, rb.talleOperacional);
+           statement1.setInt(i1++, rb.talleBotas);
+           statement1.setInt(i1++, rb.talleQuepi);
            
            if (!rb.foto.equals("")){
                byte[] imageByte = Base64.getDecoder().decode(rb.foto);
@@ -1124,6 +1136,47 @@ public class ManejadorPostulanteDB {
         }
     }
     
-    
+    public LinkedList<ArrayList<Integer>> getDatosEstadisticos(int carrera){
+        int total=0;
+        int masculino=0;
+        int ps = 0;
+        LinkedList l= new LinkedList();
+        String sql ="SELECT `unidadInsc`, COUNT(*) as cant FROM postulantes.postulantes where carrera="+carrera+" group by `unidadInsc`";
+        try {
+            Statement s= connection.createStatement();
+            ResultSet rs=s.executeQuery(sql);
+            ArrayList<Integer> al=null;
+            while (rs.next()){
+                al=new ArrayList<>();
+                al.add(rs.getInt("unidadInsc"));
+                al.add(rs.getInt("cant"));
+                l.add(al);
+                total+=rs.getInt("cant");
+            }
+            System.out.print("llegooo");
+            sql="SELECT COUNT(*) as cant FROM postulantes.postulantes where sexo='M' and carrera="+carrera;
+            rs=s.executeQuery(sql);
+            if(rs.next()){
+                masculino=rs.getInt("cant");
+            }
+            System.out.print(masculino);
+            sql="SELECT COUNT(*) as cant FROM postulantes.postulantes where ps=1 and carrera="+carrera;
+            rs=s.executeQuery(sql);
+            if(rs.next()){
+                ps=rs.getInt("cant");
+            }
+            System.out.print(ps);
+            al=new ArrayList<>();
+            al.add(total);//0
+            al.add(masculino);//1-   femenino = total-masculino;
+            al.add(ps);//2
+            l.addFirst(al);
+        }
+        catch(Exception ex){
+            System.out.print(ex.getMessage());
+        }
+        
+        return l;
+    }
     
 }

@@ -71,6 +71,19 @@ public class guardarDatosBasicos extends HttpServlet {
             rb.departamentoNac = Integer.parseInt(request.getParameter("departamentoNac"));
             rb.localidadNac = request.getParameter("localidadNac");
             rb.cc = request.getParameter("cc");
+            rb.talleOperacional = request.getParameter("talleOperacional");
+            if (request.getParameter("talleBotas").equals("")){
+                 rb.talleBotas = 0;
+            }
+            else{
+                 rb.talleBotas = Integer.parseInt(request.getParameter("talleBotas"));
+            }
+            if (request.getParameter("talleQuepi").equals("")){
+                 rb.talleQuepi = 0;
+            }
+            else{
+                 rb.talleQuepi = Integer.parseInt(request.getParameter("talleQuepi"));
+            }
             if (request.getParameter("CCNro").equals("")){
                  rb.ccNro = 0;
             }

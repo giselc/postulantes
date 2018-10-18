@@ -46,6 +46,9 @@ public class RecordPostulanteBasico {
     public boolean alojamiento;
     public boolean nsp;
     public boolean renuncio;
+    public String talleOperacional; //S,M,L,XL,XXL,XXXL
+    public int talleBotas; // entre 30 y 50
+    public int talleQuepi;
     public String observaciones;
     public String foto;
     public String fotoCIAnverso;

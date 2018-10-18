@@ -254,13 +254,25 @@
 <%
     sesion.setAttribute("Mensaje",null);
 %> 
+    <table <%if(!u.isAdmin()&&!u.isSuperAdmin()){out.print("style='display:none'");}%>>
+        <tr>
+            <td>
+                <form method="post" target="_blank" id="estadistica" action="EstadisticasActuales">
+                    <input type="image" width="30%" title="Estadísticas actuales" src="images/estadistica.png" alt="Submit Form" />
+                </form>
+                
+            </td>
+        </tr>
+    </table> 
+
+    
      <ul id="tabs">
          <li><a href="#" title="Cuerpo-Comando"><b>Cuerpo Comando</b></a></li>
          <li><a href="#" title="Apoyo-SyC"><b>Apoyo S. y C.</b></a></li>
      </ul>
     <div id="loader" style="z-index: 50;position: fixed; top:0; left:0; width:100%; height: 100%;background: url('images/loading-verde.gif') center center no-repeat; background-size: 10%"></div>
 
-
+    
      <div id="content">
          <div id="Cuerpo-Comando">
              <%@include file="listarComando.jsp" %>

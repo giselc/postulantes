@@ -55,6 +55,9 @@ public class Postulante {
     private boolean alojamiento;
     private boolean nsp;
     private boolean renuncio;
+    private String talleOperacional; //S,M,L,XL,XXL,XXXL
+    private int talleBotas; // entre 30 y 50
+    private int talleQuepi;
     //patronimico
     //PADRE
     private String pNombreComp;
@@ -114,6 +117,18 @@ public class Postulante {
 
     public void setRenuncio(boolean renuncio) {
         this.renuncio = renuncio;
+    }
+
+    public String getTalleOperacional() {
+        return talleOperacional;
+    }
+
+    public int getTalleBotas() {
+        return talleBotas;
+    }
+
+    public int getTalleQuepi() {
+        return talleQuepi;
     }
 
    
@@ -273,6 +288,18 @@ public class Postulante {
 
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
+    }
+
+    public void setTalleOperacional(String talleOperacional) {
+        this.talleOperacional = talleOperacional;
+    }
+
+    public void setTalleBotas(int talleBotas) {
+        this.talleBotas = talleBotas;
+    }
+
+    public void setTalleQuepi(int talleQuepi) {
+        this.talleQuepi = talleQuepi;
     }
 
     public void setpNombreComp(String pNombreComp) {

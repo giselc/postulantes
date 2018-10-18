@@ -1,3 +1,4 @@
+<%@page import="Classes.Usuario"%>
 <script>
     function verificarEdad(input){
         var fecha= input.value;
@@ -287,14 +288,7 @@
             <td>Necesita alojamiento: </td>
             <td><input  type=checkbox name="alojamiento" <% if(p!=null && p.isAlojamiento()){out.print("checked='checked'");} %>/></td>
         </tr>
-        <tr>
-            <td>NSP: </td>
-            <td><input  type=checkbox name="nsp" <% if(p!=null && p.isNsp()){out.print("checked='checked'");} %>/></td>
-        </tr>
-        <tr>
-            <td>Renunci&oacute;: </td>
-            <td><input  type=checkbox name="renuncio" <% if(p!=null && p.isRenuncio()){out.print("checked='checked'");} %>/></td>
-        </tr>
+        
         <tr>
             <td>Observaciones: </td>
             <td>
@@ -359,7 +353,49 @@
             <td><canvas id="canvasf1Hoja2" hidden="hidden"> </canvas></td>
             <td><a <% if (!src[7].equals("")){ out.print("href='mostrarImagen.jsp?src=src7' style='color: #000099'");} %> >Ver</a></td>
         </tr>
-    </table>
+        <tr>
+            <td>
+                <h3>USO SOLO FUNCIONARIOS E.M./ADMINISTRADOR</h3>
+            </td>
+            <td>
+                
+            <table style='border:5px solid;' <% if (!u.isAdmin()&& !u.isSuperAdmin()) {out.print("style='display: none'");} %> >
+            <tr>
+            <td>NSP: </td>
+            <td><input  type=checkbox name="nsp" <% if(p!=null && p.isNsp()){out.print("checked='checked'");} %>/></td>
+        </tr>
+        <tr>
+            <td>Renunci&oacute;: </td>
+            <td><input  type=checkbox name="renuncio" <% if(p!=null && p.isRenuncio()){out.print("checked='checked'");} %>/></td>
+        </tr>
+        <tr>
+            <td>Talle Operacional: </td>
+            <td>
+                <select name="talleOperacional" form="formulario">
+
+                    <option <%if(p==null){out.print("selected");}%> value=''></option>");
+                    <option <%if(p!=null && p.getTalleOperacional().equals("S")){out.print("selected");}%> value='S'>S</option>");
+                    <option <%if(p!=null && p.getTalleOperacional().equals("M")){out.print("selected");}%> value='M'>M</option>");
+                    <option <%if(p!=null && p.getTalleOperacional().equals("L")){out.print("selected");}%> value='L'>L</option>");
+                    <option <%if(p!=null && p.getTalleOperacional().equals("XL")){out.print("selected");}%> value='XL'>XL</option>");
+                    <option <%if(p!=null && p.getTalleOperacional().equals("XXL")){out.print("selected");}%> value='XXL'>XXL</option>");
+                    <option <%if(p!=null && p.getTalleOperacional().equals("XXXL")){out.print("selected");}%> value='XXXL'>XXXL</option>");
+                    
+                 </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Talle Quep&iacute;: </td>
+            <td><input  type=number name="talleQuepi" value="<% if( p!=null){out.print(p.getTalleQuepi());}else{out.print("0");} %>"/></td>
+        </tr>
+        <tr>
+            <td>Talle Botas: </td>
+            <td><input  type=number name="talleBotas" value="<% if( p!=null){out.print(p.getTalleBotas());}else{out.print("0");} %>"/></td>
+        </tr>
+        </table>
+            </td>
+        </tr>
+        </table>
     <p align="right"> <input style="font-size: 18px" type="submit" <% if (request.getParameter("ci")==null){ out.print("value='Guardar y Continuar'");} else{out.print("value='Modificar'");} %> /> </p>
                                              
 </form>
