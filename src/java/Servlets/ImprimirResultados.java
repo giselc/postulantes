@@ -6,6 +6,7 @@
 package Servlets;
 
 import Classes.ManejadorSeleccionBD;
+import Classes.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -36,14 +37,20 @@ public class ImprimirResultados extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession sesion = request.getSession();
         if (sesion.getAttribute("usuarioID")!=null){
-            try (PrintWriter out = response.getWriter()) {
-                ManejadorSeleccionBD ms = new ManejadorSeleccionBD();
-                String[] lista = request.getParameterValues("lista");
-                int entra= Integer.valueOf(request.getParameter("entra"));
-                ms.imprimirResultadosFinales(lista,entra,out);
+            Usuario u= (Usuario)sesion.getAttribute("usuario");
+            if(u.isAdmin()||u.isSuperAdmin()){
+                try (PrintWriter out = response.getWriter()) {
+                    ManejadorSeleccionBD ms = new ManejadorSeleccionBD();
+                    String[] lista = request.getParameterValues("lista");
+                    int entra= Integer.valueOf(request.getParameter("entra"));
+                    ms.imprimirResultadosFinales(lista,entra,out);
+                }
+                catch(Exception ex){
+                    Logger.getLogger(Sabana.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-            catch(Exception ex){
-                Logger.getLogger(Sabana.class.getName()).log(Level.SEVERE, null, ex);
+            else{
+                response.sendRedirect("listar.jsp");
             }
         }
         

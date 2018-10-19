@@ -5,19 +5,12 @@
  */
 package Servlets;
 
-import Classes.ManejadorNotasBD;
-import Classes.ManejadorPostulanteDB;
+import Classes.Usuario;
 import Classes.ManejadorSeleccionBD;
-import Classes.Postulante;
-import Classes.RecordPostulanteFiltro;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -43,34 +36,47 @@ public class Seleccion extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession sesion = request.getSession();
-        PrintWriter out = response.getWriter();
-        String mensaje = "ERROR al modificar los resultados.";
-        try {
-            int carrera = Integer.valueOf(request.getParameter("carrera"));
-            int cant = Integer.valueOf(request.getParameter("cant"));
-           // out.print("CANT="+cant+" ");
-            String[] ci = new String[cant];
-            String[] resultados = new String[cant];
-            String[] precedencia = new String[cant];
-            for(int i=0; i<cant;i++){
-                resultados[i]= request.getParameter("resultados["+i+"][]");
-                ci[i]= request.getParameter("ci["+i+"][]");
-                precedencia[i]= request.getParameter("precedencia["+i+"][]");
-             //   out.print(i+"/ci="+ci[i]+"/resultado="+resultados[i]+"/precedencia="+precedencia[i]+"---");
-            }
-            //out.print("CANT="+cant);
-            ManejadorSeleccionBD ms= new ManejadorSeleccionBD();
-            boolean b = ms.guardarResultados(ci, resultados, precedencia, carrera);
-            if(b){
-                mensaje ="Resultados modificados correctamente.";
-            }
-        }catch (Exception ex){
+        if (sesion.getAttribute("usuarioID")!=null){
+            Usuario u= (Usuario)sesion.getAttribute("usuario");
+            if(u.isAdmin()||u.isSuperAdmin()){
+                PrintWriter out = response.getWriter();
+                String mensaje = "ERROR al modificar los resultados.";
+                try {
+                    int carrera = Integer.valueOf(request.getParameter("carrera"));
+                    int cant = Integer.valueOf(request.getParameter("cant"));
+                   // out.print("CANT="+cant+" ");
+                    String[] ci = new String[cant];
+                    String[] resultados = new String[cant];
+                    String[] precedencia = new String[cant];
+                    for(int i=0; i<cant;i++){
+                        resultados[i]= request.getParameter("resultados["+i+"][]");
+                        ci[i]= request.getParameter("ci["+i+"][]");
+                        precedencia[i]= request.getParameter("precedencia["+i+"][]");
+                     //   out.print(i+"/ci="+ci[i]+"/resultado="+resultados[i]+"/precedencia="+precedencia[i]+"---");
+                    }
+                    //out.print("CANT="+cant);
+                    ManejadorSeleccionBD ms= new ManejadorSeleccionBD();
+                    boolean b = ms.guardarResultados(ci, resultados, precedencia, carrera);
+                    if(b){
+                        mensaje ="Resultados modificados correctamente.";
+                    }
+                }catch (Exception ex){
 
-         Logger.getLogger(Seleccion.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            // sets the message in request scope
-            sesion.setAttribute("Mensaje", mensaje);
-            response.sendRedirect("/seleccion.jsp?carrera="+request.getParameter("carrera"));
+                 Logger.getLogger(Seleccion.class.getName()).log(Level.SEVERE, null, ex);
+                } finally {
+                    // sets the message in request scope
+                    sesion.setAttribute("Mensaje", mensaje);
+                    response.sendRedirect("/seleccion.jsp?carrera="+request.getParameter("carrera"));
+                }
+            }
+            else{
+                response.sendRedirect("listar.jsp");
+            }
+        }
+        
+        else{
+            sesion.setAttribute("login", "vacio");
+            response.sendRedirect("");
         }
         
     }

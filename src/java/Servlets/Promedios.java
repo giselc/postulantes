@@ -6,6 +6,7 @@
 package Servlets;
 
 import Classes.ManejadorSeleccionBD;
+import Classes.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -38,28 +39,34 @@ public class Promedios extends HttpServlet {
         HttpSession sesion= request.getSession();
         PrintWriter out= response.getWriter();
         if (sesion.getAttribute("usuarioID")!=null){
-            String mensaje="";
-            try{
-                /* TODO output your page here. You may use following sample code. */
-                String auto= request.getParameter("auto");
-                ManejadorSeleccionBD ms = new ManejadorSeleccionBD();
-                if(auto.equals("true")){
-                    ms.guardarPromediosAuto(out);
+            Usuario u= (Usuario)sesion.getAttribute("usuario");
+            if(u.isAdmin()||u.isSuperAdmin()){
+                String mensaje="";
+                try{
+                    /* TODO output your page here. You may use following sample code. */
+                    String auto= request.getParameter("auto");
+                    ManejadorSeleccionBD ms = new ManejadorSeleccionBD();
+                    if(auto.equals("true")){
+                        ms.guardarPromediosAuto(out);
+                    }
+                    else{
+                        String[] ci = request.getParameterValues("ci[]");
+                        String[] promedios= request.getParameterValues("promedios[]");
+                        ms.guardarPromedios(ci, promedios,out);
+                    }
+                    mensaje="Promedios modificados correctamente";
                 }
-                else{
-                    String[] ci = request.getParameterValues("ci[]");
-                    String[] promedios= request.getParameterValues("promedios[]");
-                    ms.guardarPromedios(ci, promedios,out);
+                catch(Exception ex){
+                    sesion.setAttribute("Mensaje", ex.getMessage());
+                    Logger.getLogger(Promedios.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                mensaje="Promedios modificados correctamente";
+                finally{
+                    sesion.setAttribute("Mensaje", mensaje);
+                    response.sendRedirect("/promedios.jsp");   
+                }
             }
-            catch(Exception ex){
-                sesion.setAttribute("Mensaje", ex.getMessage());
-                Logger.getLogger(Promedios.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            finally{
-                sesion.setAttribute("Mensaje", mensaje);
-                response.sendRedirect("/promedios.jsp");   
+            else{
+                response.sendRedirect("listar.jsp");
             }
         }
         else{

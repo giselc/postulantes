@@ -17,7 +17,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.HttpSession;
+import Classes.Usuario;
 /**
  *
  * @author Gisel
@@ -37,124 +38,132 @@ public class EstadisticasActuales extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+         HttpSession sesion = request.getSession();
+        if (sesion.getAttribute("usuarioID")!=null){
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            ManejadorPostulanteDB mp = new ManejadorPostulanteDB();
-            ManejadorCodigoBD mc= new ManejadorCodigoBD();
-            LinkedList<ArrayList<Integer>> lC= mp.getDatosEstadisticos(1);//cuerpo comando
-            LinkedList<ArrayList<Integer>> lA= mp.getDatosEstadisticos(2);//Apoyo C y S
-            String datos="    <table >\n" +
-"        <tr>\n" +
-"            <td colspan=\"2\">\n" +
-"                <h3>Cuerpo Comando</h3>\n" +
-"            </td>\n" +
-"        </tr>\n" +
-"        <tr>\n" +
-"            <td>\n" +
-"                Masculino:\n" +
-"            </td>\n" +
-"            <td>\n" ;
-            ArrayList<Integer> datosGrales= lC.getFirst();
-            datos+=datosGrales.get(1);
-datos+="            </td>\n" +
-"        </tr>\n" +
-"        <tr>\n" +
-"            <td>\n" +
-"                Femenino:\n" +
-"            </td>\n" +
-"            <td>\n"  ;
-            datos+=(datosGrales.get(0)-datosGrales.get(1));
-datos+="            </td>\n" +
-"        </tr>\n" +
-"        <tr>\n" +
-"            <td>\n" +
-"                TOTAL:\n" +
-"            </td>\n" +
-"            <td>\n" ;
-            datos+=datosGrales.get(0);
-datos+="            </td>\n" +
-"        </tr>\n" +
-"        <tr>\n" +
-"            <td colspan=\"2\"><h5 style='margin:0px'> \n" +
-"                Inscriptos en:\n" +
-"            </h5></td>\n";
+            Usuario u= (Usuario)sesion.getAttribute("usuario");
+            if(u.isAdmin()|| u.isSuperAdmin()){
+                        /* TODO output your page here. You may use following sample code. */
+                        ManejadorPostulanteDB mp = new ManejadorPostulanteDB();
+                        ManejadorCodigoBD mc= new ManejadorCodigoBD();
+                        LinkedList<ArrayList<Integer>> lC= mp.getDatosEstadisticos(1);//cuerpo comando
+                        LinkedList<ArrayList<Integer>> lA= mp.getDatosEstadisticos(2);//Apoyo C y S
+                        String datos="    <table >\n" +
+            "        <tr>\n" +
+            "            <td colspan=\"2\">\n" +
+            "                <h3>Cuerpo Comando</h3>\n" +
+            "            </td>\n" +
+            "        </tr>\n" +
+            "        <tr>\n" +
+            "            <td>\n" +
+            "                Masculino:\n" +
+            "            </td>\n" +
+            "            <td>\n" ;
+                        ArrayList<Integer> datosGrales= lC.getFirst();
+                        datos+=datosGrales.get(1);
+            datos+="            </td>\n" +
+            "        </tr>\n" +
+            "        <tr>\n" +
+            "            <td>\n" +
+            "                Femenino:\n" +
+            "            </td>\n" +
+            "            <td>\n"  ;
+                        datos+=(datosGrales.get(0)-datosGrales.get(1));
+            datos+="            </td>\n" +
+            "        </tr>\n" +
+            "        <tr>\n" +
+            "            <td>\n" +
+            "                TOTAL:\n" +
+            "            </td>\n" +
+            "            <td>\n" ;
+                        datos+=datosGrales.get(0);
+            datos+="            </td>\n" +
+            "        </tr>\n" +
+            "        <tr>\n" +
+            "            <td colspan=\"2\"><h5 style='margin:0px'> \n" +
+            "                Inscriptos en:\n" +
+            "            </h5></td>\n";
 
-for(int i=1; i<lC.size();i++){
-    datos+="            <tr>\n" +
-"                <td>\n" ;
-datos+= mc.getUsuario(lC.get(i).get(0)).getNombreMostrar();
-datos+="                </td>\n" +
-"                <td>\n" ;
-datos+=lC.get(i).get(1);
-datos+="                </td>\n" +
-"            </tr>\n" +
-"        </tr>\n";
-}
-
-
-
-datos+="        <tr>\n" +
-"            <td colspan=\"2\">\n" +
-"                <h3>Apoyo S. y C.</h3>\n" +
-"            </td>\n" +
-"        </tr>\n" +
-"        <tr>\n" +
-"            <td>\n" +
-"                Masculino:\n" +
-"            </td>\n" +
-"            <td>\n" ;
-            datosGrales= lA.getFirst();
-            datos+=datosGrales.get(1);
-datos+="            </td>\n" +
-"        </tr>\n" +
-"        <tr>\n" +
-"            <td>\n" +
-"                Femenino:\n" +
-"            </td>\n" +
-"            <td>\n"  ;
-            datos+=(datosGrales.get(0)-datosGrales.get(1));
-datos+="            </td>\n" +
-"        </tr>\n" +
-"        <tr>\n" +
-"            <td>\n" +
-"                TOTAL:\n" +
-"            </td>\n" +
-"            <td>\n" ;
-            datos+=datosGrales.get(0);
-datos+="            </td>\n" +
-"        </tr>\n" +
-        
-"        <tr>\n" +
-"            <td>\n" +
-"                PS:\n" +
-"            </td>\n" +
-"            <td>\n" ;
-            datos+=datosGrales.get(2);
-datos+="            </td>\n" +
-"        </tr>\n" +
-"        <tr>\n" +
-"            <td colspan=\"2\"><h5 style='margin:0px'> \n" +
-"                Inscriptos en:\n" +
-"            </h5></td>\n";
-
-for(int i=1; i<lA.size();i++){
-    datos+="            <tr>\n" +
-"                <td>\n" ;
-datos+= mc.getUsuario(lA.get(i).get(0)).getNombreMostrar();
-datos+="                </td>\n" +
-"                <td>\n" ;
-datos+=lA.get(i).get(1);
-datos+="                </td>\n" +
-"            </tr>\n" +
-"        </tr>\n";
-}
+            for(int i=1; i<lC.size();i++){
+                datos+="            <tr>\n" +
+            "                <td>\n" ;
+            datos+= mc.getUsuario(lC.get(i).get(0)).getNombreMostrar();
+            datos+="                </td>\n" +
+            "                <td>\n" ;
+            datos+=lC.get(i).get(1);
+            datos+="                </td>\n" +
+            "            </tr>\n" +
+            "        </tr>\n";
+            }
 
 
-datos+="    </table>";
-out.print(datos);
+
+            datos+="        <tr>\n" +
+            "            <td colspan=\"2\">\n" +
+            "                <h3>Apoyo S. y C.</h3>\n" +
+            "            </td>\n" +
+            "        </tr>\n" +
+            "        <tr>\n" +
+            "            <td>\n" +
+            "                Masculino:\n" +
+            "            </td>\n" +
+            "            <td>\n" ;
+                        datosGrales= lA.getFirst();
+                        datos+=datosGrales.get(1);
+            datos+="            </td>\n" +
+            "        </tr>\n" +
+            "        <tr>\n" +
+            "            <td>\n" +
+            "                Femenino:\n" +
+            "            </td>\n" +
+            "            <td>\n"  ;
+                        datos+=(datosGrales.get(0)-datosGrales.get(1));
+            datos+="            </td>\n" +
+            "        </tr>\n" +
+            "        <tr>\n" +
+            "            <td>\n" +
+            "                TOTAL:\n" +
+            "            </td>\n" +
+            "            <td>\n" ;
+                        datos+=datosGrales.get(0);
+            datos+="            </td>\n" +
+            "        </tr>\n" +
+
+            "        <tr>\n" +
+            "            <td>\n" +
+            "                PS:\n" +
+            "            </td>\n" +
+            "            <td>\n" ;
+                        datos+=datosGrales.get(2);
+            datos+="            </td>\n" +
+            "        </tr>\n" +
+            "        <tr>\n" +
+            "            <td colspan=\"2\"><h5 style='margin:0px'> \n" +
+            "                Inscriptos en:\n" +
+            "            </h5></td>\n";
+
+            for(int i=1; i<lA.size();i++){
+                datos+="            <tr>\n" +
+            "                <td>\n" ;
+            datos+= mc.getUsuario(lA.get(i).get(0)).getNombreMostrar();
+            datos+="                </td>\n" +
+            "                <td>\n" ;
+            datos+=lA.get(i).get(1);
+            datos+="                </td>\n" +
+            "            </tr>\n" +
+            "        </tr>\n";
+            }
+
+
+            datos+="    </table>";
+            out.print(datos);
+            }
+            else{
+                response.sendRedirect("listar.jsp");
+            }
         }
     }
-
+    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

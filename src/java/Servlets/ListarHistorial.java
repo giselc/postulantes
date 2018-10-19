@@ -6,8 +6,7 @@
 package Servlets;
 
 import Classes.ManejadorHistorialBD;
-import Classes.Postulante;
-import Classes.RecordPostulanteBasico;
+import Classes.Usuario;
 import Classes.RecordPostulanteHistorial;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -41,58 +40,64 @@ public class ListarHistorial extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession sesion= request.getSession();
         if (sesion.getAttribute("usuarioID")!=null){
-            try (PrintWriter out = response.getWriter()) {
-                /* TODO output your page here. You may use following sample code. */
-                ManejadorHistorialBD mh= new ManejadorHistorialBD();
-                int anio = Integer.valueOf(request.getParameter("anio"));
-                ArrayList<RecordPostulanteHistorial> ap = mh.getPostulantesListarHistorial(null, Integer.valueOf(sesion.getAttribute("usuarioID").toString()), 1, anio);
-                JsonObjectBuilder json = Json.createObjectBuilder(); 
+            Usuario u= (Usuario)sesion.getAttribute("usuario");
+            if(u.isAdmin()||u.isSuperAdmin()){
+                try (PrintWriter out = response.getWriter()) {
+                    /* TODO output your page here. You may use following sample code. */
+                    ManejadorHistorialBD mh= new ManejadorHistorialBD();
+                    int anio = Integer.valueOf(request.getParameter("anio"));
+                    ArrayList<RecordPostulanteHistorial> ap = mh.getPostulantesListarHistorial(null, Integer.valueOf(sesion.getAttribute("usuarioID").toString()), 1, anio);
+                    JsonObjectBuilder json = Json.createObjectBuilder(); 
 
-               //json.add("filtroMostrar",rf.filtroMostrar);
-               if(ap.isEmpty()){
-                   json.add("listadoComandoHistorial", Json.createArrayBuilder().build());
+                   //json.add("filtroMostrar",rf.filtroMostrar);
+                   if(ap.isEmpty()){
+                       json.add("listadoComandoHistorial", Json.createArrayBuilder().build());
+                    }
+                    else{
+                        JsonArrayBuilder jab= Json.createArrayBuilder();
+                        for (RecordPostulanteHistorial h : ap){
+                            jab.add(Json.createObjectBuilder()
+                                .add("ci", h.p.getCi())
+                                .add("primerNombre", h.p.getPrimerNombre())
+                                .add("segundoNombre", h.p.getSegundoNombre())
+                                .add("primerApellido", h.p.getPrimerApellido())
+                                .add("segundoApellido", h.p.getSegundoApellido())
+                                .add("unidadInsc", h.p.getUnidadInsc().getNombreMostrar())
+                                .add("id", h.p.getId())
+                                .add("entra", h.entra)
+                                .add("promedio", h.promedio)
+
+                            );
+                        };
+                        json.add("listadoComandoHistorial", jab);
+                    }
+                    ap = mh.getPostulantesListarHistorial(null, Integer.valueOf(sesion.getAttribute("usuarioID").toString()), 2, anio);
+                    if(ap.isEmpty()){
+                       json.add("listadoApoyoHistorial", Json.createArrayBuilder().build());
+                    }
+                    else{
+                        JsonArrayBuilder jab= Json.createArrayBuilder();
+                        for (RecordPostulanteHistorial h : ap){
+                            jab.add(Json.createObjectBuilder()
+                                .add("ci", h.p.getCi())
+                                .add("primerNombre", h.p.getPrimerNombre())
+                                .add("segundoNombre", h.p.getSegundoNombre())
+                                .add("primerApellido", h.p.getPrimerApellido())
+                                .add("segundoApellido", h.p.getSegundoApellido())
+                                .add("unidadInsc", h.p.getUnidadInsc().getNombreMostrar())
+                                .add("id", h.p.getId())
+                                .add("entra", h.entra)
+                                .add("promedio", h.promedio)
+                            );
+                        };
+                        json.add("listadoApoyoHistorial", jab);
+                    }
+                    out.print(json.build());
+
                 }
-                else{
-                    JsonArrayBuilder jab= Json.createArrayBuilder();
-                    for (RecordPostulanteHistorial h : ap){
-                        jab.add(Json.createObjectBuilder()
-                            .add("ci", h.p.getCi())
-                            .add("primerNombre", h.p.getPrimerNombre())
-                            .add("segundoNombre", h.p.getSegundoNombre())
-                            .add("primerApellido", h.p.getPrimerApellido())
-                            .add("segundoApellido", h.p.getSegundoApellido())
-                            .add("unidadInsc", h.p.getUnidadInsc().getNombreMostrar())
-                            .add("id", h.p.getId())
-                            .add("entra", h.entra)
-                            .add("promedio", h.promedio)
-                            
-                        );
-                    };
-                    json.add("listadoComandoHistorial", jab);
-                }
-                ap = mh.getPostulantesListarHistorial(null, Integer.valueOf(sesion.getAttribute("usuarioID").toString()), 2, anio);
-                if(ap.isEmpty()){
-                   json.add("listadoApoyoHistorial", Json.createArrayBuilder().build());
-                }
-                else{
-                    JsonArrayBuilder jab= Json.createArrayBuilder();
-                    for (RecordPostulanteHistorial h : ap){
-                        jab.add(Json.createObjectBuilder()
-                            .add("ci", h.p.getCi())
-                            .add("primerNombre", h.p.getPrimerNombre())
-                            .add("segundoNombre", h.p.getSegundoNombre())
-                            .add("primerApellido", h.p.getPrimerApellido())
-                            .add("segundoApellido", h.p.getSegundoApellido())
-                            .add("unidadInsc", h.p.getUnidadInsc().getNombreMostrar())
-                            .add("id", h.p.getId())
-                            .add("entra", h.entra)
-                            .add("promedio", h.promedio)
-                        );
-                    };
-                    json.add("listadoApoyoHistorial", jab);
-                }
-                out.print(json.build());
-                 
+            }
+            else{
+                response.sendRedirect("listar.jsp");
             }
         }
         
