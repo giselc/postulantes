@@ -322,7 +322,7 @@
                  $(this).parent().attr("id","current");
                  $('#' + $(this).attr('title')).fadeIn();
              });
-         })();
+         });
      </script>
      <ul id="tabs">
         <li><a href="#" title="Datos-Personales">Datos Personales</a></li>

@@ -384,11 +384,11 @@
                 </tr>
                 <tr>
                     <td>Talle Quep&iacute;: </td>
-                    <td><input  type=number name="talleQuepi" min="50" max="75" value="<% if( p!=null){out.print(p.getTalleQuepi());}else{out.print("0");} %>"/></td>
+                    <td><input  type=number name="talleQuepi" value="<% if( p!=null){out.print(p.getTalleQuepi());}else{out.print("0");} %>"/></td>
                 </tr>
                 <tr>
                     <td>Talle Botas: </td>
-                    <td><input  type=number name="talleBotas" min="35" max="45" value="<% if( p!=null){out.print(p.getTalleBotas());}else{out.print("0");} %>"/></td>
+                    <td><input  type=number name="talleBotas" value="<% if( p!=null){out.print(p.getTalleBotas());}else{out.print("0");} %>"/></td>
                 </tr>
             </table>
             </td>
