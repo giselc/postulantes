@@ -7,15 +7,23 @@
 <div id='dialog' style="display:none" title="Filtro">
     <%@include file="filtroApoyo.jsp" %>
 </div>
-<form method="post" target="_blank" onsubmit="return listar(this)" name="formApoyo" action='Listar?anio=<%= ManejadorPostulanteDB.getAnioPostula()%>'>
+<form method="post" target="_blank"  name="formApoyo" action='Listar?anio=<%= ManejadorPostulanteDB.getAnioPostula()%>'>
     
     
     <table style="float: right;">
         <tr>
-            <td style="width: 55%"><h3 style="float: left; font-family: sans-serif">Apoyo de Servicio y Combate <%= ManejadorPostulanteDB.getAnioPostula() %></h3></td>
+            <td style="width: 40%"><h3 style="float: left; font-family: sans-serif">Apoyo de Servicio y Combate <%= ManejadorPostulanteDB.getAnioPostula() %></h3></td>
             <td style="width: 15%"><a onclick='sePuedeAgregar(<%= mp.existeDatosAniosAnteriores() %>,2)' title="Agregar Apoyo"><img width="30%" src='images/agregarLista.png' /></a> </td>
             <td style="width: 15%"><a onclick='abrir_dialog(dialog)' title="Aplicar filtro"><img width="35%" src='images/filtro_1.png' /></a> </td>
             <td style="width: 15%"><input type="image" width="30%" title="Imprimir fichas seleccionadas"src="images/imprimir.png" alt="Submit Form" /></td>
+        <% 
+       if(u.getId()==2){    
+       %>
+            <td style="width: 15%"><input type="image" formaction="PasarCarrera" width="30%" title="Pasar de carrera" src="images/cambiarCarrera.png"  /></td>
+         <%       
+        }
+       %>
+        
         </tr>
     </table>
 <table style="width: 100%;">

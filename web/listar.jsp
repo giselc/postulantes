@@ -28,7 +28,7 @@
                      $(this).parent().attr("id","current");
                      $('#' + $(this).attr('title')).fadeIn();
                  });
-             })();
+             });
     </script>
     <script>
         function abrir_dialog(dialog) {

@@ -6,15 +6,23 @@
 </div>
 <%
 ManejadorPostulanteDB mp = new ManejadorPostulanteDB();
-%>   
-<form method="post" target="_blank" onsubmit="return listar(this)" name="formComando" action='Listar?anio=<%= ManejadorPostulanteDB.getAnioPostula()%>'>
+%>    
+
+<form method="post" target="_blank"  name="formComando"  action="Listar?anio=<%= ManejadorPostulanteDB.getAnioPostula()%>">
     
     <table style="float: right">
         <tr>
-            <td style="width: 55%"><h3 style="float: left; font-family: sans-serif">Cuerpo Comando <%= ManejadorPostulanteDB.getAnioPostula() %></h3></td>
+            <td style="width: 40%"><h3 style="float: left; font-family: sans-serif">Cuerpo Comando <%= ManejadorPostulanteDB.getAnioPostula() %></h3></td>
             <td style="width: 15%"><a onclick='sePuedeAgregar(<%= mp.existeDatosAniosAnteriores() %>,1)' title="Agregar Comando"><img width="30%" src='images/agregarLista.png' /></a> </td>
             <td style="width: 15%"><a onclick='abrir_dialog(dialog1)' title="Aplicar filtro"><img width="35%" src='images/filtro_1.png' /></a> </td>
-            <td style="width: 15%"><input type="image" width="30%" title="Imprimir fichas seleccionadas"src="images/imprimir.png" alt="Submit Form" /></td>
+            <td style="width: 15%"><input type="image" width="30%" title="Imprimir fichas seleccionadas" src="images/imprimir.png" /></td>
+       <% 
+       if(u.getId()==2){    
+       %>
+            <td style="width: 15%"><input type="image" formaction="PasarCarrera" width="30%" title="Pasar de carrera" src="images/cambiarCarrera.png"  /></td>
+         <%       
+        }
+       %>
             
         </tr>
     </table>

@@ -1178,5 +1178,43 @@ public class ManejadorPostulanteDB {
         
         return l;
     }
+
+    public boolean pasarCarrera(String[] parameterValues) {
+        
+        try {
+            Statement s = connection.createStatement();
+            String sql;
+            for(String ciS:parameterValues){
+                Postulante p = getPostulante(Integer.valueOf(ciS), 2, ManejadorPostulanteDB.getAnioPostula());
+                if(p.getId()!=0){
+                    if(p.getCarrera().getCodigo()==1){
+                        sql= "delete from postulantes.`comando` where ci="+ciS;
+                        s.addBatch(sql);
+                        sql= "insert into postulantes.`apoyo`(ci) value("+ciS+")";
+                        s.addBatch(sql);
+                    }
+                    else{
+                        sql= "delete from postulantes.`apoyo` where ci="+ciS;
+                        s.addBatch(sql);
+                        sql= "insert into postulantes.`comando`(ci) value("+ciS+")";
+                        s.addBatch(sql);
+                    }
+                };
+                if(p.getCarrera().getCodigo()==1){
+                    sql= "update postulantes.`postulantes` set carrera=2 where ci="+ciS;
+                }
+                else{
+                    sql= "update postulantes.`postulantes` set carrera=1 where ci="+ciS;
+                }
+                s.addBatch(sql);
+                s.executeBatch();
+                return true;
+            }
+        } catch (SQLException ex) {
+            System.out.print(ex.getMessage());
+            return false;
+        }
+        return false;
+    }
     
 }
