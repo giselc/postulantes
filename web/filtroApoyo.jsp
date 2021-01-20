@@ -5,7 +5,7 @@
 
 <form method="post" onsubmit='return aplicarFiltro(this,"datosApoyo")' id="formApoyoFiltro" action="">
     <table style="font-size: 70%">
-        <tr style="<%if(!request.getContextPath().equals("/historial.jsp")){out.print("hidden:hidden");}%>">
+        <tr <%if(!request.getRequestURI().endsWith("/historial.jsp")){out.print("hidden");}%>>
             <td >
                 RESULTADO:
             </td>

@@ -60,8 +60,23 @@
                         <%
                             java.util.Calendar fecha = java.util.Calendar.getInstance();
                             int mes = fecha.get(java.util.Calendar.MONTH)+1;
-                            out.print(fecha.get(java.util.Calendar.DATE) + "/"
-                              +   mes  + "/"
+                            out.print(fecha.get(java.util.Calendar.DATE) + " de ");
+                            switch(mes){
+                                case 1: out.print("enero");break;
+                                case 2: out.print("febrero");break;
+                                case 3: out.print("marzo");break;
+                                case 4: out.print("abril");break;
+                                case 5: out.print("mayo");break;
+                                case 6: out.print("junio");break;
+                                case 7: out.print("julio");break;
+                                case 8: out.print("agosto");break;
+                                case 9: out.print("setiembre");break;
+                                case 10: out.print("octubre");break;
+                                case 11: out.print("noviembre");break;
+                                case 12: out.print("diciembre");break;
+                                                            
+                            }  
+                            out.print(" de "
                               + fecha.get(java.util.Calendar.YEAR));
                         %>
                     </h4>
@@ -77,7 +92,7 @@
             <tr>
                 <td colspan="2" style="text-align: center">
                     <h4>
-                        Acta de Examen de Ingreso <%= anio %>
+                        Acta de examen de ingreso <%= anio %>
                     </h4>
                 </td>
             </tr>
@@ -391,26 +406,30 @@
                     </tr>
                     <tr>
                         <td style="width: 50%"></td>
-                        <td>TTE.CNEL.</td>
+                        <td>MAY.</td>
                     </tr>
                     <tr>
                         <td style="width: 50%"></td>
-                        <td style="padding-left: 10%"><input type="text" style="border:none;border-top: #000000 solid; text-align: center" value="" autofocus/></td>
+                        <td style="padding-left: 4%"><input type="text" style="border:none;border-top: #000000 solid; text-align: center" value="" /></td>
                         
                     </tr>
             </table>
-            <table style="width: 100%; padding-right: 30%;padding-top: 1% ">
+            <table style="width: 100%; padding-right: 40%;padding-top: 1% ">
                     <tr>
-                        <td style="width: 50%"></td>
+                        <td style="width: 40%"></td>
+                        <td>EL PRESIDENTE DE LOS TRIBUNALES EXAMINADORES</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 40%"></td>
                         <td>EL SUBDIRECTOR DE LA E.M.</td>
                     </tr>
                     <tr>
-                        <td style="width: 50%"></td>
-                        <td>CNEL.</td>
+                        <td style="width: 40%"></td>
+                        <td>TTE.CNEL.</td>
                     </tr>
                     <tr>
-                        <td style="width: 50%"></td>
-                        <td style="padding-left: 10%"><input type="text" style="border:none;border-top: #000000 solid; text-align: center" value=""/></td>
+                        <td style="width: 40%"></td>
+                        <td style="padding-left: 11%"><input type="text" style="border:none;border-top: #000000 solid; text-align: center" value=""/></td>
                     </tr>
                 </table>
         

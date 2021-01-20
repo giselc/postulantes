@@ -6,6 +6,7 @@
 package Servlets;
 
 import Classes.ManejadorSeleccionBD;
+import Classes.RecordPostulanteFiltro;
 import Classes.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -42,8 +43,21 @@ public class Sabana extends HttpServlet {
                 try (PrintWriter out = response.getWriter()) {
                     ManejadorSeleccionBD ms = new ManejadorSeleccionBD();
                     String[] lista = request.getParameterValues("lista");
+                    RecordPostulanteFiltro rf =  new RecordPostulanteFiltro();
+                    rf.lmga = request.getParameter("filtrolmga");
+                    rf.pd = request.getParameter("filtropd");
+                    rf.psEjercito = request.getParameter("filtropsEjercito");
+                    rf.sexo = request.getParameter("filtrosexo");
+                    rf.canthijos = request.getParameterValues("filtrocanthijos");
+                    rf.depDom = request.getParameterValues("filtrodepDom");
+                    rf.depNac = request.getParameterValues("filtrodepNac");
+                    rf.unidadInsc = request.getParameterValues("filtrounidadInsc");
+                    rf.condicional = request.getParameter("filtrocondicional");
+                    rf.alojamiento = request.getParameter("filtroalojamiento");
+                    rf.nsp = request.getParameter("filtronsp");
+                    rf.renuncio = request.getParameter("filtrorenuncio");
                     int carrera= Integer.valueOf(request.getParameter("carrera"));
-                    ms.imprimirSabana(lista,carrera,out);
+                    ms.imprimirSabana(rf,lista,carrera,out);
                 }
                 catch(Exception ex){
                     Logger.getLogger(Sabana.class.getName()).log(Level.SEVERE, null, ex);

@@ -123,18 +123,30 @@ public class ManejadorSeleccionBD {
             }
             return al;
         }
-    public void imprimirSabana(String[]lista,int carrera,PrintWriter out){
+    public void imprimirSabana(RecordPostulanteFiltro rf,String[]lista,int carrera,PrintWriter out){
         int anio = ManejadorPostulanteDB.getAnioPostula();
         ManejadorCodigoBD mc = new ManejadorCodigoBD();
+        ManejadorNotasBD mn= new ManejadorNotasBD();
+        String filtro = ManejadorPostulanteDB.getFiltroSQL(rf);
         String sql="";
         String sql1="";
         if(carrera==1){
-            sql="SELECT edFisicaObs, numero, primerNombre, primerApellido,segundoNombre,segundoApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, departamento, observaciones, matematica, historia, idiomaEspanol, educacionfisica, arrojo, medico, medicoSeg, medicoobs,psicotecnica, psicoseg, psicoObs, odontologico, odontSeg, odontObs, promedio FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where matematica>=5 and historia>=5 and idiomaEspanol>=5 and educacionFisica>=5 and medico=1 and psicotecnica=1 and odontologico=1 and arrojo=1 and psicoSeg=0 and medicoSeg=0 and odontSeg=0 and carrera=1 and notas.anio= "+ anio +" order by postulantes.resultados.promedio desc";
-            sql1="SELECT edFisicaObs, numero, primerNombre, primerApellido,segundoNombre,segundoApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, departamento, observaciones, matematica, historia, idiomaEspanol, educacionfisica, arrojo, medico, medicoSeg, medicoobs,psicotecnica, psicoseg, psicoObs, odontologico, odontSeg, odontObs, promedio FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where (matematica<5 or historia<5 or idiomaEspanol<5 or educacionFisica<5 or medico<>1 or psicotecnica<>1 or odontologico<>1 or arrojo<>1 or psicoSeg<>0 or medicoSeg<>0 or odontSeg<>0) and carrera=1 and notas.anio= "+ anio +" order by postulantes.resultados.promedio desc";
+            if(!mn.hayNotasCargadas(anio)){
+                sql="SELECT numero, primerNombre, primerApellido,segundoNombre,segundoApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, departamento, observaciones FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci where carrera=1 "+filtro+" order by numero asc";
+            }
+            else{
+                sql="SELECT edFisicaObs, numero, primerNombre, primerApellido,segundoNombre,segundoApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, departamento, observaciones, matematica, historia, idiomaEspanol, educacionfisica, arrojo, medico, medicoSeg, medicoobs,psicotecnica, psicoseg, psicoObs, odontologico, odontSeg, odontObs, promedio FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where matematica>=5 and historia>=5 and idiomaEspanol>=5 and educacionFisica>=5 and medico=1 and psicotecnica=1 and odontologico=1 and arrojo=1 and psicoSeg=0 and medicoSeg=0 and odontSeg=0 and carrera=1 and notas.anio= "+ anio +" "+ filtro +" order by postulantes.resultados.promedio desc";
+                sql1="SELECT edFisicaObs, numero, primerNombre, primerApellido,segundoNombre,segundoApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, departamento, observaciones, matematica, historia, idiomaEspanol, educacionfisica, arrojo, medico, medicoSeg, medicoobs,psicotecnica, psicoseg, psicoObs, odontologico, odontSeg, odontObs, promedio FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where (matematica<5 or historia<5 or idiomaEspanol<5 or educacionFisica<5 or medico<>1 or psicotecnica<>1 or odontologico<>1 or arrojo<>1 or psicoSeg<>0 or medicoSeg<>0 or odontSeg<>0) and carrera=1 and notas.anio= "+ anio +" "+ filtro + " order by postulantes.resultados.promedio desc";
+            }
         }
         else{
-            sql="SELECT edFisicaObs, numero, primerNombre, primerApellido,segundoNombre,segundoApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, departamento, observaciones, matematica, historia, idiomaEspanol, educacionfisica, arrojo, medico, medicoSeg, medicoobs,psicotecnica, psicoseg, psicoObs, odontologico, odontSeg,odontObs, promedio FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where matematica>=5 and historia>=5 and idiomaEspanol>=5 and educacionFisica>=5 and medico=1 and psicotecnica=1 and odontologico=1 and arrojo=1 and psicoSeg=0 and medicoSeg=0 and odontSeg=0 and carrera=2 and notas.anio= "+ anio +" order by postulantes.resultados.promedio desc";   
-            sql1="SELECT edFisicaObs, numero, primerNombre, primerApellido,segundoNombre,segundoApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, departamento, observaciones, matematica, historia, idiomaEspanol, educacionfisica, arrojo, medico, medicoSeg, medicoobs,psicotecnica, psicoseg, psicoObs, odontologico, odontSeg,odontObs, promedio FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where (matematica<5 or historia<5 or idiomaEspanol<5 or educacionFisica<5 or medico<>1 or psicotecnica<>1 or odontologico<>1 or arrojo<>1 or psicoSeg<>0 or medicoSeg<>0 or odontSeg<>0) and carrera=2 and notas.anio= "+ anio +" order by postulantes.resultados.promedio desc";   
+            if(mn.getNotas(2, anio).isEmpty()){
+                sql="SELECT numero, primerNombre, primerApellido,segundoNombre,segundoApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, departamento, observaciones FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci where carrera=2 "+filtro+" order by numero asc";
+            }
+            else{
+                sql="SELECT edFisicaObs, numero, primerNombre, primerApellido,segundoNombre,segundoApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, departamento, observaciones, matematica, historia, idiomaEspanol, educacionfisica, arrojo, medico, medicoSeg, medicoobs,psicotecnica, psicoseg, psicoObs, odontologico, odontSeg,odontObs, promedio FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where matematica>=5 and historia>=5 and idiomaEspanol>=5 and educacionFisica>=5 and medico=1 and psicotecnica=1 and odontologico=1 and arrojo=1 and psicoSeg=0 and medicoSeg=0 and odontSeg=0 and carrera=2 and notas.anio= "+ anio +" "+ filtro +" order by postulantes.resultados.promedio desc";   
+                sql1="SELECT edFisicaObs, numero, primerNombre, primerApellido,segundoNombre,segundoApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, departamento, observaciones, matematica, historia, idiomaEspanol, educacionfisica, arrojo, medico, medicoSeg, medicoobs,psicotecnica, psicoseg, psicoObs, odontologico, odontSeg,odontObs, promedio FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where (matematica<5 or historia<5 or idiomaEspanol<5 or educacionFisica<5 or medico<>1 or psicotecnica<>1 or odontologico<>1 or arrojo<>1 or psicoSeg<>0 or medicoSeg<>0 or odontSeg<>0) and carrera=2 and notas.anio= "+ anio +" "+ filtro +" order by postulantes.resultados.promedio desc";   
+            }
         }
         out.print("<html><head><script src=\"js/jquery-1.9.1.min.js\"></script>");
                         out.print("<script src=\"js/jquery.table2excel.js\"></script>");
@@ -177,6 +189,7 @@ public class ManejadorSeleccionBD {
                 out.print(anio+"</h3></td>\n" +
     "        <td></td>\n" +
     "    </tr>\n");
+                out.print("<tr>"+rf.filtroMostrar+"</tr>");
         out.print("<tr>");
         out.print("</table><table class=\"noExl\" style=\"width: 100%; text-align: center;page-break-inside: auto;\" border='1' cellspacing='0'></tr>");
         out.print("<td>Nº</td>");
@@ -273,49 +286,58 @@ public class ManejadorSeleccionBD {
                                 Departamento d = mc.getDepartamento(rs.getInt("DEPARTAMENTO"));
                                 out.print("<td>"+d.getDescripcion()+"</td>");break;
                             case "Obs": out.print("<td>"+rs.getString("OBSERVACIONES")+"</td>");break;
-                            case "ObsEdFisica": out.print("<td>"+rs.getString("edFisicaObs")+"</td>");break;
+                            case "ObsEdFisica": if(!sql1.equals("")){out.print("<td>"+rs.getString("edFisicaObs")+"</td>");}; break;
                             case "Mat": out.print("<td>");
-                                    if(rs.getDouble("MATEMATICA")<5){
-                                        out.print("<font color=\"red\">"+rs.getDouble("MATEMATICA")+"</font>");
-                                    }
-                                    else{
-                                        out.print(rs.getDouble("MATEMATICA"));
+                                    if(!sql1.equals("")){
+                                        if(rs.getDouble("MATEMATICA")<5){
+                                            out.print("<font color=\"red\">"+rs.getDouble("MATEMATICA")+"</font>");
+                                        }
+                                        else{
+                                            out.print(rs.getDouble("MATEMATICA"));
+                                        }
                                     }
                                     out.print("</td>");break;
                             case "Hist": out.print("<td>");
-                                    if(rs.getDouble("historia")<5){
-                                        out.print("<font color=\"red\">"+rs.getDouble("historia")+"</font>");
-                                    }
-                                    else{
-                                        out.print(rs.getDouble("historia"));
+                                    if(!sql1.equals("")){
+                                        if(rs.getDouble("historia")<5){
+                                            out.print("<font color=\"red\">"+rs.getDouble("historia")+"</font>");
+                                        }
+                                        else{
+                                            out.print(rs.getDouble("historia"));
+                                        }
                                     }
                                     out.print("</td>");break;
                             case "IdEsp": out.print("<td>");
-                                    if(rs.getDouble("idiomaEspanol")<5){
-                                        out.print("<font color=\"red\">"+rs.getDouble("idiomaEspanol")+"</font>");
-                                    }
-                                    else{
-                                        out.print(rs.getDouble("idiomaEspanol"));
+                                    if(!sql1.equals("")){
+                                        if(rs.getDouble("idiomaEspanol")<5){
+                                            out.print("<font color=\"red\">"+rs.getDouble("idiomaEspanol")+"</font>");
+                                        }
+                                        else{
+                                            out.print(rs.getDouble("idiomaEspanol"));
+                                        }
                                     }
                                     out.print("</td>");break;
                             case "EdFis": out.print("<td>");
-                                    if(rs.getDouble("educacionFisica")<5){
-                                        out.print("<font color=\"red\">"+rs.getDouble("educacionFisica")+"</font>");
-                                    }
-                                    else{
-                                        out.print(rs.getDouble("educacionFisica"));
+                                    if(!sql1.equals("")){
+                                        if(rs.getDouble("educacionFisica")<5){
+                                            out.print("<font color=\"red\">"+rs.getDouble("educacionFisica")+"</font>");
+                                        }
+                                        else{
+                                            out.print(rs.getDouble("educacionFisica"));
+                                        }
                                     }
                                     out.print("</td>");break;
-                            case "Arrojo": 
-                                        out.print("<td>");
+                            case "Arrojo": out.print("<td>");
+                                    if(!sql1.equals("")){
                                         if(rs.getBoolean("arrojo")){
                                             out.print("SI");
                                         }else{
                                             out.print("<font color=\"red\">NO</font>");
                                         }
-                                        out.print("</td>");break;
-                            case "Medico": 
-                                        out.print("<td>");
+                                    }
+                                    out.print("</td>");break;
+                            case "Medico": out.print("<td>");
+                                    if(!sql1.equals("")){
                                         if(rs.getInt("medico")==1){
                                             if(rs.getBoolean("medicoSeg")){
                                                 out.print("<font color=\"red\">AC</font>");
@@ -323,20 +345,21 @@ public class ManejadorSeleccionBD {
                                             else{
                                                 out.print("A");
                                             }
-
                                         }
                                         else{
                                             out.print("<font color=\"red\">NA</font>");
                                         }
-                                        out.print("</td>");break;
-                            case "ObsMedico": 
-                                        out.print("<td>");
+                                    }
+                                    out.print("</td>");break;
+                            case "ObsMedico":out.print("<td>");
+                                    if(!sql1.equals("")){
                                         if(rs.getString("medicoObs")!=null){
                                             rs.getString("medicoObs");
                                         }
-                                        out.print("</td>");break;
-                            case "Psico": 
-                                        out.print("<td>");
+                                    }
+                                    out.print("</td>");break;
+                            case "Psico": out.print("<td>");
+                                    if(!sql1.equals("")){
                                         if(rs.getInt("psicotecnica")==1){
                                             if(rs.getBoolean("psicoSeg")){
                                                 out.print("<font color=\"red\">AC</font>");
@@ -349,15 +372,17 @@ public class ManejadorSeleccionBD {
                                         else{
                                             out.print("<font color=\"red\">NA</font>");
                                         }
-                                        out.print("</td>");break;
-                            case "ObsPsico":
-                                        out.print("<td>");
+                                    }
+                                    out.print("</td>");break;
+                            case "ObsPsico": out.print("<td>");
+                                    if(!sql1.equals("")){
                                         if(rs.getString("psicoObs")!=null){
                                             rs.getString("psicoObs");
                                         }
-                                        out.print("</td>");break;
-                            case "Odont": 
-                                        out.print("<td>");
+                                    }
+                                    out.print("</td>");break;
+                            case "Odont": out.print("<td>");
+                                    if(!sql1.equals("")){
                                         if(rs.getInt("odontologico")==1){
                                             if(rs.getBoolean("odontSeg")){
                                                 out.print("<font color=\"red\">AC</font>");
@@ -365,24 +390,27 @@ public class ManejadorSeleccionBD {
                                             else{
                                                 out.print("A");
                                             }
-
                                         }
                                         else{
                                             out.print("<font color=\"red\">NA</font>");
                                         }
-                                        out.print("</td>");break;
-                            case "ObsOdont": 
-                                        out.print("<td>");
+                                    }
+                                    out.print("</td>");break;
+                            case "ObsOdont": out.print("<td>");
+                                    if(!sql1.equals("")){
                                         if(rs.getString("odontObs")!=null){
                                             rs.getString("odontObs");
                                         }
-                                        out.print("</td>");break;
-                            case "Promedio": out.print("<td>");
-                                    if(rs.getDouble("promedio")<5){
-                                        out.print("<font color=\"red\">"+rs.getDouble("promedio")+"</font>");
                                     }
-                                    else{
-                                        out.print(rs.getDouble("promedio"));
+                                    out.print("</td>");break;
+                            case "Promedio": out.print("<td>");
+                                    if(!sql1.equals("")){
+                                        if(rs.getDouble("promedio")<5){
+                                            out.print("<font color=\"red\">"+rs.getDouble("promedio")+"</font>");
+                                        }
+                                        else{
+                                            out.print(rs.getDouble("promedio"));
+                                        }
                                     }
                                     out.print("</td>");break;
                         }
@@ -390,6 +418,7 @@ public class ManejadorSeleccionBD {
                     out.print("</tr>");
                 }
             //IMPRIMIR LOS QUE PERDIERON ALGUNA PRUEBA ORDENADO POR PROMEDIO
+                
                 rs=s.executeQuery(sql1);
             } 
 

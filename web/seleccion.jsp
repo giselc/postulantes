@@ -73,12 +73,12 @@
                             break;
                         }
                         if(parseFloat(tableEntra.rows[i].cells[9].innerText)==j){
-                            if(tableListaEspera.rows[i].cells[5].innerText!="COND."&& parseFloat(tableEntra.rows[i].cells[5].innerText)<j){ //cells[5]=id
+                            if(tableEntra.rows[i].cells[5].innerText!="COND."&& parseFloat(tableEntra.rows[i].cells[5].innerText)<j){ //cells[5]=id
                                 tableEntra.rows[i].before(tr);
                                 break;
                             }
                             else{
-                                tableNoEntran.rows[i].after(tr);
+                                tableEntra.rows[i].after(tr);
                                 break;
                             }
                         }
@@ -105,7 +105,7 @@
                                     break;
                                 }
                                 else{
-                                    tableNoEntran.rows[i].after(tr);
+                                    tableListaEspera.rows[i].after(tr);
                                     break;
                                 }
                             }
@@ -159,7 +159,7 @@
                                             break;
                                         }
                                         else{
-                                            tableNoEntran.rows[i].after(tr);
+                                            tableAnalizar.rows[i].after(tr);
                                             break;
                                         }
                                     }

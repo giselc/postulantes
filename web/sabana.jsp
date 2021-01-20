@@ -4,6 +4,8 @@
     Author     : gcincunegui
 --%>
 
+<%@page import="Classes.Departamento"%>
+<%@page import="java.util.ArrayList"%>
 <%@ include file="header.jsp" %>
     <% if(u.isAdmin()){%>
 <script>
@@ -20,8 +22,17 @@ function subir(carrera){
     f.appendChild(input);
     f.submit();
 }
+function mostrarPersonal(){
+            if(document.getElementById("filtrops").value == "S"){
+                document.getElementById("filtropse").style.display = '';
+            }
+            else{
+                document.getElementById("filtropse").style.display = 'none';
+            }
+        }
 
 </script>
+<%--
 <form method="post" action='Sabana' id="imprimir">
 <h2 align="center">Seleccione los campos que desea que aparezcan en la sábana.</h2>
     <table style="width: 100%; background-color: #CDCDCD; " border="1" cellspacing="0">
@@ -137,6 +148,193 @@ function subir(carrera){
             </td>
         </tr>
     </table>
+<h2 align="center">Seleccione el filtro que desea aplicar.</h2>
+
+<table style="font-size: 70%">
+        
+            <tr>
+
+                <td>
+                    LMGA:
+                </td>
+                <td>
+                    <select name="filtrolmga" form="imprimir"> 
+                        <option value="todos" selected="selected">TODOS</option>
+                        <option value="S">SI</option>
+                        <option value="N">NO</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    Pase directo:
+                </td>
+                <td>
+                    <select name="filtropd" form="imprimir"> 
+                        <option value="todos" selected="selected">TODOS</option>
+                        <option value="S">SI</option>
+                        <option value="N">NO</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Sexo:
+                </td>
+                <td>
+                    <select name="filtrosexo" form="imprimir">
+                        <option value="todos" selected="selected">TODOS</option>
+                        <option value="M">Masculino</option>
+                        <option value="F">Femenino</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Unidad Inscriptora:
+                </td>
+                <td>
+                    <select name="filtrounidadInsc" multiple="multiple" form="imprimir">
+                        <%
+                            ArrayList<Usuario> au= mc.getUsuarios();
+                            for (Usuario usu : au){
+                                out.print("<option value='"+String.valueOf(usu.getId())+"'>"+usu.getNombreMostrar()+"</option>");
+                            }
+                        %>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    NECESITA ALOJAMIENTO:
+                </td>
+                <td>
+                    <select name="filtroalojamiento" form="imprimir"> 
+                        <option value="todos" selected="selected">TODOS</option>
+                        <option value="S">SI</option>
+                        <option value="N">NO</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    NSP:
+                </td>
+                <td>
+                    <select name="filtronsp" form="imprimir"> 
+                        <option value="todos" selected="selected">TODOS</option>
+                        <option value="S">SI</option>
+                        <option value="N">NO</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Renunci&oacute;:
+                </td>
+                <td>
+                    <select name="filtrorenuncio" form="imprimir"> 
+                        <option value="todos" selected="selected">TODOS</option>
+                        <option value="S">SI</option>
+                        <option value="N">NO</option>
+                    </select>
+                </td>
+            </tr>
+        <tr>
+            <td>
+                Departamento Nacimiento:
+            </td>
+            <td>
+                <select name="filtrodepNac" multiple="multiple" form="imprimir">
+                    <%
+                        ArrayList<Departamento> ad= mc.getDepartamentos();
+                        int j = 0;
+                        for (Departamento dep : ad){
+                            if (j==0){
+                                j++;
+                            }
+                            else{
+                                out.print("<option value='"+String.valueOf(dep.getCodigo())+"'>"+dep.getDescripcion()+"</option>");
+                            }
+                        }
+                    %>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Departamento Domicilio:
+            </td>
+            <td>
+                <select name="filtrodepDom" multiple="multiple" form="imprimir">
+                    <%
+                        ad= mc.getDepartamentos();
+                        j = 0;
+                        for (Departamento dep : ad){
+                            if (j==0){
+                                j++;
+                            }
+                            else{
+                                out.print("<option value='"+String.valueOf(dep.getCodigo())+"'>"+dep.getDescripcion()+"</option>");
+                            }
+                        }
+                    %>
+                </select>
+            </td>
+        </tr>  
+        <tr>
+            <td>
+                Personal Subalterno:
+            </td>
+            <td> 
+                <select name="filtrops" form="imprimir" onshow="mostrarPersonal();" onchange="mostrarPersonal();" id="filtropsA">
+                    <option value="todos" selected="selected">TODOS</option>
+                    <option value="S">SI</option>
+                    <option value="N">NO</option>
+                </select>
+            </td>
+        </tr>
+        <tr id="filtropseA" style="display: none">
+            <td>
+                Personal subalterno de Ej&eacute;rcito:
+            </td>
+            <td>
+                <select name="filtropsEjercito" form="imprimir">
+                    <option value="todos" selected="selected">TODOS</option>
+                    <option value="S">SI</option>
+                    <option value="N">NO</option>
+                </select>
+            </td>
+        </tr>
+        <tr> 
+            <td>
+                Cantidad de hijos:
+            </td>
+            <td>
+                <select name="filtrocanthijos" multiple="multiple" form="imprimir">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                     <option value="3">3</option>
+                      <option value="4">+ de 3</option>
+                </select>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                Condicional:
+            </td>
+            <td>
+                <select name="filtrocondicional" form="imprimir"> 
+                    <option value="todos" selected="selected">TODOS</option>
+                    <option value="S">SI</option>
+                    <option value="N">NO</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+
 <table style="width: 30%;" align="right">
     <tr>
         <td>
@@ -152,7 +350,8 @@ function subir(carrera){
 </form>
 
 
-
+--%>
+<h1>SECCI&Oacute;N EN MANTENIMIENTO</h1>
 
 <%}else{
     response.sendRedirect("/listar.jsp");

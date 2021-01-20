@@ -219,6 +219,18 @@ public class ManejadorNotasBD {
         }
         return an;
     }
+    public Boolean hayNotasCargadas(int anio){
+        try {
+            Statement s= connection.createStatement();
+            String sql = "SELECT * from postulantes.notas";
+            ResultSet rs=s.executeQuery(sql);
+            return (rs.next());
+        }
+        catch(Exception e){
+            System.out.println("ManejadorNotasBD - hayNotasCargadas:"+ e.getMessage());
+        }
+        return false;
+    }
     public ArrayList<RecordPostulanteNota> getNotas(int carrera, int anio){
         ArrayList<RecordPostulanteNota> an= new ArrayList<>();
         try {
