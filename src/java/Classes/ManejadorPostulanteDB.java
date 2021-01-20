@@ -260,7 +260,7 @@ public class ManejadorPostulanteDB {
                 filtroMostrar += "PD = SI - ";
             }
             else{
-                if (rf.lmga.equals("N")){
+                if (rf.pd.equals("N")){
                     filtro+= " and paseDirecto = 0";
                     filtroMostrar += "PD = NO - ";
                 }
@@ -340,7 +340,7 @@ public class ManejadorPostulanteDB {
             else{
                 if(rf.ps.equals("N")){
                     filtro += " and ps = 0";
-                    filtroMostrar += "PS = SI - ";
+                    filtroMostrar += "PS = NO - ";
                 }
             }
             if (rf.sexo.equals("M")){

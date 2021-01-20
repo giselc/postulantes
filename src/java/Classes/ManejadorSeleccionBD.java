@@ -123,77 +123,7 @@ public class ManejadorSeleccionBD {
             }
             return al;
         }
-    public void imprimirSabana(RecordPostulanteFiltro rf,String[]lista,int carrera,PrintWriter out){
-        int anio = ManejadorPostulanteDB.getAnioPostula();
-        ManejadorCodigoBD mc = new ManejadorCodigoBD();
-        ManejadorNotasBD mn= new ManejadorNotasBD();
-        String filtro = ManejadorPostulanteDB.getFiltroSQL(rf);
-        String sql="";
-        String sql1="";
-        if(carrera==1){
-            if(!mn.hayNotasCargadas(anio)){
-                sql="SELECT numero, primerNombre, primerApellido,segundoNombre,segundoApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, departamento, observaciones FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci where carrera=1 "+filtro+" order by numero asc";
-            }
-            else{
-                sql="SELECT edFisicaObs, numero, primerNombre, primerApellido,segundoNombre,segundoApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, departamento, observaciones, matematica, historia, idiomaEspanol, educacionfisica, arrojo, medico, medicoSeg, medicoobs,psicotecnica, psicoseg, psicoObs, odontologico, odontSeg, odontObs, promedio FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where matematica>=5 and historia>=5 and idiomaEspanol>=5 and educacionFisica>=5 and medico=1 and psicotecnica=1 and odontologico=1 and arrojo=1 and psicoSeg=0 and medicoSeg=0 and odontSeg=0 and carrera=1 and notas.anio= "+ anio +" "+ filtro +" order by postulantes.resultados.promedio desc";
-                sql1="SELECT edFisicaObs, numero, primerNombre, primerApellido,segundoNombre,segundoApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, departamento, observaciones, matematica, historia, idiomaEspanol, educacionfisica, arrojo, medico, medicoSeg, medicoobs,psicotecnica, psicoseg, psicoObs, odontologico, odontSeg, odontObs, promedio FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where (matematica<5 or historia<5 or idiomaEspanol<5 or educacionFisica<5 or medico<>1 or psicotecnica<>1 or odontologico<>1 or arrojo<>1 or psicoSeg<>0 or medicoSeg<>0 or odontSeg<>0) and carrera=1 and notas.anio= "+ anio +" "+ filtro + " order by postulantes.resultados.promedio desc";
-            }
-        }
-        else{
-            if(mn.getNotas(2, anio).isEmpty()){
-                sql="SELECT numero, primerNombre, primerApellido,segundoNombre,segundoApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, departamento, observaciones FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci where carrera=2 "+filtro+" order by numero asc";
-            }
-            else{
-                sql="SELECT edFisicaObs, numero, primerNombre, primerApellido,segundoNombre,segundoApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, departamento, observaciones, matematica, historia, idiomaEspanol, educacionfisica, arrojo, medico, medicoSeg, medicoobs,psicotecnica, psicoseg, psicoObs, odontologico, odontSeg,odontObs, promedio FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where matematica>=5 and historia>=5 and idiomaEspanol>=5 and educacionFisica>=5 and medico=1 and psicotecnica=1 and odontologico=1 and arrojo=1 and psicoSeg=0 and medicoSeg=0 and odontSeg=0 and carrera=2 and notas.anio= "+ anio +" "+ filtro +" order by postulantes.resultados.promedio desc";   
-                sql1="SELECT edFisicaObs, numero, primerNombre, primerApellido,segundoNombre,segundoApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, departamento, observaciones, matematica, historia, idiomaEspanol, educacionfisica, arrojo, medico, medicoSeg, medicoobs,psicotecnica, psicoseg, psicoObs, odontologico, odontSeg,odontObs, promedio FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where (matematica<5 or historia<5 or idiomaEspanol<5 or educacionFisica<5 or medico<>1 or psicotecnica<>1 or odontologico<>1 or arrojo<>1 or psicoSeg<>0 or medicoSeg<>0 or odontSeg<>0) and carrera=2 and notas.anio= "+ anio +" "+ filtro +" order by postulantes.resultados.promedio desc";   
-            }
-        }
-        out.print("<html><head><script src=\"js/jquery-1.9.1.min.js\"></script>");
-                        out.print("<script src=\"js/jquery.table2excel.js\"></script>");
-                        out.print("<script> jQuery(document).ready(function() {\n" +
-                                    "    $('#export-btn').on('click', function(e){\n" +
-                                    "        e.preventDefault();\n" +
-                                    "        ResultsToTable();\n" +
-                                    "    });\n" +
-                                    "    function ResultsToTable(){    \n" +
-                                    "        $(\".resultsTable\").table2excel({\n" +
-                                    "            exclude: \".noExl\",\n" +
-                                    "            name: \"Results\",\n"+
-    "					fileext: \".xls\",\n" +
-                                    "        });\n" +
-                                    "    }\n" +
-                                    "}); </script></head><body>");
-                        out.print("<BUTTON style='color:#0000ff' id=\"export-btn\">Export</BUTTON>");
-        out.print("<style>\n" +
-    "    tr{\n" +
-    "        page-break-inside: avoid;\n" +
-    "        page-break-after: auto;\n" +
-    "    }    \n" +
-    "</style><table class=\"resultsTable\" style=\"width: 100%; text-align: center\"><tr><td>"
-        
-                + "<table class=\"noExl\" style=\"width: 100%; text-align: center\">\n" +
-    "    <tr>\n" +
-    "        <td>Escuela Militar</td>\n" +
-    "        <td></td>\n" +
-    "        <td>Jefatura de Estudios</td>\n" +
-    "    </tr>\n" +
-    "    <tr>\n" +
-    "        <td></td>\n" +
-    "        <td><h3 align=\"center\">SÁBANA ");
-        if(carrera==1){
-            out.print("CUERPO COMANDO ");
-        }
-        else{
-            out.print("APOYO DE SERVICIO Y COMBATE ");
-        }
-                out.print(anio+"</h3></td>\n" +
-    "        <td></td>\n" +
-    "    </tr>\n");
-          out.print("<tr><td>"+rf.filtroMostrar+"</td></tr>");      
-        out.print("<tr>");
-        
-        out.print("</table><table class=\"noExl\" style=\"width: 100%; text-align: center;page-break-inside: auto;\" border='1' cellspacing='0'></tr>");
-        out.print("<td>Nº</td>");
+    private void imprimirCabecera(String[]lista,PrintWriter out){
         for(String l:lista){
             switch(l){
                 case "ID": out.print("<td>ID</td>");break;
@@ -205,10 +135,18 @@ public class ManejadorSeleccionBD {
                 case "Sexo": out.print("<td>Sexo</td>");break;
                 case "UI": out.print("<td>UI</td>");break;
                 case "FechaNac": out.print("<td>F.Nac.</td>");break;
-                case "LM": out.print("<td>LM</td>");break;
+                case "cc": out.print("<td>Cc.</td>");break;
+                case "ps": out.print("<td>P.S.</td>");break;
+                case "tel": out.print("<td>Tel.</td>");break;
+                case "LM": out.print("<td>L.M.G.A.</td>");break;
+                case "pd": out.print("<td>P.D.</td>");break;
                 case "Aprobado": out.print("<td>Aprobado</td>");break;
                 case "Orient": out.print("<td>Orient.</td>");break;
+                case "Dom": out.print("<td>Dom.</td>");break;
                 case "DepDom": out.print("<td>Dep.Dom.</td>");break;
+                case "LocDom": out.print("<td>Loc.Dom.</td>");break;
+                case "DepNac": out.print("<td>Dep.Nac.</td>");break;
+                case "LocNac": out.print("<td>Loc.Nac.</td>");break;
                 case "Obs": out.print("<td>Observaciones de Ingreso</td>");break;
                 case "Mat": out.print("<td>Mat.</td>");break;
                 case "Hist": out.print("<td>Hist.</td>");break;
@@ -225,15 +163,11 @@ public class ManejadorSeleccionBD {
                 case "ObsEdFisica": out.print("<td>Obs.Ed.Fisica</td>");break;
             }
         }
-
-
-        try{
-            Statement s= connection.createStatement();
-            ResultSet rs=s.executeQuery(sql);
-            int i=1;
-            //IMPRIMIR LOS QUE SALVARON TODAS LAS PRUEBAS ORDENADO POR PROMEDIO
-          for(int j=0; j<=1;j++){
-                while(rs.next()){
+    }
+    private void imprimirCampos(String[]lista,ResultSet rs,PrintWriter out,String sql1) throws SQLException{
+        int i=1;
+        ManejadorCodigoBD mc = new ManejadorCodigoBD();
+        while(rs.next()){
                     out.print("<tr>");
                     out.print("<td>"+i+"</td>");
                     i++;
@@ -258,6 +192,28 @@ public class ManejadorSeleccionBD {
                                 Usuario u = mc.getUsuario(rs.getInt("unidadInsc"));
                                 out.print("<td>"+u.getNombreMostrar()+"</td>");break;
                             case "FechaNac": out.print("<td>"+rs.getString("FechaNac")+"</td>");break;
+                            case "cc": out.print("<td>"+rs.getString("cc")+" "+rs.getInt("ccNro")+"</td>");break;
+                            case "ps": 
+                                if(rs.getBoolean("ps")){
+                                    out.print("<td>SI");
+                                    if(rs.getBoolean("psejercito")){
+                                         out.print("-Ejército");
+                                            }
+                                    out.print("</td>");
+                                }
+                                else{
+                                    out.print("<td>NO</td>");
+                                }
+                                break;
+                            case "tel": out.print("<td>"+rs.getString("telefono")+"</td>");break;
+                            case "pd": 
+                                if(rs.getBoolean("pasedirecto")){
+                                    out.print("<td>SI-"+rs.getDouble("notaPaseDirecto"));
+                                }
+                                else{
+                                    out.print("<td>NO</td>");
+                                }
+                                break;
                             case "LM": 
                                     out.print("<td>");
                                     if(rs.getBoolean("lmga")){
@@ -283,9 +239,15 @@ public class ManejadorSeleccionBD {
                                         out.print("SE");
                                     }
                                     out.print("</td>");break;
+                            case "Dom": out.print("<td>"+rs.getString("domicilio")+"</td>");break;
                             case "DepDom": 
                                 Departamento d = mc.getDepartamento(rs.getInt("DEPARTAMENTO"));
                                 out.print("<td>"+d.getDescripcion()+"</td>");break;
+                            case "LocDom": out.print("<td>"+rs.getString("localidad")+"</td>");break;
+                            case "DepNac": 
+                                d = mc.getDepartamento(rs.getInt("DEPARTAMENTONAC"));
+                                out.print("<td>"+d.getDescripcion()+"</td>");break;
+                            case "LocNac": out.print("<td>"+rs.getString("localidadNac")+"</td>");break;
                             case "Obs": out.print("<td>"+rs.getString("OBSERVACIONES")+"</td>");break;
                             case "ObsEdFisica": if(!sql1.equals("")){out.print("<td>"+rs.getString("edFisicaObs")+"</td>");}; break;
                             case "Mat": out.print("<td>");
@@ -418,6 +380,86 @@ public class ManejadorSeleccionBD {
                     }
                     out.print("</tr>");
                 }
+    }
+    public void imprimirSabana(RecordPostulanteFiltro rf,String[]lista,int carrera,PrintWriter out){
+        int anio = ManejadorPostulanteDB.getAnioPostula();
+        ManejadorNotasBD mn= new ManejadorNotasBD();
+        String sql="";
+        String sql1="";
+        String filtro = ManejadorPostulanteDB.getFiltroSQL(rf);
+        if(carrera==1){
+            if(!mn.hayNotasCargadas(anio)){
+                sql="SELECT * FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci where carrera=1 "+filtro+" order by numero asc";
+            }
+            else{
+                sql="SELECT * FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where matematica>=5 and historia>=5 and idiomaEspanol>=5 and educacionFisica>=5 and medico=1 and psicotecnica=1 and odontologico=1 and arrojo=1 and psicoSeg=0 and medicoSeg=0 and odontSeg=0 and carrera=1 and notas.anio= "+ anio +" "+ filtro +" order by postulantes.resultados.promedio desc";
+                sql1="SELECT * FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where (matematica<5 or historia<5 or idiomaEspanol<5 or educacionFisica<5 or medico<>1 or psicotecnica<>1 or odontologico<>1 or arrojo<>1 or psicoSeg<>0 or medicoSeg<>0 or odontSeg<>0) and carrera=1 and notas.anio= "+ anio +" "+ filtro + " order by postulantes.resultados.promedio desc";
+            }
+        }
+        else{
+            if(mn.getNotas(2, anio).isEmpty()){
+                sql="SELECT * FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci where carrera=2 "+filtro+" order by numero asc";
+            }
+            else{
+                sql="SELECT * FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where matematica>=5 and historia>=5 and idiomaEspanol>=5 and educacionFisica>=5 and medico=1 and psicotecnica=1 and odontologico=1 and arrojo=1 and psicoSeg=0 and medicoSeg=0 and odontSeg=0 and carrera=2 and notas.anio= "+ anio +" "+ filtro +" order by postulantes.resultados.promedio desc";   
+                sql1="SELECT * FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where (matematica<5 or historia<5 or idiomaEspanol<5 or educacionFisica<5 or medico<>1 or psicotecnica<>1 or odontologico<>1 or arrojo<>1 or psicoSeg<>0 or medicoSeg<>0 or odontSeg<>0) and carrera=2 and notas.anio= "+ anio +" "+ filtro +" order by postulantes.resultados.promedio desc";   
+            }
+        }
+        out.print("<html><head><script src=\"js/jquery-1.9.1.min.js\"></script>");
+                        out.print("<script src=\"js/jquery.table2excel.js\"></script>");
+                        out.print("<script> jQuery(document).ready(function() {\n" +
+                                    "    $('#export-btn').on('click', function(e){\n" +
+                                    "        e.preventDefault();\n" +
+                                    "        ResultsToTable();\n" +
+                                    "    });\n" +
+                                    "    function ResultsToTable(){    \n" +
+                                    "        $(\".resultsTable\").table2excel({\n" +
+                                    "            exclude: \".noExl\",\n" +
+                                    "            name: \"Results\",\n"+
+    "					fileext: \".xls\",\n" +
+                                    "        });\n" +
+                                    "    }\n" +
+                                    "}); </script></head><body>");
+                        out.print("<BUTTON style='color:#0000ff' id=\"export-btn\">Export</BUTTON>");
+        out.print("<style>\n" +
+    "    tr{\n" +
+    "        page-break-inside: avoid;\n" +
+    "        page-break-after: auto;\n" +
+    "    }    \n" +
+    "</style><table class=\"resultsTable\" style=\"width: 100%; text-align: center\"><tr><td>"
+        
+                + "<table class=\"noExl\" style=\"width: 100%; text-align: center\">\n" +
+    "    <tr>\n" +
+    "        <td>Escuela Militar</td>\n" +
+    "        <td></td>\n" +
+    "        <td>Jefatura de Estudios</td>\n" +
+    "    </tr>\n" +
+    "    <tr>\n" +
+    "        <td></td>\n" +
+    "        <td><h3 align=\"center\">SÁBANA ");
+        if(carrera==1){
+            out.print("CUERPO COMANDO ");
+        }
+        else{
+            out.print("APOYO DE SERVICIO Y COMBATE ");
+        }
+                out.print(anio+"</h3></td>\n" +
+    "        <td></td>\n" +
+    "    </tr>\n");
+          out.print("<tr><td>"+rf.filtroMostrar+"</td></tr>");      
+        out.print("<tr>");
+        
+        out.print("</table><table class=\"noExl\" style=\"width: 100%; text-align: center;page-break-inside: auto;\" border='1' cellspacing='0'></tr>");
+        out.print("<td>Nº</td>");
+        imprimirCabecera(lista, out);
+
+
+        try{
+            Statement s= connection.createStatement();
+            ResultSet rs=s.executeQuery(sql);
+            //IMPRIMIR LOS QUE SALVARON TODAS LAS PRUEBAS ORDENADO POR PROMEDIO
+          for(int j=0; j<=1;j++){
+                imprimirCampos(lista, rs, out,sql1);
             //IMPRIMIR LOS QUE PERDIERON ALGUNA PRUEBA ORDENADO POR PROMEDIO
                 
                 rs=s.executeQuery(sql1);
@@ -431,11 +473,11 @@ public class ManejadorSeleccionBD {
 
        out.print("</table></td></tr></table></body></html>");
     }
-    public void imprimirResultadosFinales(String[]lista,int entran,PrintWriter out){
+    public void imprimirResultadosFinales(String[]lista,RecordPostulanteFiltro rf,int entran,PrintWriter out){
         int anio = ManejadorPostulanteDB.getAnioPostula();
-        ManejadorCodigoBD mc = new ManejadorCodigoBD();
-        String sql="SELECT precedencia,numero, segundoNombre, segundoApellido, primerNombre, primerApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, cc, ccnro, telefono, domicilio, departamento, observaciones, matematica, historia, idiomaEspanol, educacionfisica, arrojo, medico, medicoSeg, medicoobs,psicotecnica, psicoseg, psicoObs, odontologico, odontSeg, odontObs, promedio FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where carrera=1 and notas.anio= "+ anio +" and resultado="+ entran +" order by postulantes.resultados.promedio desc, numero asc";
-        String sql1="SELECT precedencia,numero,  segundoNombre, segundoApellido, primerNombre, primerApellido, postulantes.ci, sexo, UnidadInsc, FechaNac, lmga, quinto, orientacion, cc, ccnro, telefono, domicilio, departamento, observaciones, matematica, historia, idiomaEspanol, educacionfisica, arrojo, medico, medicoSeg, medicoobs,psicotecnica, psicoseg, psicoObs, odontologico, odontSeg, odontObs, promedio FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where carrera=2 and notas.anio= "+ anio +" and resultado="+ entran +" order by postulantes.resultados.promedio desc, numero asc";   
+        String filtro = ManejadorPostulanteDB.getFiltroSQL(rf);
+        String sql="SELECT * FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where carrera=1 and notas.anio= "+ anio +" and resultado="+ entran +filtro+" order by postulantes.resultados.promedio desc, numero asc";
+        String sql1="SELECT * FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where carrera=2 and notas.anio= "+ anio +" and resultado="+ entran +filtro+" order by postulantes.resultados.promedio desc, numero asc";   
         try{       
             for(int k=0; k<=1;k++){
                 out.print("<style>\n" +
@@ -467,6 +509,7 @@ public class ManejadorSeleccionBD {
                         out.print(anio+"</h3></td>\n" +
                 "        <td style='width:20%'></td>\n" +
                 "    </tr>\n"+
+                "<tr><td>"+rf.filtroMostrar+"</td></tr>"+      
                 "<tr><td></td><td><h3 align=\"center\">");
                 if(k==0){
                     out.print("CUERPO COMANDO");
@@ -477,39 +520,7 @@ public class ManejadorSeleccionBD {
                 out.print("<tr>");
                 out.print("</table><table style=\"width: 100%; text-align: center;page-break-inside: auto;\" border='1' cellspacing='0'></tr>");
                 out.print("<td>PRECEDENCIA</td>");
-                for(String l:lista){
-                    switch(l){
-                        case "ID": out.print("<td>ID</td>");break;
-                        case "PrimerNombre": out.print("<td>Primer Nombre</td>");break;
-                        case "SegundoNombre": out.print("<td>Segundo Nombre</td>");break;
-                        case "PrimerApellido": out.print("<td>Primer Apellido</td>");break;
-                        case "SegundoApellido": out.print("<td>Segundo Apellido</td>");break;
-                        case "CI": out.print("<td>CI</td>");break;
-                            case "Telefono": out.print("<td>Tel.</td>");break;
-                                case "Credencial": out.print("<td>Cred.</td>");break;
-                        case "Sexo": out.print("<td>Sexo</td>");break;
-                        case "UI": out.print("<td>UI</td>");break;
-                        case "FechaNac": out.print("<td>F.Nac.</td>");break;
-                        case "LM": out.print("<td>LM</td>");break;
-                        case "Aprobado": out.print("<td>Aprobado</td>");break;
-                        case "Orient": out.print("<td>Orient.</td>");break;
-                            case "Dom": out.print("<td>Dom.</td>");break;
-                        case "DepDom": out.print("<td>Dep.Dom.</td>");break;
-                        case "Obs": out.print("<td>Observaciones de Ingreso</td>");break;
-                        case "Mat": out.print("<td>Mat.</td>");break;
-                        case "Hist": out.print("<td>Hist.</td>");break;
-                        case "IdEsp": out.print("<td>Id.Esp.</td>");break;
-                        case "EdFis": out.print("<td>Ed.Fis.</td>");break;
-                        case "Arrojo": out.print("<td>Arrojo</td>");break;
-                        case "Medico": out.print("<td>M</td>");break;
-                        case "ObsMedico": out.print("<td>Obs.Medico</td>");break;
-                        case "Psico": out.print("<td>P</td>");break;
-                        case "ObsPsico": out.print("<td>Obs.Psico</td>");break;
-                        case "Odont": out.print("<td>O</td>");break;
-                        case "ObsOdont": out.print("<td>Obs.Odont</td>");break;
-                        case "Promedio": out.print("<td>Promedio</td>");break;
-                    }
-                }
+                imprimirCabecera(lista, out);
                 Statement s= connection.createStatement();
                 ResultSet rs=null;
                 if(k==0){
@@ -517,145 +528,7 @@ public class ManejadorSeleccionBD {
                 }else{
                     rs=s.executeQuery(sql1);
                 }
-                int i=1;
-                while(rs.next()){
-                    out.print("<tr>");
-                    out.print("<td>"+i+"</td>");
-                    i++;
-                    for(String l:lista){
-                        switch(l){
-                            case "ID": 
-                                    out.print("<td>");
-                                    if(rs.getInt("Numero")==0){
-                                        out.print("COND.");
-                                    }
-                                    else{
-                                        out.print(rs.getInt("Numero"));
-                                    }
-                                    out.print("</td>");break;
-                            case "PrimerNombre": out.print("<td>"+rs.getString("PrimerNombre")+"</td>");break;
-                            case "SegundoNombre": out.print("<td>"+rs.getString("SegundoNombre")+"</td>");break;
-                            case "PrimerApellido": out.print("<td>"+rs.getString("PrimerApellido")+"</td>");break;
-                            case "SegundoApellido": out.print("<td>"+rs.getString("SegundoApellido")+"</td>");break;
-                            case "CI": out.print("<td>"+rs.getInt("ci")+"</td>");break;
-                                case "Telefono": out.print("<td>"+rs.getString("telefono")+"</td>");break;
-                                case "Credencial": out.print("<td>"+rs.getString("cc")+" "+rs.getInt("ccnro")+"</td>");break;
-                            case "Sexo": out.print("<td>"+rs.getString("sexo")+"</td>");break;
-                            case "UI": 
-                                Usuario u = mc.getUsuario(rs.getInt("unidadInsc"));
-                                out.print("<td>"+u.getNombreMostrar()+"</td>");break;
-                            case "FechaNac": out.print("<td>"+rs.getString("FechaNac")+"</td>");break;
-                            case "LM": 
-                                    out.print("<td>");
-                                    if(rs.getBoolean("lmga")){
-                                        out.print("SI");
-                                    }else{
-                                        out.print("NO");
-                                    }
-                                    out.print("</td>");break;
-                            case "Aprobado": 
-                                    out.print("<td>");
-                                    if(rs.getBoolean("quinto")){
-                                        out.print("5to.");
-                                    }else{
-                                        out.print("6to.");
-                                    }
-                                    out.print("</td>");break;
-                            case "Orient": 
-                                    out.print("<td>");
-                                    if(rs.getInt("orientacion")==1){
-                                        out.print("SH");
-                                    }
-                                    else{
-                                        out.print("SE");
-                                    }
-                                    out.print("</td>");break;
-                            case "Dom": out.print("<td>"+rs.getString("domicilio")+"</td>");break;
-                            case "DepDom": 
-                                Departamento d = mc.getDepartamento(rs.getInt("DEPARTAMENTO"));
-                                out.print("<td>"+d.getDescripcion()+"</td>");break;
-                            case "Obs": out.print("<td>"+rs.getString("OBSERVACIONES")+"</td>");break;
-                            case "Mat": out.print("<td>"+rs.getDouble("MATEMATICA")+"</td>");break;
-                            case "Hist": out.print("<td>"+rs.getDouble("HISTORIA")+"</td>");break;
-                            case "IdEsp": out.print("<td>"+rs.getDouble("IDIOMAESPANOL")+"</td>");break;
-                            case "EdFis": out.print("<td>"+rs.getDouble("EDUCACIONFISICA")+"</td>");break;
-                            case "Arrojo": 
-                                        out.print("<td>");
-                                        if(rs.getBoolean("arrojo")){
-                                            out.print("SI");
-                                        }else{
-                                            out.print("NO");
-                                        }
-                                        out.print("</td>");break;
-                            case "Medico": 
-                                        out.print("<td>");
-                                        if(rs.getInt("medico")==1){
-                                            if(rs.getBoolean("medicoSeg")){
-                                                out.print("AC");
-                                            }
-                                            else{
-                                                out.print("A");
-                                            }
-
-                                        }
-                                        else{
-                                            out.print("NA");
-                                        }
-                                        out.print("</td>");break;
-                            case "ObsMedico": 
-                                        out.print("<td>");
-                                        if(rs.getString("medicoObs")!=null){
-                                            rs.getString("medicoObs");
-                                        }
-                                        out.print("</td>");break;
-                            case "Psico": 
-                                        out.print("<td>");
-                                        if(rs.getInt("psicotecnica")==1){
-                                            if(rs.getBoolean("psicoSeg")){
-                                                out.print("AC");
-                                            }
-                                            else{
-                                                out.print("A");
-                                            }
-
-                                        }
-                                        else{
-                                            out.print("NA");
-                                        }
-                                        out.print("</td>");break;
-                            case "ObsPsico":
-                                        out.print("<td>");
-                                        if(rs.getString("psicoObs")!=null){
-                                            rs.getString("psicoObs");
-                                        }
-                                        out.print("</td>");break;
-                            case "Odont": 
-                                        out.print("<td>");
-                                        if(rs.getInt("odontologico")==1){
-                                            if(rs.getBoolean("odontSeg")){
-                                                out.print("AC");
-                                            }
-                                            else{
-                                                out.print("A");
-                                            }
-
-                                        }
-                                        else{
-                                            out.print("NA");
-                                        }
-                                        out.print("</td>");break;
-                            case "ObsOdont": 
-                                        out.print("<td>");
-                                        if(rs.getString("odontObs")!=null){
-                                            rs.getString("odontObs");
-                                        }
-                                        out.print("</td>");break;
-                            case "Promedio": out.print("<td>"+rs.getDouble("promedio")+"</td>");break;
-                        }
-                    }
-                    out.print("</tr>");
-                }
-                out.print("</table>");
+                imprimirCampos(lista, rs, out, sql1);
                 if(k==0){
                    out.print(" <h1 style='page-break-after: always;'></h1>");
                 }
