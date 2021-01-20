@@ -46,6 +46,8 @@ public class Sabana extends HttpServlet {
                     RecordPostulanteFiltro rf =  new RecordPostulanteFiltro();
                     rf.lmga = request.getParameter("filtrolmga");
                     rf.pd = request.getParameter("filtropd");
+                    rf.anio_aprobado = request.getParameter("filtroanio_aprobado");
+                    rf.ps = request.getParameter("filtrops");
                     rf.psEjercito = request.getParameter("filtropsEjercito");
                     rf.sexo = request.getParameter("filtrosexo");
                     rf.canthijos = request.getParameterValues("filtrocanthijos");

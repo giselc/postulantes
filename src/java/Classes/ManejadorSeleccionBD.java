@@ -189,8 +189,9 @@ public class ManejadorSeleccionBD {
                 out.print(anio+"</h3></td>\n" +
     "        <td></td>\n" +
     "    </tr>\n");
-                out.print("<tr>"+rf.filtroMostrar+"</tr>");
+          out.print("<tr><td>"+rf.filtroMostrar+"</td></tr>");      
         out.print("<tr>");
+        
         out.print("</table><table class=\"noExl\" style=\"width: 100%; text-align: center;page-break-inside: auto;\" border='1' cellspacing='0'></tr>");
         out.print("<td>Nº</td>");
         for(String l:lista){

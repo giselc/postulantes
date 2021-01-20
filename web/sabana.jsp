@@ -32,7 +32,6 @@ function mostrarPersonal(){
         }
 
 </script>
-<%--
 <form method="post" action='Sabana' id="imprimir">
 <h2 align="center">Seleccione los campos que desea que aparezcan en la sábana.</h2>
     <table style="width: 100%; background-color: #CDCDCD; " border="1" cellspacing="0">
@@ -70,6 +69,18 @@ function mostrarPersonal(){
             </td>
             <td>
                 <input type="checkbox" name="lista"  value="FechaNac"/> Fecha de Nacimiento
+            </td>
+            
+        </tr>
+        <tr>
+            <td>
+                <input type="checkbox" name="lista"  value="Sexo"/> Credencial Civica
+            </td>
+            <td>
+                <input type="checkbox" name="lista"  value="UI"/> Personal Subalterno
+            </td>
+            <td>
+                <input type="checkbox" name="lista"  value="FechaNac"/> Cantidad de hijos
             </td>
             
         </tr>
@@ -150,7 +161,7 @@ function mostrarPersonal(){
     </table>
 <h2 align="center">Seleccione el filtro que desea aplicar.</h2>
 
-<table style="font-size: 70%">
+<table>
         
             <tr>
 
@@ -288,14 +299,15 @@ function mostrarPersonal(){
                 Personal Subalterno:
             </td>
             <td> 
-                <select name="filtrops" form="imprimir" onshow="mostrarPersonal();" onchange="mostrarPersonal();" id="filtropsA">
+                <select name="filtrops" form="imprimir" onshow="mostrarPersonal();" onchange="mostrarPersonal();" id="filtrops">
                     <option value="todos" selected="selected">TODOS</option>
                     <option value="S">SI</option>
                     <option value="N">NO</option>
                 </select>
             </td>
         </tr>
-        <tr id="filtropseA" style="display: none">
+        
+        <tr id="filtropse" style="display: none">
             <td>
                 Personal subalterno de Ej&eacute;rcito:
             </td>
@@ -304,6 +316,18 @@ function mostrarPersonal(){
                     <option value="todos" selected="selected">TODOS</option>
                     <option value="S">SI</option>
                     <option value="N">NO</option>
+                </select>
+            </td>
+        </tr>
+        <tr style="display: none;">
+            <td>
+                 A cursar en el instituto:
+            </td>
+            <td>
+                <select name="filtroanio_aprobado" form="imprimir" onchange="mostrarOrientacion(1);" id="anio">
+                    <option value="todos" selected="selected">TODOS</option>
+                    <option value="5">Secundaria</option>
+                    <option value="6">6to aprobado</option>
                 </select>
             </td>
         </tr>
@@ -350,9 +374,9 @@ function mostrarPersonal(){
 </form>
 
 
---%>
+<%--
 <h1>SECCI&Oacute;N EN MANTENIMIENTO</h1>
-
+--%>
 <%}else{
     response.sendRedirect("/listar.jsp");
     }%>
