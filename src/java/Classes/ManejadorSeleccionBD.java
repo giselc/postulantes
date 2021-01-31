@@ -159,13 +159,14 @@ public class ManejadorSeleccionBD {
                 case "ObsPsico": out.print("<td>Obs.Psico</td>");break;
                 case "Odont": out.print("<td>O</td>");break;
                 case "ObsOdont": out.print("<td>Obs.Odont</td>");break;
+                case "aloj": out.print("<td>Aloj.</td>");break;
                 case "Promedio": out.print("<td>Promedio</td>");break;
                 case "ObsEdFisica": out.print("<td>Obs.Ed.Fisica</td>");break;
             }
         }
     }
-    private void imprimirCampos(String[]lista,ResultSet rs,PrintWriter out,String sql1) throws SQLException{
-        int i=1;
+    private int imprimirCampos(String[]lista,ResultSet rs,PrintWriter out,String sql1, int i) throws SQLException{
+        //int i=1;
         ManejadorCodigoBD mc = new ManejadorCodigoBD();
         while(rs.next()){
                     out.print("<tr>");
@@ -366,6 +367,14 @@ public class ManejadorSeleccionBD {
                                         }
                                     }
                                     out.print("</td>");break;
+                            case "aloj": 
+                                    out.print("<td>");
+                                    if(rs.getBoolean("alojamiento")){
+                                        out.print("SI");
+                                    }else{
+                                        out.print("NO");
+                                    }
+                                    out.print("</td>");break;
                             case "Promedio": out.print("<td>");
                                     if(!sql1.equals("")){
                                         if(rs.getDouble("promedio")<5){
@@ -380,6 +389,7 @@ public class ManejadorSeleccionBD {
                     }
                     out.print("</tr>");
                 }
+        return i;
     }
     public void imprimirSabana(RecordPostulanteFiltro rf,String[]lista,int carrera,PrintWriter out){
         int anio = ManejadorPostulanteDB.getAnioPostula();
@@ -388,7 +398,7 @@ public class ManejadorSeleccionBD {
         String sql1="";
         String filtro = ManejadorPostulanteDB.getFiltroSQL(rf);
         if(carrera==1){
-            if(!mn.hayNotasCargadas(anio)){
+            if(!mn.hayNotasCargadas(anio,1)){
                 sql="SELECT * FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci where carrera=1 "+filtro+" order by numero asc";
             }
             else{
@@ -397,7 +407,7 @@ public class ManejadorSeleccionBD {
             }
         }
         else{
-            if(mn.getNotas(2, anio).isEmpty()){
+             if(!mn.hayNotasCargadas(anio,2)){
                 sql="SELECT * FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci where carrera=2 "+filtro+" order by numero asc";
             }
             else{
@@ -458,8 +468,9 @@ public class ManejadorSeleccionBD {
             Statement s= connection.createStatement();
             ResultSet rs=s.executeQuery(sql);
             //IMPRIMIR LOS QUE SALVARON TODAS LAS PRUEBAS ORDENADO POR PROMEDIO
+            int i=1;
           for(int j=0; j<=1;j++){
-                imprimirCampos(lista, rs, out,sql1);
+                i=imprimirCampos(lista, rs, out,sql1,i);
             //IMPRIMIR LOS QUE PERDIERON ALGUNA PRUEBA ORDENADO POR PROMEDIO
                 
                 rs=s.executeQuery(sql1);
@@ -478,7 +489,8 @@ public class ManejadorSeleccionBD {
         String filtro = ManejadorPostulanteDB.getFiltroSQL(rf);
         String sql="SELECT * FROM postulantes.postulantes LEFT JOIN postulantes.comando ON postulantes.ci = comando.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where carrera=1 and notas.anio= "+ anio +" and resultado="+ entran +filtro+" order by postulantes.resultados.promedio desc, numero asc";
         String sql1="SELECT * FROM postulantes.postulantes LEFT JOIN postulantes.apoyo ON postulantes.ci = apoyo.ci LEFT JOIN postulantes.resultados ON postulantes.ci = resultados.ci LEFT JOIN postulantes.notas on postulantes.ci = notas.ci where carrera=2 and notas.anio= "+ anio +" and resultado="+ entran +filtro+" order by postulantes.resultados.promedio desc, numero asc";   
-        try{       
+        try{     
+            int i=1;
             for(int k=0; k<=1;k++){
                 out.print("<style>\n" +
                 "    tr{\n" +
@@ -528,7 +540,8 @@ public class ManejadorSeleccionBD {
                 }else{
                     rs=s.executeQuery(sql1);
                 }
-                imprimirCampos(lista, rs, out, sql1);
+                i=imprimirCampos(lista, rs, out, sql1,i);
+               
                 if(k==0){
                    out.print(" <h1 style='page-break-after: always;'></h1>");
                 }

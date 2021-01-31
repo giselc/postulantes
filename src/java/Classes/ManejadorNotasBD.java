@@ -219,10 +219,10 @@ public class ManejadorNotasBD {
         }
         return an;
     }
-    public Boolean hayNotasCargadas(int anio){
+    public Boolean hayNotasCargadas(int anio,int carrera){
         try {
             Statement s= connection.createStatement();
-            String sql = "SELECT * from postulantes.notas";
+            String sql = "SELECT * from postulantes.notas left join postulantes.postulantes on postulantes.notas.ci= postulantes.postulantes.ci where carrera="+carrera;
             ResultSet rs=s.executeQuery(sql);
             return (rs.next());
         }

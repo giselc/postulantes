@@ -149,6 +149,9 @@
         </tr>
         <tr>
             <td>
+                <input type="checkbox" name="lista"  value="aloj"/> Necesita alojamiento
+            </td>
+            <td>
                 <input type="checkbox" name="lista"  value="Obs"/> Observaciones de Ingreso
             </td>
             <td>
@@ -342,6 +345,7 @@
             </td>
         </tr>
         
+      <%--  
         <tr>
             <td>
                 Condicional:
@@ -351,6 +355,106 @@
                     <option value="todos" selected="selected">TODOS</option>
                     <option value="S">SI</option>
                     <option value="N">NO</option>
+                </select>
+            </td>
+        </tr>
+      --%>
+        <tr>
+            <td>
+                Matem&aacute;ticas:
+            </td>
+            <td>
+                <select name="filtromat" form="imprimir"> 
+                    <option value="todos" selected="selected">TODOS</option>
+                    <option value="salva">>=5</option>
+                    <option value="pierde"><5</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Historia:
+            </td>
+            <td>
+                <select name="filtrohist" form="imprimir"> 
+                    <option value="todos" selected="selected">TODOS</option>
+                    <option value="salva">>=5</option>
+                    <option value="pierde"><5</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Idioma Espa&ntilde;ol:
+            </td>
+            <td>
+                <select name="filtroidesp" form="imprimir"> 
+                    <option value="todos" selected="selected">TODOS</option>
+                    <option value="salva">>=5</option>
+                    <option value="pierde"><5</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Educaci&oacute;n F&iacute;sica:
+            </td>
+            <td>
+                <select name="filtroedfisica" form="imprimir"> 
+                    <option value="todos" selected="selected">TODOS</option>
+                    <option value="salva">>=5</option>
+                    <option value="pierde"><5</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Arrojo:
+            </td>
+            <td>
+                <select name="filtroarrojo" form="imprimir"> 
+                    <option value="todos" selected="selected">TODOS</option>
+                    <option value="salva">Pasa</option>
+                    <option value="pierde">NO pasa</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                M&eacute;dico:
+            </td>
+            <td>
+                <select name="filtromed" form="imprimir"> 
+                    <option value="todos" selected="selected">TODOS</option>
+                    <option value="apto">Apto</option>
+                    <option value="cond">Condicional</option>
+                    <option value="noapto">NO apto</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Psicol&oacute;gico:
+            </td>
+            <td>
+                <select name="filtropsico" form="imprimir"> 
+                    <option value="todos" selected="selected">TODOS</option>
+                    <option value="apto">Apto</option>
+                    <option value="cond">Condicional</option>
+                    <option value="noapto">NO apto</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Odontol&oacute;gico:
+            </td>
+            <td>
+                <select name="filtroodont" form="imprimir"> 
+                    <option value="todos" selected="selected">TODOS</option>
+                    <option value="apto">Apto</option>
+                    <option value="cond">Condicional</option>
+                    <option value="noapto">NO apto</option>
                 </select>
             </td>
         </tr>

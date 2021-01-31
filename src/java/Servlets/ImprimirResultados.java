@@ -59,6 +59,14 @@ public class ImprimirResultados extends HttpServlet {
                     rf.alojamiento = request.getParameter("filtroalojamiento");
                     rf.nsp = request.getParameter("filtronsp");
                     rf.renuncio = request.getParameter("filtrorenuncio");
+                    rf.matematica = request.getParameter("filtromat");
+                    rf.historia = request.getParameter("filtrohist");
+                    rf.idiomaEspanol = request.getParameter("filtroidesp");
+                    rf.educacionFisica = request.getParameter("filtroedfisica");
+                    rf.arrojo = request.getParameter("filtroarrojo");
+                    rf.medico = request.getParameter("filtromed");
+                    rf.psicotecnica = request.getParameter("filtropsico");
+                    rf.odontologico = request.getParameter("filtroodont");
                     ms.imprimirResultadosFinales(lista,rf,entra,out);
                 }
                 catch(Exception ex){

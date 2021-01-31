@@ -295,12 +295,102 @@ public class ManejadorPostulanteDB {
                     filtroMostrar += "Renuncio = NO - ";
                 }
             }
-            if(rf.condicional.equals("S")){
-                filtroMostrar += "CONDICIONAL = SI - ";
+            if(rf.matematica.equals("salva")){
+                filtro+= " and matematica >=5 ";
+                filtroMostrar += "Matematica >= 5 - ";
             }
             else{
-                if (rf.condicional.equals("N")){
-                    filtroMostrar += "condicional = NO - ";
+                if (rf.matematica.equals("pierde")){
+                    filtro+= " and matematica < 5";
+                    filtroMostrar += "Matematica < 5 - ";
+                }
+            }
+            if(rf.historia.equals("salva")){
+                filtro+= " and historia >=5";
+                filtroMostrar += "Historia >= 5 - ";
+            }
+            else{
+                if (rf.historia.equals("pierde")){
+                    filtro+= " and historia < 5";
+                    filtroMostrar += "Historia < 5 - ";
+                }
+            }
+            if(rf.idiomaEspanol.equals("salva")){
+                filtro+= " and idiomaEspanol >=5";
+                filtroMostrar += "Idioma Español >= 5 - ";
+            }
+            else{
+                if (rf.idiomaEspanol.equals("pierde")){
+                    filtro+= " and idiomaEspanol < 5";
+                    filtroMostrar += "Idioma Español < 5 - ";
+                }
+            }
+            if(rf.educacionFisica.equals("salva")){
+                filtro+= " and educacionFisica >=5";
+                filtroMostrar += "Educación Física >= 5 - ";
+            }
+            else{
+                if (rf.educacionFisica.equals("pierde")){
+                    filtro+= " and educacionFisica < 5";
+                    filtroMostrar += "Educación Física < 5 - ";
+                }
+            }
+            if(rf.arrojo.equals("salva")){
+                filtro+= " and arrojo =1 ";
+                filtroMostrar += "Arrojo = Pasa - ";
+            }
+            else{
+                if (rf.arrojo.equals("pierde")){
+                    filtro+= " and arrojo =0 ";
+                    filtroMostrar += "Arrojo = No Pasa - ";
+                }
+            }
+            if(rf.medico.equals("apto")){
+                filtro+= " and medico=3";
+                filtroMostrar += "Médico = Apto - ";
+            }
+            else{
+                if (rf.medico.equals("cond")){
+                    filtro+= " and medico=2";
+                    filtroMostrar +=  "Médico = Condicional - ";
+                }
+                else{
+                    if (rf.medico.equals("noapto")){
+                       filtro+= " and medico=1";
+                       filtroMostrar +=  "Médico = No Apto - ";
+                    }   
+                }
+            }
+            if(rf.psicotecnica.equals("apto")){
+                filtro+= " and psicotecnica=3";
+                filtroMostrar += "Psicotécnica = Apto - ";
+            }
+            else{
+                if (rf.psicotecnica.equals("cond")){
+                    filtro+= " and psicotecnica=2";
+                    filtroMostrar +=  "Psicotécnica = Condicional - ";
+                }
+                else{
+                    if (rf.psicotecnica.equals("noapto")){
+                       filtro+= " and psicotecnica=1";
+                       filtroMostrar +=  "Psicotécnica = No Apto - ";
+                    }   
+                }
+            }
+            if(rf.odontologico.equals("apto")){
+                filtro+= " and odontologico=3";
+                filtroMostrar += "Odontológico = Apto - ";
+            }
+            else{
+                if (rf.odontologico.equals("cond")){
+                    filtro+= " and odontologico=2";
+                    filtroMostrar +=  "Odontológico = Condicional - ";
+                }
+                else{
+                    if (rf.odontologico.equals("noapto")){
+                       filtro+= " and odontologico=1";
+                       filtroMostrar +=  "Odontológico = No Apto - ";
+                    }   
                 }
             }
             if(rf.anio_aprobado.equals("5")){
@@ -447,7 +537,7 @@ public class ManejadorPostulanteDB {
             }
             else{
                 rf.filtroMostrar = "";
-            }
+            }            
         }
         return filtro;
     }
