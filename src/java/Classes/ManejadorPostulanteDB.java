@@ -346,49 +346,49 @@ public class ManejadorPostulanteDB {
                 }
             }
             if(rf.medico.equals("apto")){
-                filtro+= " and medico=3";
+                filtro+= " and medico=1 and medicoseg=0";
                 filtroMostrar += "Médico = Apto - ";
             }
             else{
                 if (rf.medico.equals("cond")){
-                    filtro+= " and medico=2";
+                    filtro+= " and medico=1 and medicoseg=1";
                     filtroMostrar +=  "Médico = Condicional - ";
                 }
                 else{
                     if (rf.medico.equals("noapto")){
-                       filtro+= " and medico=1";
+                       filtro+= " and medico=2";
                        filtroMostrar +=  "Médico = No Apto - ";
                     }   
                 }
             }
             if(rf.psicotecnica.equals("apto")){
-                filtro+= " and psicotecnica=3";
+                filtro+= " and psicotecnica=1 and psicoseg=0";
                 filtroMostrar += "Psicotécnica = Apto - ";
             }
             else{
                 if (rf.psicotecnica.equals("cond")){
-                    filtro+= " and psicotecnica=2";
+                    filtro+= " and psicotecnica=1 and psicoseg=1";
                     filtroMostrar +=  "Psicotécnica = Condicional - ";
                 }
                 else{
                     if (rf.psicotecnica.equals("noapto")){
-                       filtro+= " and psicotecnica=1";
+                       filtro+= " and psicotecnica=2";
                        filtroMostrar +=  "Psicotécnica = No Apto - ";
                     }   
                 }
             }
             if(rf.odontologico.equals("apto")){
-                filtro+= " and odontologico=3";
+                filtro+= " and and odontologico=1 and odontseg=0";
                 filtroMostrar += "Odontológico = Apto - ";
             }
             else{
                 if (rf.odontologico.equals("cond")){
-                    filtro+= " and odontologico=2";
+                    filtro+= " and odontologico=1 and odontseg=1";
                     filtroMostrar +=  "Odontológico = Condicional - ";
                 }
                 else{
                     if (rf.odontologico.equals("noapto")){
-                       filtro+= " and odontologico=1";
+                       filtro+= " and odontologico=2";
                        filtroMostrar +=  "Odontológico = No Apto - ";
                     }   
                 }

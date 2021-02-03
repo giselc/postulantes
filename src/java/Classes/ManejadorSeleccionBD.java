@@ -318,7 +318,7 @@ public class ManejadorSeleccionBD {
                             case "ObsMedico":out.print("<td>");
                                     if(!sql1.equals("")){
                                         if(rs.getString("medicoObs")!=null){
-                                            rs.getString("medicoObs");
+                                            out.print(rs.getString("medicoObs"));
                                         }
                                     }
                                     out.print("</td>");break;
@@ -341,7 +341,7 @@ public class ManejadorSeleccionBD {
                             case "ObsPsico": out.print("<td>");
                                     if(!sql1.equals("")){
                                         if(rs.getString("psicoObs")!=null){
-                                            rs.getString("psicoObs");
+                                            out.print(rs.getString("psicoObs"));
                                         }
                                     }
                                     out.print("</td>");break;
@@ -363,7 +363,7 @@ public class ManejadorSeleccionBD {
                             case "ObsOdont": out.print("<td>");
                                     if(!sql1.equals("")){
                                         if(rs.getString("odontObs")!=null){
-                                            rs.getString("odontObs");
+                                            out.print(rs.getString("odontObs"));
                                         }
                                     }
                                     out.print("</td>");break;
