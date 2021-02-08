@@ -29,13 +29,13 @@ public class RecordPostulanteFiltro {
     public String alojamiento; // TODOS, S, N
     public String nsp; // TODOS, S, N
     public String renuncio; // TODOS, S, N
-    public String matematica; //TODOS, salva,pierde
-    public String historia;//TODOS, salva,pierde
-    public String idiomaEspanol;//TODOS, salva,pierde
-    public String educacionFisica;//TODOS, salva,pierde
-    public String medico;//TODOS,apto,cond,noapto
-    public String psicotecnica;//TODOS,apto,cond,noapto
-    public String arrojo;//TODOS, salva,pierde
-    public String odontologico;//TODOS,apto,cond,noapto
+    public String matematica=""; //TODOS, salva,pierde
+    public String historia="";//TODOS, salva,pierde
+    public String idiomaEspanol="";//TODOS, salva,pierde
+    public String educacionFisica="";//TODOS, salva,pierde
+    public String medico="";//TODOS,apto,cond,noapto
+    public String psicotecnica="";//TODOS,apto,cond,noapto
+    public String arrojo="";//TODOS, salva,pierde
+    public String odontologico="";//TODOS,apto,cond,noapto
     
 }

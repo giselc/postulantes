@@ -203,7 +203,7 @@
 
                         <tr>
                             <td style="background-color: #ccffcc;">
-
+                                
                             </td>
                             <td style="background-color: #ccccff;">
 
@@ -235,8 +235,18 @@
                         </tr>
                         <tr>
                             <td></td>
+                            <td style="color: #009933">Texto verde: </td>
+                            <td>Pases Directos</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td style="background-color: #ff9900">Recuadro Naranja: </td>
+                            <td>Posee alguna prueba insuficiente o Apto c/s</td>
+                        </tr>
+                        <tr>
+                            <td></td>
                             <td style="background-color: #ff9999">Recuadro rojo: </td>
-                            <td>Posee alguna prueba insuficiente</td>
+                            <td>NO apto o NO cumple</td>
                         </tr>
                     </table>
                 </td>
@@ -264,7 +274,8 @@
                 ManejadorSeleccionBD ms= new ManejadorSeleccionBD();
                 String datos="";
                 String color = "#ffffcc";
-                String colorNocond="#ff9999";
+                String colorNoApto="#ff9999";
+                String colorIns="#ff9900";
                 String colorFinal="";
                 int j=0;
                 ArrayList<Postulante> listado = ms.getPostulantesSeleccion(0, Integer.valueOf(sesion.getAttribute("usuarioID").toString()), Integer.valueOf(request.getParameter("carrera")));
@@ -287,16 +298,22 @@
                     
                     for (Postulante p : listado){
                         if(p.getNotas().reingreso){
-                            if(!p.getNotas().arrojo||(p.getNotas().psicotecnica==2)||(p.getNotas().psicotecnica==1 && p.getNotas().psicoSeg)||(p.getNotas().medico==2)||(p.getNotas().medico==1 && p.getNotas().medicoSeg)||(p.getNotas().odontologico==2)||(p.getNotas().odontologico==1 && p.getNotas().odontSeg)||(p.getNotas().educacionFisica<5)){
-                                colorFinal=colorNocond;
+                            if(!p.getNotas().arrojo||(p.getNotas().psicotecnica==2)||(p.getNotas().medico==2)||(p.getNotas().odontologico==2)){
+                                colorFinal=colorNoApto;
+                            }
+                            else if((p.getNotas().psicotecnica==1 && p.getNotas().psicoSeg)||(p.getNotas().medico==1 && p.getNotas().medicoSeg)||(p.getNotas().odontologico==1 && p.getNotas().odontSeg)||(p.getNotas().educacionFisica<5)) {
+                                colorFinal=colorIns;
                             }
                             else{
                                 colorFinal=color; 
                             }
                         }
                         else{
-                            if(!p.getNotas().arrojo||(p.getNotas().psicotecnica==2)||(p.getNotas().psicotecnica==1 && p.getNotas().psicoSeg)||(p.getNotas().medico==2)||(p.getNotas().medico==1 && p.getNotas().medicoSeg)||(p.getNotas().odontologico==2)||(p.getNotas().odontologico==1 && p.getNotas().odontSeg)||(p.getNotas().matematica<5)||(p.getNotas().historia<5)||(p.getNotas().idiomaEspaniol<5)||(p.getNotas().educacionFisica<5)){
-                                colorFinal=colorNocond;
+                            if(!p.getNotas().arrojo||(p.getNotas().psicotecnica==2)||(p.getNotas().medico==2)||(p.getNotas().odontologico==2)){
+                                colorFinal=colorNoApto;
+                            }
+                            else if((p.getNotas().psicotecnica==1 && p.getNotas().psicoSeg)||(p.getNotas().medico==1 && p.getNotas().medicoSeg)||(p.getNotas().odontologico==1 && p.getNotas().odontSeg)||(p.getNotas().matematica<5)||(p.getNotas().historia<5)||(p.getNotas().idiomaEspaniol<5)||(p.getNotas().educacionFisica<5)){
+                                colorFinal=colorIns;
                             }
                             else{
                                 colorFinal=color; 
@@ -305,6 +322,9 @@
                         datos += "<tr style='background-color:"+colorFinal;
                         if(p.getNotas().reingreso){
                             datos+= ";font-weight: bold;color:blue;";
+                        }
+                        if(p.getNotas().pd){
+                            datos+= ";font-weight: bold;color:#009933;";
                         }
                         datos+= "' id="+p.getCi()+">";
                         datos +="<td><input type=text size='3' style='text-align:center;' readonly='readonly' name=\"precedencia["+j+"][]\" value=\"";
@@ -428,7 +448,7 @@
                                 "</tr>"+
                                 "<tr>"+
                                 "<td>Psicotécnica:</td>"+
-                                "<td id='"+p.getNotas().psicotecnica+"'>";
+                                "<td>";
                                 if(p.getNotas().psicotecnica==2){
                                        datos+="<font color=\"red\">NO APTO</font>";
                                 }else{
@@ -555,16 +575,22 @@
                 datos="";
                 for (Postulante p : listado){
                     if(p.getNotas().reingreso){
-                        if(!p.getNotas().arrojo||(p.getNotas().psicotecnica==2)||(p.getNotas().psicotecnica==1 && p.getNotas().psicoSeg)||(p.getNotas().medico==2)||(p.getNotas().medico==1 && p.getNotas().medicoSeg)||(p.getNotas().odontologico==2)||(p.getNotas().odontologico==1 && p.getNotas().odontSeg)||(p.getNotas().educacionFisica<5)){
-                            colorFinal=colorNocond;
+                        if(!p.getNotas().arrojo||(p.getNotas().psicotecnica==2)||(p.getNotas().medico==2)||(p.getNotas().odontologico==2)){
+                            colorFinal=colorNoApto;
+                        }
+                        else if((p.getNotas().psicotecnica==1 && p.getNotas().psicoSeg)||(p.getNotas().medico==1 && p.getNotas().medicoSeg)||(p.getNotas().odontologico==1 && p.getNotas().odontSeg)||(p.getNotas().educacionFisica<5)){
+                            colorFinal=colorIns;
                         }
                         else{
                             colorFinal=color; 
                         }
                     }
                     else{
-                        if(!p.getNotas().arrojo||(p.getNotas().psicotecnica==2)||(p.getNotas().psicotecnica==1 && p.getNotas().psicoSeg)||(p.getNotas().medico==2)||(p.getNotas().medico==1 && p.getNotas().medicoSeg)||(p.getNotas().odontologico==2)||(p.getNotas().odontologico==1 && p.getNotas().odontSeg)||(p.getNotas().matematica<5)||(p.getNotas().historia<5)||(p.getNotas().idiomaEspaniol<5)||(p.getNotas().educacionFisica<5)){
-                            colorFinal=colorNocond;
+                        if(!p.getNotas().arrojo||(p.getNotas().psicotecnica==2)||(p.getNotas().medico==2)||(p.getNotas().odontologico==2)){
+                            colorFinal=colorNoApto;
+                        }
+                        else if((p.getNotas().psicotecnica==1 && p.getNotas().psicoSeg)||(p.getNotas().medico==1 && p.getNotas().medicoSeg)||(p.getNotas().odontologico==1 && p.getNotas().odontSeg)||(p.getNotas().matematica<5)||(p.getNotas().historia<5)||(p.getNotas().idiomaEspaniol<5)||(p.getNotas().educacionFisica<5)){
+                            colorFinal=colorIns;
                         }
                         else{
                             colorFinal=color; 
@@ -573,6 +599,9 @@
                         datos += "<tr style='background-color:"+colorFinal;
                         if(p.getNotas().reingreso){
                             datos+= ";font-weight: bold;color:blue;";
+                        }
+                        if(p.getNotas().pd){
+                            datos+= ";font-weight: bold;color:#009933;";
                         }
                         datos+="' id="+p.getCi()+">";
                         datos +="<td><input type=text size='3' style='text-align:center;' readonly='readonly' name=\"precedencia["+j+"][]\" value=\"0\"/></td>";
@@ -778,16 +807,22 @@
                 datos="";
                 for (Postulante p : listado){
                         if(p.getNotas().reingreso){
-                            if(!p.getNotas().arrojo||(p.getNotas().psicotecnica==2)||(p.getNotas().psicotecnica==1 && p.getNotas().psicoSeg)||(p.getNotas().medico==2)||(p.getNotas().medico==1 && p.getNotas().medicoSeg)||(p.getNotas().odontologico==2)||(p.getNotas().odontologico==1 && p.getNotas().odontSeg)||(p.getNotas().educacionFisica<5)){
-                                colorFinal=colorNocond;
+                            if(!p.getNotas().arrojo||(p.getNotas().psicotecnica==2)||(p.getNotas().medico==2)||(p.getNotas().odontologico==2)){
+                                colorFinal=colorNoApto;
+                            }
+                            else if((p.getNotas().psicotecnica==1 && p.getNotas().psicoSeg)||(p.getNotas().medico==1 && p.getNotas().medicoSeg)||(p.getNotas().odontologico==1 && p.getNotas().odontSeg)||(p.getNotas().educacionFisica<5)){
+                                colorFinal=colorIns;
                             }
                             else{
                                 colorFinal=color; 
                             }
                         }
                         else{
-                            if(!p.getNotas().arrojo||(p.getNotas().psicotecnica==2)||(p.getNotas().psicotecnica==1 && p.getNotas().psicoSeg)||(p.getNotas().medico==2)||(p.getNotas().medico==1 && p.getNotas().medicoSeg)||(p.getNotas().odontologico==2)||(p.getNotas().odontologico==1 && p.getNotas().odontSeg)||(p.getNotas().matematica<5)||(p.getNotas().historia<5)||(p.getNotas().idiomaEspaniol<5)||(p.getNotas().educacionFisica<5)){
-                                colorFinal=colorNocond;
+                            if(!p.getNotas().arrojo||(p.getNotas().psicotecnica==2)||(p.getNotas().medico==2)||(p.getNotas().odontologico==2)){
+                                colorFinal=colorNoApto;
+                            }
+                            else if((p.getNotas().psicotecnica==1 && p.getNotas().psicoSeg)||(p.getNotas().medico==1 && p.getNotas().medicoSeg)||(p.getNotas().odontologico==1 && p.getNotas().odontSeg)||(p.getNotas().matematica<5)||(p.getNotas().historia<5)||(p.getNotas().idiomaEspaniol<5)||(p.getNotas().educacionFisica<5)){
+                                colorFinal=colorIns;
                             }
                             else{
                                 colorFinal=color; 
@@ -796,6 +831,9 @@
                         datos += "<tr style='background-color:"+colorFinal;
                         if(p.getNotas().reingreso){
                             datos+= ";font-weight: bold; color:blue;";
+                        }
+                        if(p.getNotas().pd){
+                            datos+= ";font-weight: bold; color:#009933;";
                         }
                         datos+="' id="+p.getCi()+">";
                         datos +="<td><input type=text size='3' style='text-align:center;' readonly='readonly' name=\"precedencia["+j+"][]\" value=\"0\"/></td>";
@@ -998,7 +1036,8 @@
             <%
                 datos="";
                 color = "#ffffcc";
-                colorNocond="#ff9999";
+                colorIns="#ff9900";
+                colorNoApto="#ff9999";
                 colorFinal="";
                 listado = ms.getPostulantesSeleccion(3, Integer.valueOf(sesion.getAttribute("usuarioID").toString()), Integer.valueOf(request.getParameter("carrera")));
                 if (!listado.isEmpty()){
@@ -1020,16 +1059,22 @@
                     
                     for (Postulante p : listado){
                         if(p.getNotas().reingreso){
-                            if(!p.getNotas().arrojo||(p.getNotas().psicotecnica==2)||(p.getNotas().psicotecnica==1 && p.getNotas().psicoSeg)||(p.getNotas().medico==2)||(p.getNotas().medico==1 && p.getNotas().medicoSeg)||(p.getNotas().odontologico==2)||(p.getNotas().odontologico==1 && p.getNotas().odontSeg)||(p.getNotas().educacionFisica<5)){
-                                colorFinal=colorNocond;
+                            if(!p.getNotas().arrojo||(p.getNotas().psicotecnica==2)||(p.getNotas().medico==2)||(p.getNotas().odontologico==2)){
+                                colorFinal=colorNoApto;
+                            }
+                            else if((p.getNotas().psicotecnica==1 && p.getNotas().psicoSeg)||(p.getNotas().medico==1 && p.getNotas().medicoSeg)||(p.getNotas().odontologico==1 && p.getNotas().odontSeg)||(p.getNotas().educacionFisica<5)){
+                                colorFinal=colorIns; 
                             }
                             else{
                                 colorFinal=color; 
                             }
                         }
                         else{
-                            if(!p.getNotas().arrojo||(p.getNotas().psicotecnica==2)||(p.getNotas().psicotecnica==1 && p.getNotas().psicoSeg)||(p.getNotas().medico==2)||(p.getNotas().medico==1 && p.getNotas().medicoSeg)||(p.getNotas().odontologico==2)||(p.getNotas().odontologico==1 && p.getNotas().odontSeg)||(p.getNotas().matematica<5)||(p.getNotas().historia<5)||(p.getNotas().idiomaEspaniol<5)||(p.getNotas().educacionFisica<5)){
-                                colorFinal=colorNocond;
+                            if(!p.getNotas().arrojo||(p.getNotas().psicotecnica==2)||(p.getNotas().medico==2)||(p.getNotas().odontologico==2)){
+                                colorFinal=colorNoApto;
+                            }
+                            else if((p.getNotas().psicotecnica==1 && p.getNotas().psicoSeg)||(p.getNotas().medico==1 && p.getNotas().medicoSeg)||(p.getNotas().odontologico==1 && p.getNotas().odontSeg)||(p.getNotas().matematica<5)||(p.getNotas().historia<5)||(p.getNotas().idiomaEspaniol<5)||(p.getNotas().educacionFisica<5)){
+                                colorFinal=colorIns;
                             }
                             else{
                                 colorFinal=color; 
@@ -1038,6 +1083,9 @@
                         datos += "<tr style='background-color:"+colorFinal;
                         if(p.getNotas().reingreso){
                             datos+= ";font-weight: bold;color:blue;";
+                        }
+                        if(p.getNotas().pd){
+                            datos+= ";font-weight: bold;color:#009933;";
                         }
                         datos+="' id="+p.getCi()+">";
                         datos +="<td><input type=text size='3' style='text-align:center;' readonly='readonly' name=\"precedencia["+j+"][]\" value=\"0\"/></td>";

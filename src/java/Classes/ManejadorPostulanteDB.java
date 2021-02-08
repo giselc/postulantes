@@ -1274,6 +1274,7 @@ public class ManejadorPostulanteDB {
         try {
             Statement s = connection.createStatement();
             String sql;
+            String sql1="";
             for(String ciS:parameterValues){
                 Postulante p = getPostulante(Integer.valueOf(ciS), 2, ManejadorPostulanteDB.getAnioPostula());
                 if(p.getId()!=0){
@@ -1282,12 +1283,14 @@ public class ManejadorPostulanteDB {
                         s.addBatch(sql);
                         sql= "insert into postulantes.`apoyo`(ci) value("+ciS+")";
                         s.addBatch(sql);
+                        sql1="select * from postulantes.`apoyo` where ci="+ciS;
                     }
                     else{
                         sql= "delete from postulantes.`apoyo` where ci="+ciS;
                         s.addBatch(sql);
                         sql= "insert into postulantes.`comando`(ci) value("+ciS+")";
                         s.addBatch(sql);
+                        sql1="select * from postulantes.`comando` where ci="+ciS;
                     }
                 };
                 if(p.getCarrera().getCodigo()==1){
@@ -1298,6 +1301,10 @@ public class ManejadorPostulanteDB {
                 }
                 s.addBatch(sql);
                 s.executeBatch();
+                ResultSet rs=s.executeQuery(sql1);
+                if(rs.next()){
+                    p.setId(rs.getInt("numero"));
+                }
                 return true;
             }
         } catch (SQLException ex) {
